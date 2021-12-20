@@ -10,13 +10,19 @@ from os import sys, path
 
 from PySide2 import QtWidgets
 
+if __package__ is None:
+    print("Not executed in package.")
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+    
+from pickme.widgets.standalone_window import Ui_MainWindow
+
+class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+
+        self.setupUi(self)
+
 if __name__ == "__main__":
-    if __package__ is None:
-        print("Not executed in package.")
-        sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-    from pickme.widgets.main_window import MainWindow
-
     app = QtWidgets.QApplication(sys.argv)
 
     window = MainWindow()
