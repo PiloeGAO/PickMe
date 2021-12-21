@@ -7,10 +7,12 @@
 '''
 import os
 
-import maya.cmds as cmds
+from maya import cmds
 import maya
 
 from pickme.core.path import ICONS_DIR
+
+print(ICONS_DIR)
 
 def remove_shelf():
     """Clear the current PickMe shelf from the interface.
@@ -36,7 +38,7 @@ def create_shelf():
         label='Open PickMe',
         command='from pickme.dccs.maya.shelf_commands import open_ui; open_ui()',
         sourceType='python', annotation='',
-        image=os.path.join(ICONS_DIR, "pause.png"),
+        image=os.path.join(ICONS_DIR, "figurine.png"),
         style='iconOnly'
     )
 
