@@ -8,6 +8,6 @@
 from PySide2 import QtWidgets
 from pickme.widgets.auto_generated.standalone_window import Ui_StandaloneWindow
 class MainWindow(QtWidgets.QMainWindow, Ui_StandaloneWindow):
-    def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent=parent)
+    def __init__(self):
+        super(MainWindow, self).__init__()
         self.setupUi(self)

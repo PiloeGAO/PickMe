@@ -7,8 +7,8 @@
 """
 from PySide2 import QtWidgets
 from pickme.widgets.auto_generated.horizontal_button_bar_widget import Ui_HorizontalButtonBarWidget
-class HorizontalButtonBarWidget(QtWidgets.QMainWindow, Ui_HorizontalButtonBarWidget):
+class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget):
     def __init__(self, parent=None):
-        super(HorizontalButtonBarWidget, self).__init__(parent=parent)
+        super(HorizontalButtonBarWidget, self).__init__()
 
         self.setupUi(self)
