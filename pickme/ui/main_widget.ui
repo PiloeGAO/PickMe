@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="Ui_HorizontalButtonBarWidget" name="headerWidget" native="true"/>
+    <widget class="HorizontalButtonBarWidget" name="headerWidget" native="true"/>
    </item>
    <item>
     <widget class="QTabWidget" name="rigsWidget">
@@ -35,7 +35,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Ui_HorizontalButtonBarWidget</class>
+   <class>HorizontalButtonBarWidget</class>
    <extends>QWidget</extends>
    <header location="global">pickme/widgets/horizontal_button_bar_widget.h</header>
    <container>1</container>

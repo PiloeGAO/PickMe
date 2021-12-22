@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="Ui_RigDisplayWidget" name="rigDisplay" native="true">
+    <widget class="RigDisplayWidget" name="rigDisplay" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Ui_HorizontalButtonBarWidget" name="selectionGroup" native="true">
+    <widget class="HorizontalButtonBarWidget" name="selectionGroup" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -50,15 +50,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Ui_HorizontalButtonBarWidget</class>
+   <class>HorizontalButtonBarWidget</class>
    <extends>QWidget</extends>
    <header location="global">pickme/widgets/horizontal_button_bar_widget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Ui_RigDisplayWidget</class>
+   <class>RigDisplayWidget</class>
    <extends>QWidget</extends>
-   <header>pickme/widgets/rig_display_widget.h</header>
+   <header location="global">pickme/widgets/rig_display_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
