@@ -18,8 +18,8 @@ class Ui_HorizontalButtonBarWidget(object):
         if not HorizontalButtonBarWidget.objectName():
             HorizontalButtonBarWidget.setObjectName(u"HorizontalButtonBarWidget")
         HorizontalButtonBarWidget.resize(599, 116)
-        self.horizontalLayout = QHBoxLayout(HorizontalButtonBarWidget)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.mainLayout = QHBoxLayout(HorizontalButtonBarWidget)
+        self.mainLayout.setObjectName(u"mainLayout")
         self.buttonArrayWidget = QScrollArea(HorizontalButtonBarWidget)
         self.buttonArrayWidget.setObjectName(u"buttonArrayWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -28,6 +28,8 @@ class Ui_HorizontalButtonBarWidget(object):
         sizePolicy.setHeightForWidth(self.buttonArrayWidget.sizePolicy().hasHeightForWidth())
         self.buttonArrayWidget.setSizePolicy(sizePolicy)
         self.buttonArrayWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.buttonArrayWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.buttonArrayWidget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
         self.buttonArrayWidget.setWidgetResizable(True)
         self.buttonArrayWidgetContents = QWidget()
         self.buttonArrayWidgetContents.setObjectName(u"buttonArrayWidgetContents")
@@ -37,11 +39,11 @@ class Ui_HorizontalButtonBarWidget(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.buttonArrayWidgetContents.sizePolicy().hasHeightForWidth())
         self.buttonArrayWidgetContents.setSizePolicy(sizePolicy1)
-        self.horizontalLayout_2 = QHBoxLayout(self.buttonArrayWidgetContents)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.buttonArrayWidgetContentsLayout = QHBoxLayout(self.buttonArrayWidgetContents)
+        self.buttonArrayWidgetContentsLayout.setObjectName(u"buttonArrayWidgetContentsLayout")
         self.buttonArrayWidget.setWidget(self.buttonArrayWidgetContents)
 
-        self.horizontalLayout.addWidget(self.buttonArrayWidget)
+        self.mainLayout.addWidget(self.buttonArrayWidget)
 
         self.actionButton = QPushButton(HorizontalButtonBarWidget)
         self.actionButton.setObjectName(u"actionButton")
@@ -52,7 +54,7 @@ class Ui_HorizontalButtonBarWidget(object):
         self.actionButton.setSizePolicy(sizePolicy2)
         self.actionButton.setMinimumSize(QSize(16, 16))
 
-        self.horizontalLayout.addWidget(self.actionButton)
+        self.mainLayout.addWidget(self.actionButton)
 
 
         self.retranslateUi(HorizontalButtonBarWidget)

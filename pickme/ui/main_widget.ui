@@ -13,22 +13,18 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="mainLayout">
    <item>
     <widget class="HorizontalButtonBarWidget" name="headerWidget" native="true"/>
    </item>
    <item>
-    <widget class="QTabWidget" name="rigsWidget">
-     <widget class="QWidget" name="rigTab">
-      <attribute name="title">
-       <string>Tab 1</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>Tab 2</string>
-      </attribute>
-     </widget>
+    <widget class="RigDisplayWidget" name="pickerWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
     </widget>
    </item>
   </layout>
@@ -38,6 +34,12 @@
    <class>HorizontalButtonBarWidget</class>
    <extends>QWidget</extends>
    <header location="global">pickme/widgets/horizontal_button_bar_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RigDisplayWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">pickme/widgets/rig_display_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

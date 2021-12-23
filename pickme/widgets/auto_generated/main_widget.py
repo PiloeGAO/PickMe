@@ -13,6 +13,7 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from pickme.widgets.horizontal_button_bar_widget import HorizontalButtonBarWidget
+from pickme.widgets.rig_display_widget import RigDisplayWidget
 
 
 class Ui_MainWidget(object):
@@ -20,23 +21,22 @@ class Ui_MainWidget(object):
         if not MainWidget.objectName():
             MainWidget.setObjectName(u"MainWidget")
         MainWidget.resize(720, 500)
-        self.verticalLayout = QVBoxLayout(MainWidget)
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.mainLayout = QVBoxLayout(MainWidget)
+        self.mainLayout.setObjectName(u"mainLayout")
         self.headerWidget = HorizontalButtonBarWidget(MainWidget)
         self.headerWidget.setObjectName(u"headerWidget")
 
-        self.verticalLayout.addWidget(self.headerWidget)
+        self.mainLayout.addWidget(self.headerWidget)
 
-        self.rigsWidget = QTabWidget(MainWidget)
-        self.rigsWidget.setObjectName(u"rigsWidget")
-        self.rigTab = QWidget()
-        self.rigTab.setObjectName(u"rigTab")
-        self.rigsWidget.addTab(self.rigTab, "")
-        self.tab_2 = QWidget()
-        self.tab_2.setObjectName(u"tab_2")
-        self.rigsWidget.addTab(self.tab_2, "")
+        self.pickerWidget = RigDisplayWidget(MainWidget)
+        self.pickerWidget.setObjectName(u"pickerWidget")
+        sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pickerWidget.sizePolicy().hasHeightForWidth())
+        self.pickerWidget.setSizePolicy(sizePolicy)
 
-        self.verticalLayout.addWidget(self.rigsWidget)
+        self.mainLayout.addWidget(self.pickerWidget)
 
 
         self.retranslateUi(MainWidget)
@@ -46,7 +46,5 @@ class Ui_MainWidget(object):
 
     def retranslateUi(self, MainWidget):
         MainWidget.setWindowTitle(QCoreApplication.translate("MainWidget", u"Form", None))
-        self.rigsWidget.setTabText(self.rigsWidget.indexOf(self.rigTab), QCoreApplication.translate("MainWidget", u"Tab 1", None))
-        self.rigsWidget.setTabText(self.rigsWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWidget", u"Tab 2", None))
     # retranslateUi
 
