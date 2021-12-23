@@ -30,9 +30,20 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         reload_icon = os.path.join(ICONS_DIR, "return.png")
         
         self.headerWidget.set_action_button(
-            icon=reload_icon
+            icon=reload_icon,
+            clicked_func=self.reload_configurations
         )
 
+        self.load_rigs()
+    
+    def reload_configurations(self):
+        """Reload rigs from disk.
+        """
+        print("Reload rigs.")
+        self.pickerWidget.stackedWidget.setCurrentIndex(0)
+        self.headerWidget.clear_bar()
+
+        self._manager.reload_configurations()
         self.load_rigs()
     
     def load_rigs(self):
