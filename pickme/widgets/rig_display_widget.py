@@ -24,8 +24,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Setup all interactions for the main widget.
         """
         # Set header functions.
-        plus_icon = QtGui.QIcon()
-        plus_icon.addFile(os.path.join(ICONS_DIR, "plus.png"))
+        plus_icon = os.path.join(ICONS_DIR, "plus.png")
         
         self.selectionGroup.set_action_button(
             icon=plus_icon,

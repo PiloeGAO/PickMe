@@ -5,8 +5,10 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
+
 from pickme.widgets.auto_generated.horizontal_button_bar_widget import Ui_HorizontalButtonBarWidget
+
 class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget):
     def __init__(self, parent=None):
         super(HorizontalButtonBarWidget, self).__init__()
@@ -27,6 +29,13 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         """
         if(icon != None):
             self.actionButton.setText("")
+
+            # Convert string to QIcon.
+            if(type(icon) == str):
+                tmp_icon = QtGui.QIcon()
+                tmp_icon.addFile(icon)
+                icon = tmp_icon
+            
             self.actionButton.setIcon(icon)
         else:
             self.actionButton.setText(name)
@@ -56,12 +65,20 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
             released_func (function, optional): Function to execute on release. Defaults to None.
             menu (QMenu, optional): Set the menu of the button. Defaults to None.
         """
-        button = QtWidgets.QPushButton(name)
+        button = QtWidgets.QPushButton()
         button.setFlat(flat)
         button.setFixedSize(64, 64)
 
         if(icon != None):
+            # Convert string to QIcon.
+            if(type(icon) == str):
+                tmp_icon = QtGui.QIcon()
+                tmp_icon.addFile(icon)
+                icon = tmp_icon
+
             button.setIcon(icon)
+        else:
+            button.setText(name)
 
         if(clicked_func != None):
             button.clicked.connect(clicked_func)
