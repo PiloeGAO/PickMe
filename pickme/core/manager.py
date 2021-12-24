@@ -13,7 +13,7 @@ from pickme.core.rig import Rig
 class Manager():
     def __init__(self, integration="standalone") -> None:
 
-        if(integration == "maya"):
+        if(integration.lower() == "maya"):
             from pickme.dccs.maya.integration import MayaIntegration
             self._integration = MayaIntegration()
         else:

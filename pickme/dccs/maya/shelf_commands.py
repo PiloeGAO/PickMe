@@ -13,7 +13,7 @@ from pickme.dccs.maya.maya_widgets import DockableWidgetUIScript
 def open_ui():
     """Open the interface of PickMe.
     """
-    pickme_main_widget = MainWidget()
+    pickme_main_widget = MainWidget(integration="maya")
     DockableWidgetUIScript(window_name="PickMe", widget=pickme_main_widget, restore=False)
 
 def open_doc():
