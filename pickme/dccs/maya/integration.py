@@ -6,13 +6,14 @@
     :brief:     PickMe Maya integration class.
 '''
 from maya import cmds
+
 from pickme.core.integration import Integration
 
 class MayaIntegration(Integration):
-    def __init__(self) -> None:
+    def __init__(self, manager=None) -> None:
         super(MayaIntegration, self).__init__()
-
         self._name = "Maya"
+        self._manager = manager
     
     def is_rig(self, name):
         """Check if the rig is loaded in the scene.
@@ -46,6 +47,29 @@ class MayaIntegration(Integration):
         all_references = [ref for ref in cmds.ls(references=True) if f"{name}RN" in ref]
 
         for ref in all_references:
-            rigs_objects.append(cmds.referenceQuery(ref, nodes=True)[0])
+            object_name = cmds.referenceQuery(ref, nodes=True)[0]
+            object_name = object_name.split(":")[:-1][0]
+            rigs_objects.append(object_name)
 
         return rigs_objects
+    
+    def get_selection(self):
+        """Get the viewport selection.
+
+        Returns:
+            list: Object names
+        """
+        selection = [obj.replace(f"{self._manager.rig.name}:", "") for obj in cmds.ls(sl=True)]
+        return selection
+    
+    def select_objects(self, objects, clear_selection=True):
+        """Select the list of objects.
+
+        Args:
+            objects (list): Object names
+        """
+        cmds.select(clear=clear_selection)
+
+        objects = [f"{self._manager.rig.name}:{obj}" for obj in objects]
+
+        cmds.select(objects)

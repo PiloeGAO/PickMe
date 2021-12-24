@@ -15,20 +15,44 @@ class Manager():
 
         if(integration.lower() == "maya"):
             from pickme.dccs.maya.integration import MayaIntegration
-            self._integration = MayaIntegration()
+            self._integration = MayaIntegration(manager = self)
         else:
             from pickme.core.integration import Integration
             self._integration = Integration()
         
         print(f"Current integration: {self._integration.name}")
 
+        self._current_rig = 0
         self._rigs = []
-
+        
         self.load_configurations()
+
+    @property
+    def integration(self):
+        return self._integration
 
     @property
     def rigs(self):
         return self._rigs
+    
+    @property
+    def current_rig(self):
+        return self._current_rig
+    
+    @current_rig.setter
+    def current_rig(self, id):
+        if(len(self._rigs) >= id):
+            self._current_rig = len(self._rigs)-1
+        
+        self._current_rig = id
+        self._rigs[self._current_rig].reload()
+
+    @property
+    def rig(self):
+        if(len(self._rigs) == 0):
+            return None
+        
+        return self._rigs[self._current_rig]
     
     def load_configurations(self):
         """Load rig configurations from disk.
@@ -48,7 +72,7 @@ class Manager():
                     continue
                 
             for object in self._integration.all_rigs(dir):
-                rig = Rig(name=object, path=config_filepath, icon=config_icon)
+                rig = Rig(id=len(self._rigs), name=object, path=config_filepath, icon=config_icon)
                 self._rigs.append(rig)
     
     def reload_configurations(self):

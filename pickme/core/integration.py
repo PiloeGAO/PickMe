@@ -7,8 +7,9 @@
 '''
 
 class Integration(object):
-    def __init__(self):
+    def __init__(self, manager=None):
         self._name = "Standalone"
+        self._manager = manager
     
     @property
     def name(self):
@@ -38,3 +39,19 @@ class Integration(object):
             list: Names
         """
         return [name]
+    
+    def get_selection(self):
+        """Get the viewport selection.
+
+        Returns:
+            list: Object names
+        """
+        return ["Toto"]
+    
+    def select_objects(self, objects):
+        """Select the list of objects.
+
+        Args:
+            objects (list): Object names
+        """
+        print(objects)

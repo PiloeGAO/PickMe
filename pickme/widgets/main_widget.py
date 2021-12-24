@@ -6,8 +6,9 @@
     :version:   0.0.1
 """
 import os
+from functools import partial
 
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtWidgets
 
 from pickme.core.manager import Manager
 from pickme.core.path import ICONS_DIR
@@ -21,6 +22,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         self._manager = Manager(integration=integration)
 
         self.setupUi(self)
+
+        self.pickerWidget.manager = self._manager
+
         self.setup_interactions()
     
     def setup_interactions(self):
@@ -60,8 +64,21 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
             self.headerWidget.add_button(
                 name=rig.name,
-                icon=rig_icon
+                icon=rig_icon,
+                clicked_func=partial(self.move_to_rig, rig.id)
             )
         
         if(len(self._manager.rigs) > 0):
             self.pickerWidget.stackedWidget.setCurrentIndex(1)
+
+    def move_to_rig(self, id):
+        """Update the current rig in the Manager.
+
+        Args:
+            id (int): Index of the new selected rig
+        """
+        self._manager.current_rig = id
+        
+        print(f"Move to {self._manager.rig.name}")
+
+        self.pickerWidget.setup_interactions()
