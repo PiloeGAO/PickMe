@@ -14,8 +14,11 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         super(HorizontalButtonBarWidget, self).__init__()
 
         self.setupUi(self)
+
+        self.buttonArrayWidgetContentsLayout.setSpacing(0)
+        self.buttonArrayWidgetContentsLayout.setMargin(0)
     
-    def set_action_button(self, name="Action", icon=None, flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
+    def set_action_button(self, name="Action", display_name=True, icon=None, flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
         """Set the action button datas.
 
         Args:
@@ -27,9 +30,10 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
             released_func (function, optional): Function to execute on release. Defaults to None.
             menu (QMenu, optional): Set the menu of the button. Defaults to None.
         """
-        if(icon != None):
-            self.actionButton.setText("")
+        self.actionButton.setText(name)
 
+        if(icon != None):
+            if(not display_name): self.actionButton.setText("")
             # Convert string to QIcon.
             if(type(icon) == str):
                 tmp_icon = QtGui.QIcon()
@@ -37,8 +41,6 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
                 icon = tmp_icon
             
             self.actionButton.setIcon(icon)
-        else:
-            self.actionButton.setText(name)
         
         self.actionButton.setFlat(flat)
         self.actionButton.setFixedSize(64, 64)
@@ -53,7 +55,7 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         if(menu != None):
             self.actionButton.setMenu(menu)
     
-    def add_button(self, name="Button", icon=None, flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
+    def add_button(self, name="Button", display_name=True, icon=None, flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
         """Add a button to bar.
 
         Args:
@@ -65,11 +67,12 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
             released_func (function, optional): Function to execute on release. Defaults to None.
             menu (QMenu, optional): Set the menu of the button. Defaults to None.
         """
-        button = QtWidgets.QPushButton()
+        button = QtWidgets.QPushButton(name)
         button.setFlat(flat)
         button.setFixedSize(64, 64)
 
         if(icon != None):
+            if(not display_name): button.setText("")
             # Convert string to QIcon.
             if(type(icon) == str):
                 tmp_icon = QtGui.QIcon()
@@ -77,8 +80,6 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
                 icon = tmp_icon
 
             button.setIcon(icon)
-        else:
-            button.setText(name)
 
         if(clicked_func != None):
             button.clicked.connect(clicked_func)

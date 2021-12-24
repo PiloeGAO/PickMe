@@ -27,6 +27,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         plus_icon = os.path.join(ICONS_DIR, "plus.png")
         
         self.selectionGroup.set_action_button(
+            display_name=False,
             icon=plus_icon,
             clicked_func=self.add_selection_group
         )

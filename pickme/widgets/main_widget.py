@@ -30,6 +30,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         reload_icon = os.path.join(ICONS_DIR, "return.png")
         
         self.headerWidget.set_action_button(
+            display_name=False,
             icon=reload_icon,
             clicked_func=self.reload_configurations
         )
