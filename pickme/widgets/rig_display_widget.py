@@ -12,6 +12,7 @@ from PySide2 import QtWidgets
 
 from pickme.core.path import ICONS_DIR
 from pickme.widgets.auto_generated.rig_display_widget import Ui_RigDisplayWidget
+from pickme.widgets.selection_set_button import SelectionSetButton
 
 class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def __init__(self, parent=None):
@@ -51,10 +52,8 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         self.selectionGroup.clear_bar()
 
         for set in self._manager.rig.selection_sets:
-            self.selectionGroup.add_button(
-                set["name"],
-                clicked_func=(partial(self._manager.integration.select_objects, set["objects"]))
-            )
+            selection_set_button = SelectionSetButton(set, self._manager.integration)
+            self.selectionGroup.add_item_to_bar(selection_set_button)
 
     def add_selection_set(self):
         """Add a selection group to the UI.
@@ -72,4 +71,4 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         
         self._manager.rig.create_selection_set(name=name, objects=selection)
 
-        self.selectionGroup.add_button(name, clicked_func=(partial(self._manager.integration.select_objects, selection)))
+        self.load_selection_sets()

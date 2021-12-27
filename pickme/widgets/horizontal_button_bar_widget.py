@@ -17,6 +17,7 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
 
         self.buttonArrayWidgetContentsLayout.setSpacing(0)
         self.buttonArrayWidgetContentsLayout.setMargin(0)
+        self.buttonArrayWidgetContentsLayout.addStretch()
     
     def set_action_button(self, name="Action", display_name=True, icon=None, flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
         """Set the action button datas.
@@ -91,7 +92,7 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         if(menu != None):
             button.setMenu(menu)
         
-        self.buttonArrayWidgetContentsLayout.addWidget(button)
+        self.buttonArrayWidgetContentsLayout.insertWidget(self.buttonArrayWidgetContentsLayout.count()-1, button)
 
     def add_item_to_bar(self, item):
         """Add a widget to the bar.
@@ -99,7 +100,9 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         Args:
             item (QWidget): Widget to add
         """
-        self.buttonArrayWidgetContentsLayout.addWidget(item)
+        # self.buttonArrayWidgetContentsLayout.addWidget(item)
+        
+        self.buttonArrayWidgetContentsLayout.insertWidget(self.buttonArrayWidgetContentsLayout.count()-1, item)
     
     def remove_item(self, i):
         """Remove a specific element from the bar.
@@ -115,5 +118,5 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
 
         source: https://gist.github.com/JokerMartini/7fe4f204b6a7912be3ac
         """
-        for i in reversed(range(self.buttonArrayWidgetContentsLayout.count())): 
+        for i in reversed(range(self.buttonArrayWidgetContentsLayout.count()-1)): 
             self.buttonArrayWidgetContentsLayout.itemAt(i).widget().setParent(None)

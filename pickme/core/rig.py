@@ -74,7 +74,7 @@ class Rig():
             )
 
             file.seek(0)
-            file.write(json.dumps(content))
+            file.write(json.dumps(content, indent=4))
             file.truncate()
 
             self._selection_sets = content
