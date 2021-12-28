@@ -11,9 +11,8 @@ from functools import partial
 from PySide2 import QtWidgets
 
 class SelectionSetButton(QtWidgets.QPushButton):
-    def __init__(self, selection_set, integration, parent=None) -> None:
+    def __init__(self, selection_set, parent=None) -> None:
         super(SelectionSetButton, self).__init__(selection_set.name, parent=parent)
-        self._integration = integration
 
         self.setFixedSize(64, 64)
 

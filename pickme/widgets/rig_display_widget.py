@@ -52,7 +52,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         self.selectionGroup.clear_bar()
 
         for set in self._manager.rig.selection_sets:
-            selection_set_button = SelectionSetButton(set, self._manager.integration)
+            selection_set_button = SelectionSetButton(set)
             self.selectionGroup.add_item_to_bar(selection_set_button)
 
     def add_selection_set(self):
