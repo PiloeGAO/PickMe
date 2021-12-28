@@ -73,3 +73,16 @@ class MayaIntegration(Integration):
         objects = [f"{self._manager.rig.name}:{obj}" for obj in objects]
 
         cmds.select(objects)
+    
+    def reset_moves(self, objects):
+        """Reset the translation, position and scale of selection.
+
+        Args:
+            objects (list): Object names
+        """
+        objects = [f"{self._manager.rig.name}:{obj}" for obj in objects]
+
+        for object in objects:
+            cmds.setAttr(f"{object}.translate", 0, 0, 0)
+            cmds.setAttr(f"{object}.rotate", 0, 0, 0)
+            cmds.setAttr(f"{object}.scale", 1, 1, 1)

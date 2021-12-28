@@ -138,3 +138,6 @@ class SelectionSet():
     
     def select_objects(self):
         self._rig.manager.integration.select_objects(self._objects)
+    
+    def reset_moves(self):
+        self._rig.manager.integration.reset_moves(self._objects)

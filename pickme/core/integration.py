@@ -55,3 +55,11 @@ class Integration(object):
             objects (list): Object names
         """
         print(objects)
+    
+    def reset_moves(self, objects):
+        """Reset the translation, position and scale of selection.
+
+        Args:
+            objects (list): Object names
+        """
+        print(f"Reset {objects}")

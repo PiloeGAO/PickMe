@@ -24,7 +24,6 @@ class SelectionSetButton(QtWidgets.QPushButton):
         # Set Menu.
         self._menu = QtWidgets.QMenu()
 
-        color_menu_icon = QtGui.QIcon(os.path.join(ICONS_DIR, "toolFill.png"))
         color_menu = QtWidgets.QMenu("Colors")
 
         color_config_file = open(os.path.join(ROOT_DIR, "ui", "selection_sets_colors.json"), "r")
@@ -74,7 +73,7 @@ class SelectionSetButton(QtWidgets.QPushButton):
         """
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if event.button() == QtCore.Qt.MiddleButton:
-                print("Toto")
+                self._set.reset_moves()
             elif event.button() == QtCore.Qt.RightButton:
                 self._menu.exec_(QtGui.QCursor.pos())
             else:
