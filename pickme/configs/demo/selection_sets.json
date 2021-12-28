@@ -1,103 +1,10 @@
 [
     {
         "id": 0,
-        "name": "L_Hand",
-        "objects": [
-            "L_hand_metacarpeIndex_FK_CON",
-            "L_hand_auricular_01_FK_CON",
-            "L_hand_major_00_FK_CON",
-            "L_hand_auricular_00_FK_CON",
-            "L_hand_auricular_02_FK_CON",
-            "L_hand_index_00_FK_CON",
-            "L_hand_annular_01_FK_CON",
-            "L_hand_major_02_FK_CON",
-            "L_hand_index_02_FK_CON",
-            "L_hand_annular_02_FK_CON",
-            "L_hand_index_01_FK_CON",
-            "L_hand_metacarpeMajor_FK_CON",
-            "L_hand_metacarpeAnnular_FK_CON",
-            "L_hand_annular_00_FK_CON",
-            "L_hand_metacarpeAuricular_FK_CON",
-            "L_hand_major_01_FK_CON",
-            "L_hand_thumb_02_FK_CON",
-            "L_hand_thumb_01_FK_CON",
-            "L_hand_thumb_00_FK_CON"
-        ]
-    },
-    {
-        "id": 1,
-        "name": "R_Hand",
-        "objects": [
-            "R_hand_thumb_02_FK_CON",
-            "R_hand_major_01_FK_CON",
-            "R_hand_index_01_FK_CON",
-            "R_hand_annular_02_FK_CON",
-            "R_hand_thumb_01_FK_CON",
-            "R_hand_auricular_01_FK_CON",
-            "R_hand_index_02_FK_CON",
-            "R_hand_annular_00_FK_CON",
-            "R_hand_major_00_FK_CON",
-            "R_hand_auricular_02_FK_CON",
-            "R_hand_annular_01_FK_CON",
-            "R_hand_auricular_00_FK_CON",
-            "R_hand_major_02_FK_CON",
-            "R_hand_index_00_FK_CON",
-            "R_hand_metacarpeAuricular_FK_CON",
-            "R_hand_metacarpeIndex_FK_CON",
-            "R_hand_metacarpeAnnular_FK_CON",
-            "R_hand_metacarpeMajor_FK_CON",
-            "R_hand_thumb_00_FK_CON"
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Worlds",
+        "name": "World",
         "objects": [
             "main_SRT_global"
-        ]
-    },
-    {
-        "id": 3,
-        "name": "Eyes",
-        "objects": [
-            "eyes_eye_R_FK_CON",
-            "eyes_eye_L_FK_CON"
-        ]
-    },
-    {
-        "id": 4,
-        "name": "Facial",
-        "objects": [
-            "facial_L_outerBrowRaiser_CON",
-            "facial_R_cheekRaiser_CON",
-            "facial_L_AU16_CON",
-            "facial_R_cheekBlowShape_CON",
-            "facial_R_chinRaiser_CON",
-            "facial_R_upperLipRaiser_CON",
-            "facial_R_eyeClosed",
-            "facial_R_AU16_CON",
-            "facial_mouth_CON",
-            "facial_L_cheekRaiser_CON",
-            "facial_R_dimplerShape_CON",
-            "facial_R_lidTightener_CON",
-            "facial_R_nasolabialDeepener_CON",
-            "facial_L_innerBrowRaiser_CON",
-            "facial_L_lipCornerPuller_CON",
-            "facial_L_lidTightener_CON",
-            "facial_L_upperLipRaiser_CON",
-            "facial_L_cheekBlowShape_CON",
-            "facial_L_cheekPuffer_CON",
-            "facial_L_eyeClosed",
-            "facial_L_dimplerShape_CON",
-            "facial_R_lipCornerPuller_CON",
-            "facial_L_nasolabialDeepener_CON",
-            "facial_L_chinRaiser_CON",
-            "facial_R_cheekPuffer_CON",
-            "facial_OMouth_CON",
-            "facial_R_outerBrowRaiser_CON",
-            "facial_R_innerBrowRaiser_CON",
-            "facial_R_lowerLipDepressor_CON",
-            "facial_L_lowerLipDepressor_CON"
-        ]
+        ],
+        "color": "#e58e26"
     }
 ]

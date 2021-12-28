@@ -9,13 +9,14 @@ import os
 import json
 
 class SelectionSet():
-    def __init__(self, rig=None, id=0, name="", objects=[]) -> None:
+    def __init__(self, rig=None, id=0, name="", objects=[], color="") -> None:
         self._rig = rig
         self._selection_set_path = os.path.join(os.path.dirname(os.path.realpath(self._rig.path)), "selection_sets.json")
 
         self._id = id
         self._name = name
         self._objects = objects
+        self._color  = color
     
     @staticmethod
     def create_set(rig, name="", objects=[]):
@@ -65,7 +66,8 @@ class SelectionSet():
                         rig=rig, 
                         id=data["id"],
                         name=data["name"],
-                        objects=data["objects"]
+                        objects=data["objects"],
+                        color=data.get("color", "")
                     )
                 )
 
@@ -96,8 +98,16 @@ class SelectionSet():
             file.truncate()
 
     @property
+    def rig(self):
+        return self._rig
+
+    @property
     def id(self):
         return self._id
+    
+    @id.setter
+    def id(self, new_id):
+        self._id = new_id
 
     @property
     def name(self):
@@ -108,11 +118,20 @@ class SelectionSet():
         return self._objects
     
     @property
+    def color(self):
+        return self._color
+    
+    @color.setter
+    def color(self, new_color):
+        self._color = new_color
+    
+    @property
     def json(self):
         datas = {
-            "id":self._id,
-            "name":self._name,
-            "objects":self._objects
+            "id": self._id,
+            "name": self._name,
+            "objects": self._objects,
+            "color": self._color
         }
 
         return datas

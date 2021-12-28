@@ -1,0 +1,82 @@
+[
+    {
+        "name":"Flat Flesh",
+        "color":"#fad390"
+    },
+    {
+        "name":"Melon Melody",
+        "color":"#f8c291"
+    },
+    {
+        "name":"Livid",
+        "color":"#6a89cc"
+    },
+    {
+        "name":"Spray",
+        "color":"#82ccdd"
+    },
+    {
+        "name":"Paradise Green",
+        "color":"#b8e994"
+    },
+    {
+        "name":"Squash Blossom",
+        "color":"#f6b93b"
+    },
+    {
+        "name":"Mandarin Red",
+        "color":"#e55039"
+    },
+    {
+        "name":"Azraq Blue",
+        "color":"#4a69bd"
+    },
+    {
+        "name":"Dupain",
+        "color":"#60a3bc"
+    },
+    {
+        "name":"Aurora Green",
+        "color":"#78e08f"
+    },
+    {
+        "name":"Iceland Poppy",
+        "color":"#fa983a"
+    },
+    {
+        "name":"Tomato Red",
+        "color":"#eb2f06"
+    },
+    {
+        "name":"Yue Guand Lan Blue",
+        "color":"#1e3799"
+    },
+    {
+        "name":"Good Samaritan",
+        "color":"#3c6382"
+    },
+    {
+        "name":"Waterfall",
+        "color":"#38ada9"
+    },
+    {
+        "name":"Carrot Orange",
+        "color":"#e58e26"
+    },
+    {
+        "name":"Jalapeno Red",
+        "color":"#b71540"
+    },
+    {
+        "name":"Dark Sapphire",
+        "color":"#0c2461"
+    },
+    {
+        "name":"Forest Blues",
+        "color":"#0a3d62"
+    },
+    {
+        "name":"Reef Encounter",
+        "color":"#079992"
+    }
+]
