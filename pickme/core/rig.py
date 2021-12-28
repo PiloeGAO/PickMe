@@ -64,7 +64,7 @@ class Rig():
         """
         for selection_set in self._selection_sets:
             if(selection_set.id > id):
-                selection_set.id = selection_set.id - 1
+                selection_set.id -= 1
 
         del self._selection_sets[id]
         

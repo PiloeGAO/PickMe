@@ -127,6 +127,11 @@ class SelectionSet():
     
     @property
     def json(self):
+        """Convert the class to json formating.
+
+        Returns:
+            dict: Parsed data
+        """
         datas = {
             "id": self._id,
             "name": self._name,
@@ -137,7 +142,11 @@ class SelectionSet():
         return datas
     
     def select_objects(self):
+        """Select objects (shortcut to the integration).
+        """
         self._rig.manager.integration.select_objects(self._objects)
     
     def reset_moves(self):
+        """Reset the pos-rot-scale of the selection (shortcut to the integration).
+        """
         self._rig.manager.integration.reset_moves(self._objects)
