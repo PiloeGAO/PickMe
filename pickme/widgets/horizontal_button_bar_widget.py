@@ -5,7 +5,7 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from pickme.widgets.auto_generated.horizontal_button_bar_widget import Ui_HorizontalButtonBarWidget
 
@@ -19,12 +19,13 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         self.buttonArrayWidgetContentsLayout.setMargin(0)
         self.buttonArrayWidgetContentsLayout.addStretch()
     
-    def set_action_button(self, name="Action", display_name=True, icon=None, flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
+    def set_action_button(self, name="Action", display_name=True, icon=None, icon_size=(64, 64), flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
         """Set the action button datas.
 
         Args:
             name (str, optional): Text displayed on the button. Defaults to "Action".
             icon (QIcon, optional): Icon to display instead of the text. Defaults to None.
+            icon_size (tuple, optional): Icon Size in pixel. Defaults to (64, 64).
             flat (bool, optional): Set button to flat display. Defaults to False.
             clicked_func (function, optional): Function to execute on clicked. Defaults to None.
             pressed_func (function, optional): Function to execute on press. Defaults to None.
@@ -34,14 +35,22 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         self.actionButton.setText(name)
 
         if(icon != None):
+            icon_size = QtCore.QSize(icon_size[0], icon_size[1])
+
             if(not display_name): self.actionButton.setText("")
+
             # Convert string to QIcon.
             if(type(icon) == str):
-                tmp_icon = QtGui.QIcon()
-                tmp_icon.addFile(icon)
+                icon_pixmap = QtGui.QPixmap(icon)
+                tmp_icon = QtGui.QIcon(icon_pixmap)
                 icon = tmp_icon
             
+            # Reset the icon to correct scale.
+            if(icon_pixmap.width() < icon_size.width() or icon_pixmap.height() < icon_size.height()):
+                icon_size = icon_pixmap.size()
+
             self.actionButton.setIcon(icon)
+            self.actionButton.setIconSize(icon_size)
         
         self.actionButton.setFlat(flat)
         self.actionButton.setFixedSize(64, 64)
