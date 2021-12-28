@@ -19,6 +19,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         super(RigDisplayWidget, self).__init__()
 
         self._manager = None
+        self._rig = None
 
         self.setupUi(self)
     
@@ -29,6 +30,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     @manager.setter
     def manager(self, manager):
         self._manager = manager
+        self._rig = manager.rig
         self.setup_interactions()
 
     def setup_interactions(self):
@@ -43,7 +45,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             clicked_func=self.add_selection_set
         )
 
-        if(self._manager.rig != None):
+        if(self._rig != None):
             self.load_selection_sets()
     
     def load_selection_sets(self):
@@ -51,7 +53,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """
         self.selectionGroup.clear_bar()
 
-        for set in self._manager.rig.selection_sets:
+        for set in self._rig.selection_sets:
             selection_set_button = SelectionSetButton(set)
             self.selectionGroup.add_item_to_bar(selection_set_button)
 
@@ -69,6 +71,6 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             print("No name entered or nothing selected.")
             return
         
-        self._manager.rig.create_selection_set(name=name, objects=selection)
+        self._rig.create_selection_set(name=name, objects=selection)
 
         self.load_selection_sets()
