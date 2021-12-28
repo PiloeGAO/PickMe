@@ -72,7 +72,14 @@ class Manager():
                     continue
                 
             for object in self._integration.all_rigs(dir):
-                rig = Rig(id=len(self._rigs), name=object, path=config_filepath, icon=config_icon)
+                rig = Rig(
+                    manager=self,
+                    id=len(self._rigs),
+                    name=object,
+                    path=config_filepath,
+                    icon=config_icon
+                )
+                
                 self._rigs.append(rig)
     
     def reload_configurations(self):

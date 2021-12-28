@@ -53,8 +53,7 @@
         "id": 2,
         "name": "Worlds",
         "objects": [
-            "main_SRT_global",
-            "main_SRT_local"
+            "main_SRT_global"
         ]
     },
     {
