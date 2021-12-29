@@ -12,11 +12,13 @@ from functools import partial
 from PySide2 import QtWidgets, QtGui, QtCore
 
 from pickme.core.path import ROOT_DIR, ICONS_DIR
+from pickme.core.selection_set import SelectionSet
 
 class SelectionSetButton(QtWidgets.QToolButton):
-    def __init__(self, selection_set="", parent=None) -> None:
+    def __init__(self, selection_set, parent_widget, parent=None) -> None:
         super(SelectionSetButton, self).__init__(parent=parent)
         self._set = selection_set
+        self._parent = parent_widget
 
         # Set Button Display.
         self.setFixedSize(64, 64)
@@ -25,6 +27,10 @@ class SelectionSetButton(QtWidgets.QToolButton):
 
         # Set Menu.
         self._menu = QtWidgets.QMenu()
+
+        self._menu.addAction("Rename", self.rename)
+        self._menu.addAction("Change Icon", self.change_icon)
+        self._menu.addSeparator()
 
         color_menu = QtWidgets.QMenu("Colors")
 
@@ -60,12 +66,13 @@ class SelectionSetButton(QtWidgets.QToolButton):
         """
         if(self._set.color != ""):
             self.setStyleSheet("""
-                background-color: {color};
+            QToolButton{
+                background-color: %s;
                 color: #FFFFFF;
                 border:  none;
-            """.format(
-                color = self._set.color
-            ))
+            }
+            """%self._set.color
+            )
         
         if(os.path.isfile(self._set.icon)):
             icon_size = self.size()
@@ -93,6 +100,41 @@ class SelectionSetButton(QtWidgets.QToolButton):
                 self._menu.exec_(QtGui.QCursor.pos())
             else:
                 super(SelectionSetButton, self).mousePressEvent(event)
+
+    def rename(self):
+        """Rename the current button.
+        """
+        new_name, ok = QtWidgets.QInputDialog().getText(self, "Rename set",
+                                     "Name:", QtWidgets.QLineEdit.Normal,
+                                     self._set.name)
+        if(not ok or new_name == ""):
+            return
+
+        self._set.name = new_name
+
+        SelectionSet.save_sets(self._set.rig)
+
+        self._parent.load_selection_sets()
+
+    def change_icon(self):
+        """Chaneg the icon of the current button.
+        """
+        rig_path = self._set.rig.path
+        new_icon, ok = QtWidgets.QInputDialog().getText(self, "Update icon",
+                                     "Icon name:", QtWidgets.QLineEdit.Normal,
+                                     self._set.icon_name)
+
+        if(not ok):
+            return
+        
+        if(not os.path.isfile(os.path.join(rig_path, "icons", new_icon))):
+            new_icon = ""
+
+        self._set.icon = new_icon
+
+        SelectionSet.save_sets(self._set.rig)
+
+        self._parent.load_selection_sets()
 
     def change_color(self, new_color):
         """Update the color of the button.

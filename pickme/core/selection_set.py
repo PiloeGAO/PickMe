@@ -117,6 +117,10 @@ class SelectionSet():
     def name(self):
         return self._name
     
+    @name.setter
+    def name(self, name):
+        self._name = name
+    
     @property
     def objects(self):
         return self._objects
@@ -132,6 +136,14 @@ class SelectionSet():
     @property
     def icon(self):
         return os.path.join(self._rig_config_path, "icons", self._icon)
+    
+    @property
+    def icon_name(self):
+        return self._icon
+    
+    @icon.setter
+    def icon(self, icon):
+        self._icon = icon
     
     @property
     def json(self):
