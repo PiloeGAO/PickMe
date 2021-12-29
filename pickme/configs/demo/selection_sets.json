@@ -1,10 +1,33 @@
 [
     {
         "id": 0,
-        "name": "World",
+        "name": "world",
         "objects": [
             "main_SRT_global"
         ],
-        "color": "#fad390"
+        "color": "#eb2f06",
+        "icon": "world.png"
+    },
+    {
+        "id": 1,
+        "name": "L Fingers",
+        "objects": [
+            "L_hand_thumb_01_FK_CON",
+            "L_hand_thumb_02_FK_CON",
+            "L_hand_major_00_FK_CON",
+            "L_hand_index_00_FK_CON",
+            "L_hand_major_01_FK_CON",
+            "L_hand_auricular_01_FK_CON",
+            "L_hand_index_02_FK_CON",
+            "L_hand_annular_00_FK_CON",
+            "L_hand_major_02_FK_CON",
+            "L_hand_auricular_00_FK_CON",
+            "L_hand_annular_01_FK_CON",
+            "L_hand_annular_02_FK_CON",
+            "L_hand_index_01_FK_CON",
+            "L_hand_auricular_02_FK_CON"
+        ],
+        "color": "#82ccdd",
+        "icon": ""
     }
 ]

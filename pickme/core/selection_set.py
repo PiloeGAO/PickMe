@@ -9,17 +9,19 @@ import os
 import json
 
 class SelectionSet():
-    def __init__(self, rig=None, id=0, name="", objects=[], color="") -> None:
+    def __init__(self, rig=None, id=0, name="", objects=[], color="", icon="") -> None:
         self._rig = rig
-        self._selection_set_path = os.path.join(os.path.dirname(os.path.realpath(self._rig.path)), "selection_sets.json")
+        self._rig_config_path = self._rig.path
+        self._selection_set_path = os.path.join(self._rig_config_path, "selection_sets.json")
 
         self._id = id
         self._name = name
         self._objects = objects
         self._color  = color
+        self._icon = icon
     
     @staticmethod
-    def create_set(rig, name="", objects=[]):
+    def create_set(rig, name="", objects=[], icon=""):
         """Create a new selection set.
 
         Args:
@@ -34,7 +36,8 @@ class SelectionSet():
             rig,
             id=len(selection_sets),
             name=name,
-            objects=objects
+            objects=objects,
+            icon=icon
         )
         
         selection_sets.append(new_set)
@@ -50,7 +53,7 @@ class SelectionSet():
         Returns:
             list: Selection sets for the given rig
         """
-        selection_set_file = os.path.join(os.path.dirname(os.path.realpath(rig.path)), "selection_sets.json")
+        selection_set_file = os.path.join(rig.path, "selection_sets.json")
 
         if(not os.path.isfile(selection_set_file)):
             return []
@@ -65,9 +68,10 @@ class SelectionSet():
                     SelectionSet(
                         rig=rig, 
                         id=data["id"],
-                        name=data["name"],
-                        objects=data["objects"],
-                        color=data.get("color", "")
+                        name=data.get("name", "Selection Set"),
+                        objects=data.get("objects",[]),
+                        color=data.get("color", ""),
+                        icon=data.get("icon", "")
                     )
                 )
 
@@ -80,7 +84,7 @@ class SelectionSet():
         Args:
             rig (class: Rig): Rig
         """
-        selection_set_file = os.path.join(os.path.dirname(os.path.realpath(rig.path)), "selection_sets.json")
+        selection_set_file = os.path.join(rig.path, "selection_sets.json")
 
         if(not os.path.isfile(selection_set_file)):
             file = open(selection_set_file, "w")
@@ -126,6 +130,10 @@ class SelectionSet():
         self._color = new_color
     
     @property
+    def icon(self):
+        return os.path.join(self._rig_config_path, "icons", self._icon)
+    
+    @property
     def json(self):
         """Convert the class to json formating.
 
@@ -136,7 +144,8 @@ class SelectionSet():
             "id": self._id,
             "name": self._name,
             "objects": self._objects,
-            "color": self._color
+            "color": self._color,
+            "icon": self._icon
         }
 
         return datas

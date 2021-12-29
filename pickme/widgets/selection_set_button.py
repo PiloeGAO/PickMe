@@ -13,13 +13,15 @@ from PySide2 import QtWidgets, QtGui, QtCore
 
 from pickme.core.path import ROOT_DIR, ICONS_DIR
 
-class SelectionSetButton(QtWidgets.QPushButton):
-    def __init__(self, selection_set, parent=None) -> None:
-        super(SelectionSetButton, self).__init__(selection_set.name, parent=parent)
+class SelectionSetButton(QtWidgets.QToolButton):
+    def __init__(self, selection_set="", parent=None) -> None:
+        super(SelectionSetButton, self).__init__(parent=parent)
         self._set = selection_set
 
         # Set Button Display.
         self.setFixedSize(64, 64)
+        self.setText(self._set.name)
+        self.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
         # Set Menu.
         self._menu = QtWidgets.QMenu()
@@ -64,6 +66,19 @@ class SelectionSetButton(QtWidgets.QPushButton):
             """.format(
                 color = self._set.color
             ))
+        
+        if(os.path.isfile(self._set.icon)):
+            icon_size = self.size()
+
+            icon_pixmap = QtGui.QPixmap(self._set.icon)
+            icon = QtGui.QIcon(icon_pixmap)
+            
+            # Reset the icon to correct scale.
+            if(icon_pixmap.width() < icon_size.width() or icon_pixmap.height() < icon_size.height()):
+                icon_size = icon_pixmap.size()
+
+            self.setIcon(icon)
+            self.setIconSize(icon_size/2)
         
     def mousePressEvent(self, event):
         """Implement Middle Click and Right Click.

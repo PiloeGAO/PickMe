@@ -17,7 +17,8 @@ class Rig():
         self._id = id
         self._name = name
         self._path = path
-        self._icon = icon
+        self._config_path = os.path.join(path, "config.json")
+        self._icon = os.path.join(path, "icon.png")
         self._selection_sets = SelectionSet.load_sets(self)
     
     @property
@@ -49,14 +50,20 @@ class Rig():
         """
         self._selection_sets = SelectionSet.load_sets(self)
 
-    def create_selection_set(self, name, objects):
+    def create_selection_set(self, name, objects, icon):
         """Create selection set and them it to disk.
 
         Args:
             name (str): Name of the set
             objects (list): Objects name
         """
-        self._selection_sets = SelectionSet.create_set(self, name=name, objects=objects)
+        self._selection_sets = SelectionSet.create_set(
+            self,
+            name=name,
+            objects=objects,
+            icon=icon
+        )
+
         self.save_selection_sets()
 
     def delete_selection_set(self, id):

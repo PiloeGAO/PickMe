@@ -63,9 +63,6 @@ class Manager():
         ]
 
         for dir in configurations_directories:
-            config_filepath = os.path.join(CONFIG_DIR, dir, "config.json")
-            config_icon = os.path.join(CONFIG_DIR, dir, "icon.png")
-
             if(self._integration.name != "Standalone"):
                 # Only display rigs loaded in the scene.
                 if(not self._integration.is_rig(dir)):
@@ -76,8 +73,7 @@ class Manager():
                     manager=self,
                     id=len(self._rigs),
                     name=object,
-                    path=config_filepath,
-                    icon=config_icon
+                    path=os.path.join(CONFIG_DIR, dir)
                 )
                 
                 self._rigs.append(rig)

@@ -54,7 +54,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         self.selectionGroup.clear_bar()
 
         for set in self._rig.selection_sets:
-            selection_set_button = SelectionSetButton(set)
+            selection_set_button = SelectionSetButton(selection_set=set)
             self.selectionGroup.add_item_to_bar(selection_set_button)
 
     def add_selection_set(self):
@@ -71,6 +71,13 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             print("No name entered or nothing selected.")
             return
         
-        self._rig.create_selection_set(name=name, objects=selection)
+        rig_path = self._rig.path
+        icon_name = ""
+        
+        if(os.path.isfile(os.path.join(rig_path, "icons", name))):
+            icon_name = name
+            name = os.path.splitext(name)[:-1][0]
+
+        self._rig.create_selection_set(name=name, objects=selection, icon=icon_name)
 
         self.load_selection_sets()
