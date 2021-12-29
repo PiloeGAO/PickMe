@@ -108,8 +108,6 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         Args:
             item (QWidget): Widget to add
         """
-        # self.buttonArrayWidgetContentsLayout.addWidget(item)
-        
         self.buttonArrayWidgetContentsLayout.insertWidget(self.buttonArrayWidgetContentsLayout.count()-1, item)
     
     def remove_item(self, i):
@@ -118,7 +116,7 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         Args:
             i (int): Index of the element
         """
-        if(i < self.buttonArrayWidgetContentsLayout.count() and i >= 0):
+        if(i < self.buttonArrayWidgetContentsLayout.count()-1 and i >= 0):
             self.buttonArrayWidgetContentsLayout.itemAt(i).widget().setParent(None)
 
     def clear_bar(self):
