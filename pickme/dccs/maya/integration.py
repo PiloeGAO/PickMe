@@ -83,6 +83,9 @@ class MayaIntegration(Integration):
         objects = [f"{self._manager.rig.name}:{obj}" for obj in objects]
 
         for object in objects:
-            cmds.setAttr(f"{object}.translate", 0, 0, 0)
-            cmds.setAttr(f"{object}.rotate", 0, 0, 0)
-            cmds.setAttr(f"{object}.scale", 1, 1, 1)
+            if(not True in (cmds.getAttr(f"{object}.translate", lock=True), not cmds.getAttr(f"{object}.translate", settable=True))):
+                cmds.setAttr(f"{object}.translate", 0, 0, 0)
+            if(not True in (cmds.getAttr(f"{object}.rotate", lock=True), not cmds.getAttr(f"{object}.rotate", settable=True))):
+                cmds.setAttr(f"{object}.rotate", 0, 0, 0)
+            if(not True in (cmds.getAttr(f"{object}.scale", lock=True), not cmds.getAttr(f"{object}.scale", settable=True))):
+                cmds.setAttr(f"{object}.scale", 1, 1, 1)
