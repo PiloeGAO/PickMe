@@ -11,7 +11,8 @@ from pickme.core.path import CONFIG_DIR
 from pickme.core.rig import Rig
 
 class Manager():
-    def __init__(self, integration="standalone") -> None:
+    def __init__(self, main_widget, integration="standalone") -> None:
+        self._main_widget = main_widget
 
         if(integration.lower() == "maya"):
             from pickme.dccs.maya.integration import MayaIntegration
@@ -26,6 +27,10 @@ class Manager():
         self._rigs = []
         
         self.load_configurations()
+
+    @property
+    def ui(self):
+        return self._main_widget
 
     @property
     def integration(self):

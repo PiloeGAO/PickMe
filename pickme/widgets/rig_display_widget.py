@@ -6,7 +6,6 @@
     :version:   0.0.1
 """
 import os
-from functools import partial
 
 from PySide2 import QtWidgets
 
@@ -45,7 +44,9 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             clicked_func=self.add_selection_set
         )
 
+        self._rig = self._manager.rig
         if(self._rig != None):
+            print(f"Loading {self._rig.name}")
             self.load_selection_sets()
     
     def load_selection_sets(self):

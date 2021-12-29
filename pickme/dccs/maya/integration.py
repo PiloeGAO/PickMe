@@ -6,6 +6,7 @@
     :brief:     PickMe Maya integration class.
 '''
 from maya import cmds
+from maya.api import OpenMaya
 
 from pickme.core.integration import Integration
 
@@ -14,6 +15,10 @@ class MayaIntegration(Integration):
         super(MayaIntegration, self).__init__()
         self._name = "Maya"
         self._manager = manager
+
+        # Adding callbacks
+        OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterCreateReference, self._manager.ui.reload_configurations)
+        OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterRemoveReference, self._manager.ui.reload_configurations)
     
     def is_rig(self, name):
         """Check if the rig is loaded in the scene.
@@ -32,7 +37,7 @@ class MayaIntegration(Integration):
         
         loaded_references = cmds.ls(references=True)
 
-        if(f"{name}RN" in loaded_references):
+        if(len([ref for ref in loaded_references if f"{name}RN" in ref]) > 0):
             return True
         
         return False

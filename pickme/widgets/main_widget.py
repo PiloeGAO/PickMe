@@ -19,7 +19,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def __init__(self, integration="standalone", parent=None):
         super(MainWidget, self).__init__()
 
-        self._manager = Manager(integration=integration)
+        self._manager = Manager(self, integration=integration)
 
         self.setupUi(self)
 
@@ -41,7 +41,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self.load_rigs()
     
-    def reload_configurations(self):
+    def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
         """
         print("Reload rigs.")
@@ -70,6 +70,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         
         if(len(self._manager.rigs) > 0):
             self.pickerWidget.stackedWidget.setCurrentIndex(1)
+            self.move_to_rig(0)
 
     def move_to_rig(self, id):
         """Update the current rig in the Manager.
@@ -78,7 +79,4 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
             id (int): Index of the new selected rig
         """
         self._manager.current_rig = id
-        
-        print(f"Move to {self._manager.rig.name}")
-
         self.pickerWidget.setup_interactions()
