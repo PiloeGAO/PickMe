@@ -41,6 +41,10 @@ class Ui_HorizontalButtonBarWidget(object):
         self.buttonArrayWidgetContents.setSizePolicy(sizePolicy1)
         self.buttonArrayWidgetContentsLayout = QHBoxLayout(self.buttonArrayWidgetContents)
         self.buttonArrayWidgetContentsLayout.setObjectName(u"buttonArrayWidgetContentsLayout")
+        self.buttonArrayWidgetSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.buttonArrayWidgetContentsLayout.addItem(self.buttonArrayWidgetSpacer)
+
         self.buttonArrayWidget.setWidget(self.buttonArrayWidgetContents)
 
         self.mainLayout.addWidget(self.buttonArrayWidget)

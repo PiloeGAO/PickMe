@@ -17,7 +17,6 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
 
         self.buttonArrayWidgetContentsLayout.setSpacing(0)
         self.buttonArrayWidgetContentsLayout.setMargin(0)
-        self.buttonArrayWidgetContentsLayout.addStretch()
     
     def set_action_button(self, name="Action", display_name=True, icon=None, icon_size=(64, 64), flat=False, clicked_func=None, pressed_func=None, released_func=None, menu=None):
         """Set the action button datas.
