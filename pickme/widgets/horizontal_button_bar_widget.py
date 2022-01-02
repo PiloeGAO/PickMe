@@ -85,7 +85,6 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
             self.actionButton.setIconSize(icon_size)
         
         self.actionButton.setFlat(flat)
-        self.actionButton.setFixedSize(64, 64)
 
         if(clicked_func != None):
             self.actionButton.clicked.connect(clicked_func)
