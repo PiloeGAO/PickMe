@@ -66,12 +66,24 @@ class SelectionSetButton(QtWidgets.QToolButton):
         """
         if(self._set.color != ""):
             self.setStyleSheet("""
-            QToolButton{
+            QToolButton {
                 background-color: %s;
                 color: #FFFFFF;
-                border:  none;
+                margin: 2px;
+                border-radius: 3px;
+                border-style: solid;
+                border-width: 2px;
+                border-color: %s;
             }
-            """%self._set.color
+
+            QToolButton:hover {
+                border-color: grey;
+            }
+
+            QToolButton:pressed {
+                border-color: white;
+            }
+            """ % (self._set.color, self._set.color)
             )
         
         if(os.path.isfile(self._set.icon)):

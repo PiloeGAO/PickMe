@@ -17,6 +17,25 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
 
         self.buttonArrayWidgetContentsLayout.setSpacing(0)
         self.buttonArrayWidgetContentsLayout.setMargin(0)
+
+        self.buttonArrayWidget.setFrameStyle(QtWidgets.QFrame.NoFrame)
+
+        self.setStyleSheet(
+        """
+        QPushButton {
+            border-radius: 3px;
+            border-style: solid;
+            border-width: 2px;
+            border-color: grey;
+        }
+        QScrollArea {
+            border-radius: 3px;
+            border-style: solid;
+            border-width: 2px;
+            border-color: grey;
+        }
+        """
+        )
     
     @property
     def widgets(self):
