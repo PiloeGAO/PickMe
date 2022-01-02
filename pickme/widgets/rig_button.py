@@ -49,6 +49,7 @@ class RigButton(QtWidgets.QToolButton):
 
         self.setStyleSheet(
         """
+        margin: 2px;
         border-radius: 3px;
         border-style: solid;
         border-width: 2px;
@@ -65,6 +66,7 @@ class RigButton(QtWidgets.QToolButton):
         
         self.setStyleSheet(
         """
+        margin: 2px;
         border-radius: 0px;
         border-style: none;
         border-width: 0px;
