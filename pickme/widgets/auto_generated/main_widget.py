@@ -23,6 +23,7 @@ class Ui_MainWidget(object):
         MainWidget.resize(720, 500)
         self.mainLayout = QVBoxLayout(MainWidget)
         self.mainLayout.setObjectName(u"mainLayout")
+        self.mainLayout.setContentsMargins(3, 3, 3, 3)
         self.headerWidget = HorizontalButtonBarWidget(MainWidget)
         self.headerWidget.setObjectName(u"headerWidget")
 

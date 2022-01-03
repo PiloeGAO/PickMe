@@ -20,9 +20,10 @@ class Ui_RigDisplayWidget(object):
     def setupUi(self, RigDisplayWidget):
         if not RigDisplayWidget.objectName():
             RigDisplayWidget.setObjectName(u"RigDisplayWidget")
-        RigDisplayWidget.resize(636, 594)
+        RigDisplayWidget.resize(306, 250)
         self.mainLayout = QVBoxLayout(RigDisplayWidget)
         self.mainLayout.setObjectName(u"mainLayout")
+        self.mainLayout.setContentsMargins(0, 0, 0, 0)
         self.stackedWidget = QStackedWidget(RigDisplayWidget)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.no_rig_page = QWidget()
@@ -44,6 +45,7 @@ class Ui_RigDisplayWidget(object):
         self.rig_display_page.setObjectName(u"rig_display_page")
         self.verticalLayout = QVBoxLayout(self.rig_display_page)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.rigDisplay = RigPickerWidget(self.rig_display_page)
         self.rigDisplay.setObjectName(u"rigDisplay")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)

@@ -18,8 +18,6 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         self.buttonArrayWidgetContentsLayout.setSpacing(0)
         self.buttonArrayWidgetContentsLayout.setMargin(0)
 
-        self.buttonArrayWidget.setFrameStyle(QtWidgets.QFrame.NoFrame)
-
         self.setStyleSheet(
         """
         QPushButton {
