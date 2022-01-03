@@ -63,3 +63,11 @@ class Integration(object):
             objects (list): Object names
         """
         print(f"Reset {objects}")
+    
+    def update_attribute(self, attribute):
+        """Update attribute for object.
+
+        Args:
+            attribute (class: Attribute): Attribute
+        """
+        print(f"Updating {attribute.object} > {attribute.name} to {attribute.value}")

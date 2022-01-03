@@ -76,6 +76,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
                 continue
 
             button.set_inactive()
+    
+    def refresh_attributes(self):
+        self.pickerWidget.refresh_attributes()
 
     def move_to_rig(self, id):
         """Update the current rig in the Manager.

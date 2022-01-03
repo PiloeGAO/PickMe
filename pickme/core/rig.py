@@ -20,6 +20,8 @@ class Rig():
         self._config_path = os.path.join(path, "config.json")
         self._icon = os.path.join(path, "icon.png")
         self._selection_sets = SelectionSet.load_sets(self)
+
+        self._attributes = []
     
     @property
     def manager(self):
@@ -44,6 +46,17 @@ class Rig():
     @property
     def selection_sets(self):
         return self._selection_sets
+    
+    @property
+    def attributes(self):
+        return self._attributes
+    
+    @attributes.setter
+    def attributes(self, attributes=[]):
+        if(type(attributes) != list):
+            raise TypeError("attributes property can only be set with a list")
+        
+        self._attributes = attributes
     
     def reload(self):
         """Force rig class reload.

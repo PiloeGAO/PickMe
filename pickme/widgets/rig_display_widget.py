@@ -11,6 +11,7 @@ from PySide2 import QtWidgets
 
 from pickme.core.path import ICONS_DIR
 from pickme.widgets.auto_generated.rig_display_widget import Ui_RigDisplayWidget
+from pickme.widgets.attribute_widget import AttributeWidget
 from pickme.widgets.selection_set_button import SelectionSetButton
 
 class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
@@ -35,7 +36,10 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def setup_interactions(self):
         """Setup all interactions for the main widget.
         """
-        # Set header functions.
+        # Set Attributes functions.
+        self.refresh_attributes()
+
+        # Set selection sets functions.
         plus_icon = os.path.join(ICONS_DIR, "plus.png")
         
         self.selectionGroup.set_action_button(
@@ -48,7 +52,45 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         if(self._rig != None):
             print(f"Loading {self._rig.name}")
             self.load_selection_sets()
+
+    def refresh_attributes(self):
+        if(self._rig == None):
+            return
+        
+        self.clear_attributes_editor()
+
+        # Set Attributes functions.
+        for attr in self._rig.attributes:
+            attribute_widget = AttributeWidget(attribute=attr)
+            self.add_item_to_attributes_editor(attribute_widget)
+
+    # Attributes Editor
+    def add_item_to_attributes_editor(self, item):
+        """Add a widget to the bar.
+
+        Args:
+            item (QWidget): Widget to add
+        """
+        self.attributesEditorLayout.insertWidget(self.attributesEditorLayout.count()-1, item)
     
+    def remove_item_from_attributes_editor(self, i):
+        """Remove a specific element from the bar.
+
+        Args:
+            i (int): Index of the element
+        """
+        if(i < self.attributesEditorLayout.count()-1 and i >= 0):
+            self.attributesEditorLayout.itemAt(i).widget().setParent(None)
+
+    def clear_attributes_editor(self):
+        """Clear the bar.
+
+        source: https://gist.github.com/JokerMartini/7fe4f204b6a7912be3ac
+        """
+        for i in reversed(range(self.attributesEditorLayout.count()-1)): 
+            self.attributesEditorLayout.itemAt(i).widget().setParent(None)
+
+    # Selection Sets.
     def load_selection_sets(self):
         """Load selections sets for current rig.
         """
