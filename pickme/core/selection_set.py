@@ -21,7 +21,7 @@ class SelectionSet():
         self._icon = icon
     
     @staticmethod
-    def create_set(rig, name="", objects=[], icon=""):
+    def create_set(rig, name="", objects=[], icon="", color=""):
         """Create a new selection set.
 
         Args:
@@ -37,7 +37,8 @@ class SelectionSet():
             id=len(selection_sets),
             name=name,
             objects=objects,
-            icon=icon
+            icon=icon,
+            color=color
         )
         
         selection_sets.append(new_set)

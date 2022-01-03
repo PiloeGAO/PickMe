@@ -50,7 +50,7 @@ class Rig():
         """
         self._selection_sets = SelectionSet.load_sets(self)
 
-    def create_selection_set(self, name, objects, icon):
+    def create_selection_set(self, name, objects, icon, color="#0a3d62"):
         """Create selection set and them it to disk.
 
         Args:
@@ -61,7 +61,8 @@ class Rig():
             self,
             name=name,
             objects=objects,
-            icon=icon
+            icon=icon,
+            color=color
         )
 
         self.save_selection_sets()
