@@ -72,6 +72,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
 
                 group_box = QtWidgets.QGroupBox(attr.nice_name)
                 group_box_layout = QtWidgets.QVBoxLayout()
+                group_box_layout.setMargin(0)
                 group_box.setLayout(group_box_layout)
                 self.add_item_to_attributes_editor(group_box)
 

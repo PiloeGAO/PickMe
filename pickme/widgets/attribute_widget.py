@@ -24,6 +24,7 @@ class AttributeWidget(QtWidgets.QWidget):
         """
 
         layout = QtWidgets.QGridLayout()
+        layout.setMargin(0)
         self.setLayout(layout)
 
         if(self._attribute == None):

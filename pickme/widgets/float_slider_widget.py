@@ -5,8 +5,6 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
-from functools import partial
-
 from PySide2 import QtWidgets, QtCore
 
 class FloatSliderWidget(QtWidgets.QWidget):
@@ -56,6 +54,7 @@ class FloatSliderWidget(QtWidgets.QWidget):
 
     def setupUi(self):
         layout = QtWidgets.QHBoxLayout()
+        layout.setMargin(0)
 
         self.min_value_widget = QtWidgets.QLabel(str(self.min))
         layout.addWidget(self.min_value_widget)

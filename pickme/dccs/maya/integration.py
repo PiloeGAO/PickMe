@@ -138,7 +138,7 @@ class MayaIntegration(Integration):
                         AttributeGroup(
                             self._manager.rig,
                             sel,
-                            f"{sel}"
+                            f"{attr}"
                         )
                     )
                     continue
