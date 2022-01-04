@@ -62,11 +62,16 @@ class Attribute(BaseAttribute):
             self._nice_name = self._nice_name.replace(parent_attribute.name, "")
 
         self._attribute_type = attribute_type
+        self._default_value = default_value
         self._value = default_value
 
         self._min_value = kwargs.get("min_value", 0)
         self._max_value = kwargs.get("max_value", 1)
     
+    @property
+    def default_value(self):
+        return self._default_value
+
     @property
     def value(self):
         return self._value

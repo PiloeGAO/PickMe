@@ -5,7 +5,7 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtCore
 
 from pickme.core.attribute import AttributeTypes
 
@@ -18,6 +18,20 @@ class AttributeWidget(QtWidgets.QWidget):
         self._attribute = attribute
 
         self.setupUi()
+    
+    def mousePressEvent(self, event):
+        """Implement Middle Click and Right Click.
+
+        Args:
+            event (QEvent): Event.
+        """
+        if event.type() == QtCore.QEvent.MouseButtonPress:
+            if event.button() == QtCore.Qt.MiddleButton:
+                # Reset the value to default.
+                self.update_value(self._attribute.default_value)
+                self._attribute.edit_attribute(self._attribute.default_value)
+            else:
+                super(AttributeWidget, self).mousePressEvent(event)
     
     def setupUi(self):
         """Build the user interface.
@@ -63,14 +77,22 @@ class AttributeWidget(QtWidgets.QWidget):
     def refresh_widget(self):
         """Refresh the widget.
         """
+        self.update_value(self._attribute.value)
+    
+    def update_value(self, new_value):
+        """Update the value of the widget.
+
+        Args:
+            new_value (int, float, bool, str): New value
+        """
         if(self._attribute.attribute_type == AttributeTypes.number):
-            self.value_widget.value = self._attribute.value
+            self.value_widget.value = new_value
 
         elif(self._attribute.attribute_type == AttributeTypes.boolean):
-            self.value_widget.setChecked(self._attribute.value)
+            self.value_widget.setChecked(new_value)
 
         elif(self._attribute.attribute_type == AttributeTypes.string):
-            self.value_widget.setText(self._attribute.value)
+            self.value_widget.setText(new_value)
 
         else:
             print("Nothing to update.")
