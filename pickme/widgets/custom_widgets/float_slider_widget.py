@@ -5,6 +5,8 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
+from functools import partial
+
 from PySide2 import QtWidgets, QtCore
 
 class FloatSliderWidget(QtWidgets.QWidget):
@@ -66,8 +68,8 @@ class FloatSliderWidget(QtWidgets.QWidget):
         self.slider.setMaximum(self._max)
         self.slider.setValue(self._value)
 
-        self.slider.valueChanged.connect(
-               self.update_value
+        self.slider.sliderReleased.connect(
+            self.update_value
         )
 
         layout.addWidget(self.slider)
@@ -77,8 +79,8 @@ class FloatSliderWidget(QtWidgets.QWidget):
 
         self.setLayout(layout)
     
-    def update_value(self, new_value):
-        self._value = new_value
+    def update_value(self):
+        self._value = self.slider.value()
         self.slider.setToolTip(str(self.value))
         
         self._update_function(self.value) 
