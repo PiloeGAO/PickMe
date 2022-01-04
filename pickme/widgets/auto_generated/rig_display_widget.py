@@ -46,20 +46,20 @@ class Ui_RigDisplayWidget(object):
         self.verticalLayout = QVBoxLayout(self.rig_display_page)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.pickerLayout = QHBoxLayout()
-        self.pickerLayout.setObjectName(u"pickerLayout")
-        self.rigDisplay = RigPickerWidget(self.rig_display_page)
+        self.horizontalSplitter = QSplitter(self.rig_display_page)
+        self.horizontalSplitter.setObjectName(u"horizontalSplitter")
+        self.horizontalSplitter.setEnabled(True)
+        self.horizontalSplitter.setOrientation(Qt.Horizontal)
+        self.horizontalSplitter.setHandleWidth(5)
+        self.rigDisplay = RigPickerWidget(self.horizontalSplitter)
         self.rigDisplay.setObjectName(u"rigDisplay")
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rigDisplay.sizePolicy().hasHeightForWidth())
         self.rigDisplay.setSizePolicy(sizePolicy)
-        self.rigDisplay.setMinimumSize(QSize(64, 64))
-
-        self.pickerLayout.addWidget(self.rigDisplay)
-
-        self.scrollAttributesEditor = QScrollArea(self.rig_display_page)
+        self.horizontalSplitter.addWidget(self.rigDisplay)
+        self.scrollAttributesEditor = QScrollArea(self.horizontalSplitter)
         self.scrollAttributesEditor.setObjectName(u"scrollAttributesEditor")
         sizePolicy.setHeightForWidth(self.scrollAttributesEditor.sizePolicy().hasHeightForWidth())
         self.scrollAttributesEditor.setSizePolicy(sizePolicy)
@@ -67,7 +67,7 @@ class Ui_RigDisplayWidget(object):
         self.scrollAttributesEditor.setWidgetResizable(True)
         self.attributesEditorObject = QWidget()
         self.attributesEditorObject.setObjectName(u"attributesEditorObject")
-        self.attributesEditorObject.setGeometry(QRect(0, 0, 149, 192))
+        self.attributesEditorObject.setGeometry(QRect(0, 0, 86, 194))
         self.attributesEditorLayout = QVBoxLayout(self.attributesEditorObject)
         self.attributesEditorLayout.setObjectName(u"attributesEditorLayout")
         self.attributesEditorLayout.setContentsMargins(0, 0, 0, 0)
@@ -76,11 +76,9 @@ class Ui_RigDisplayWidget(object):
         self.attributesEditorLayout.addItem(self.attributesSpacer)
 
         self.scrollAttributesEditor.setWidget(self.attributesEditorObject)
+        self.horizontalSplitter.addWidget(self.scrollAttributesEditor)
 
-        self.pickerLayout.addWidget(self.scrollAttributesEditor)
-
-
-        self.verticalLayout.addLayout(self.pickerLayout)
+        self.verticalLayout.addWidget(self.horizontalSplitter)
 
         self.selectionGroup = HorizontalButtonBarWidget(self.rig_display_page)
         self.selectionGroup.setObjectName(u"selectionGroup")
@@ -100,7 +98,7 @@ class Ui_RigDisplayWidget(object):
 
         self.retranslateUi(RigDisplayWidget)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(RigDisplayWidget)
