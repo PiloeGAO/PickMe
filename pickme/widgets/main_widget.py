@@ -77,6 +77,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
             button.set_inactive()
     
+    def create_attributes(self):
+        self.pickerWidget.create_attributes()
+
     def refresh_attributes(self):
         self.pickerWidget.refresh_attributes()
 

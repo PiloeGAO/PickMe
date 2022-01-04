@@ -30,6 +30,13 @@ class FloatSliderWidget(QtWidgets.QWidget):
     @value.setter
     def value(self, value):
         self._value = value * self._factor
+        self.slider.setValue(self._value)
+
+        if(self.value < self.min):
+            self.min = self.value
+        
+        if(self.value > self.max):
+            self.max = self.value
 
     @property
     def min(self):

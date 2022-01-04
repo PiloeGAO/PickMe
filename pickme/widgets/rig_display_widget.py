@@ -8,6 +8,7 @@
 import os
 
 from PySide2 import QtWidgets
+from pickme.core.attribute import AttributeTypes
 
 from pickme.core.path import ICONS_DIR
 from pickme.widgets.auto_generated.rig_display_widget import Ui_RigDisplayWidget
@@ -20,6 +21,8 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
 
         self._manager = None
         self._rig = None
+
+        self.attributes_widgets = []
 
         self.setupUi(self)
     
@@ -37,7 +40,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Setup all interactions for the main widget.
         """
         # Set Attributes functions.
-        self.refresh_attributes()
+        self.create_attributes()
 
         # Set selection sets functions.
         plus_icon = os.path.join(ICONS_DIR, "plus.png")
@@ -53,16 +56,40 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             print(f"Loading {self._rig.name}")
             self.load_selection_sets()
 
-    def refresh_attributes(self):
+    def create_attributes(self):
+        """Create attributes.
+        """
         if(self._rig == None):
             return
         
         self.clear_attributes_editor()
+        self.attributes_widgets = []
 
         # Set Attributes functions.
         for attr in self._rig.attributes:
-            attribute_widget = AttributeWidget(attribute=attr)
-            self.add_item_to_attributes_editor(attribute_widget)
+            if(attr.attribute_type == AttributeTypes.group):
+                if(len(attr.childs) == 0): continue
+
+                group_box = QtWidgets.QGroupBox(attr.nice_name)
+                group_box_layout = QtWidgets.QVBoxLayout()
+                group_box.setLayout(group_box_layout)
+                self.add_item_to_attributes_editor(group_box)
+
+                for child_attr in attr.childs:
+                    attribute_widget = AttributeWidget(attribute=child_attr)
+                    self.attributes_widgets.append(attribute_widget)
+                    group_box_layout.addWidget(attribute_widget)
+
+            else:
+                attribute_widget = AttributeWidget(attribute=attr)
+                self.attributes_widgets.append(attribute_widget)
+                self.add_item_to_attributes_editor(attribute_widget)
+
+    def refresh_attributes(self):
+        """Update attributes values.
+        """
+        for attr_widget in self.attributes_widgets:
+            attr_widget.refresh_widget()
 
     # Attributes Editor
     def add_item_to_attributes_editor(self, item):

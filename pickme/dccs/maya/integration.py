@@ -8,7 +8,7 @@
 from maya import cmds
 from maya.api import OpenMaya
 
-from pickme.core.attribute import AttributeTypes, Attribute
+from pickme.core.attribute import AttributeGroup, AttributeTypes, Attribute
 from pickme.core.integration import Integration
 
 class MayaIntegration(Integration):
@@ -22,6 +22,7 @@ class MayaIntegration(Integration):
         OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterRemoveReference, self._manager.ui.reload_configurations)
 
         OpenMaya.MEventMessage.addEventCallback("SelectionChanged", self.get_attributes_for_selection)
+        OpenMaya.MEventMessage.addEventCallback("timeChanged", self.refresh_attributes)
     
     def is_rig(self, name):
         """Check if the rig is loaded in the scene.
@@ -103,47 +104,129 @@ class MayaIntegration(Integration):
         """
         attributes = []
 
+        attributes_to_skip = (
+            "visibility",
+            "translateX",
+            "translateY",
+            "translateZ",
+            "rotateX",
+            "rotateY",
+            "rotateZ",
+            "scaleX",
+            "scaleY",
+            "scaleZ"
+        )
+
         for sel in cmds.ls(sl=True):
+            attributes.append(
+                AttributeGroup(
+                    self._manager.rig,
+                    sel,
+                    f"{sel}"
+                )
+            )
+
             for attr in cmds.listAttr(sel, keyable=True):
+                if(attr in attributes_to_skip): continue
+                
+                maya_attribute_type = cmds.getAttr(f"{sel}.{attr}", type=True)
+
+                if(maya_attribute_type == "enum" and
+                    cmds.attributeQuery(attr, node=sel, listEnum=True)[0] == "---------------"):
+                    # Create group
+                    attributes.append(
+                        AttributeGroup(
+                            self._manager.rig,
+                            sel,
+                            f"{sel}"
+                        )
+                    )
+                    continue
+
+                # Create attributes.
                 attribute_name = attr
                 attribute_value = cmds.getAttr(f"{sel}.{attr}")
 
-                attribute_min = 0
-                attribute_max = 1
-
-                # Add correct Type + Min and Max for sliders
-                maya_attribute_type = cmds.getAttr(f"{sel}.{attr}", type=True)
-
-                if(maya_attribute_type in ("double", "long")):
+                if(maya_attribute_type in ("double", "long", "enum")):
                     attribute_type = AttributeTypes.number
 
                     if(cmds.attributeQuery(attr, node=sel, minExists=True)):
                         attribute_min = cmds.attributeQuery(attr, node=sel, min=True)[0]
+                    else:
+                        attribute_min = attribute_value * -2
                         
                     if(cmds.attributeQuery(attr, node=sel, maxExists=True)):
                         attribute_max = cmds.attributeQuery(attr, node=sel, max=True)[0]
                     else:
                         attribute_max = attribute_value * 2
                 
+                    new_attribute = Attribute(
+                        self._manager.rig,
+                        sel,
+                        attribute_name,
+                        attribute_type,
+                        attribute_value,
+                        min_value = attribute_min,
+                        max_value = attribute_max
+                    )
+
                 elif(maya_attribute_type == "bool"):
                     attribute_type = AttributeTypes.boolean
+                    
+                    new_attribute = Attribute(
+                        self._manager.rig,
+                        sel,
+                        attribute_name,
+                        attribute_type,
+                        attribute_value
+                    )
+                elif(maya_attribute_type == "enum"):
+                    enum_values = cmds.attributeQuery(attr, node=sel, listEnum=True)
+                    
+                    # TODO: Add enum attribute type.
+                    continue
                 else:
                     attribute_type = AttributeTypes.string
                     attribute_value = str(attribute_value)
+                
+                    new_attribute = Attribute(
+                        self._manager.rig,
+                        sel,
+                        attribute_name,
+                        attribute_type,
+                        attribute_value
+                    )
 
-                new_attribute = Attribute(
-                    self._manager.rig,
-                    sel,
-                    attribute_name,
-                    attribute_type,
-                    attribute_value,
-                    min_value = attribute_min,
-                    max_value = attribute_max
-                )
-
-                attributes.append(new_attribute)
+                attributes[-1].childs.append(new_attribute)
         
         self._manager.rig.attributes = attributes
+        self._manager.ui.create_attributes()
+
+    def refresh_attribute(self, attribute):
+        """Get the value of an attribute.
+
+        Args:
+            attribute (class: Attribute): The attribute to update
+        """
+        new_value = cmds.getAttr(f"{attribute.object}.{attribute.name}")
+
+        if(attribute.attribute_type == AttributeTypes.number):
+            attribute.value = float(new_value)
+        elif(attribute.attribute_type == AttributeTypes.boolean):
+            attribute.value = bool(new_value)
+        elif(attribute.attribute_type == AttributeTypes.string):
+            attribute.value = str(new_value)
+
+    def refresh_attributes(self, *args):
+        """Refresh attributes values.
+        """
+        for attribute in self._manager.rig.attributes:
+            if(attribute.attribute_type == AttributeTypes.group):
+                for sub_attribute in attribute.childs:
+                    self.refresh_attribute(sub_attribute)
+            else:
+                self.refresh_attribute(attribute)
+
         self._manager.ui.refresh_attributes()
 
     def update_attribute(self, attribute):
@@ -155,6 +238,4 @@ class MayaIntegration(Integration):
         try:
             cmds.setAttr(f"{attribute.object}.{attribute.name}", attribute.value)
         except Exception as e:
-            print(e)
-        else:
             print(f"Failed to set {attribute.object}.{attribute.name} to {attribute.value}")

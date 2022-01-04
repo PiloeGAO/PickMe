@@ -29,10 +29,10 @@ class AttributeWidget(QtWidgets.QWidget):
         if(self._attribute == None):
             self.title = QtWidgets.QLabel("No attribute linked")
 
-        self.title = QtWidgets.QLabel(self._attribute.name)
+        self.title = QtWidgets.QLabel(self._attribute.nice_name)
         layout.addWidget(self.title, 0, 0)
 
-        if(self._attribute.attribute_type == 0):
+        if(self._attribute.attribute_type == AttributeTypes.number):
             self.value_widget = FloatSliderWidget(
                 self._attribute.value,
                 self._attribute.min_value,
@@ -40,20 +40,36 @@ class AttributeWidget(QtWidgets.QWidget):
                 func=self._attribute.edit_attribute
             )
 
-        elif(self._attribute.attribute_type == 1):
+        elif(self._attribute.attribute_type == AttributeTypes.boolean):
             self.value_widget = QtWidgets.QCheckBox("")
             self.value_widget.setChecked(self._attribute.value)
             self.value_widget.toggled.connect(
                 self._attribute.edit_attribute
             )
 
-        elif(self._attribute.attribute_type == 2):
+        elif(self._attribute.attribute_type == AttributeTypes.string):
             self.value_widget = QtWidgets.QLineEdit()
             self.value_widget.setText(self._attribute.value)
             self.value_widget.textChanged.connect(
                 self._attribute.edit_attribute
             )
+
         else:
             self.value_widget = QtWidgets.QLabel("Incorrect value type.")
 
         layout.addWidget(self.value_widget, 0, 1)
+    
+    def refresh_widget(self):
+        """Refresh the widget.
+        """
+        if(self._attribute.attribute_type == AttributeTypes.number):
+            self.value_widget.value = self._attribute.value
+
+        elif(self._attribute.attribute_type == AttributeTypes.boolean):
+            self.value_widget.setChecked(self._attribute.value)
+
+        elif(self._attribute.attribute_type == AttributeTypes.string):
+            self.value_widget.setText(self._attribute.value)
+
+        else:
+            print("Nothing to update.")
