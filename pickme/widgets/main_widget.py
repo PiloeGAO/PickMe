@@ -13,7 +13,7 @@ from pickme.core.manager import Manager
 from pickme.core.path import ICONS_DIR
 
 from pickme.widgets.auto_generated.main_widget import Ui_MainWidget
-from pickme.widgets.rig_button import RigButton
+from pickme.widgets.custom_widgets.rig_button import RigButton
 
 class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def __init__(self, integration="standalone", parent=None):

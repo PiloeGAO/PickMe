@@ -45,7 +45,7 @@
   <customwidget>
    <class>HorizontalButtonBarWidget</class>
    <extends>QWidget</extends>
-   <header location="global">pickme/widgets/horizontal_button_bar_widget.h</header>
+   <header location="global">pickme/widgets/custom_widgets/horizontal_button_bar_widget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

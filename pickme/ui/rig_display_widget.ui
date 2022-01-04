@@ -29,7 +29,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="no_rig_page">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -169,13 +169,13 @@
   <customwidget>
    <class>HorizontalButtonBarWidget</class>
    <extends>QWidget</extends>
-   <header location="global">pickme/widgets/horizontal_button_bar_widget.h</header>
+   <header location="global">pickme/widgets/custom_widgets/horizontal_button_bar_widget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>RigPickerWidget</class>
    <extends>QWidget</extends>
-   <header location="global">pickme/widgets/rig_picker_widget.h</header>
+   <header location="global">pickme/widgets/custom_widgets/rig_picker_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -12,8 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from pickme.widgets.horizontal_button_bar_widget import HorizontalButtonBarWidget
-from pickme.widgets.rig_picker_widget import RigPickerWidget
+from pickme.widgets.custom_widgets.horizontal_button_bar_widget import HorizontalButtonBarWidget
+from pickme.widgets.custom_widgets.rig_picker_widget import RigPickerWidget
 
 
 class Ui_RigDisplayWidget(object):
@@ -98,7 +98,7 @@ class Ui_RigDisplayWidget(object):
 
         self.retranslateUi(RigDisplayWidget)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(RigDisplayWidget)

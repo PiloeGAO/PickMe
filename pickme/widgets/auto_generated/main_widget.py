@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from pickme.widgets.horizontal_button_bar_widget import HorizontalButtonBarWidget
+from pickme.widgets.custom_widgets.horizontal_button_bar_widget import HorizontalButtonBarWidget
 from pickme.widgets.rig_display_widget import RigDisplayWidget
 
 

@@ -5,11 +5,11 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
-from PySide2 import QtWidgets, QtCore
+from PySide2 import QtWidgets
 
 from pickme.core.attribute import AttributeTypes
 
-from pickme.widgets.float_slider_widget import FloatSliderWidget
+from pickme.widgets.custom_widgets.float_slider_widget import FloatSliderWidget
 
 class AttributeWidget(QtWidgets.QWidget):
     def __init__(self, attribute=None, update_function=None):

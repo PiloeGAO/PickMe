@@ -12,8 +12,8 @@ from pickme.core.attribute import AttributeTypes
 
 from pickme.core.path import ICONS_DIR
 from pickme.widgets.auto_generated.rig_display_widget import Ui_RigDisplayWidget
-from pickme.widgets.attribute_widget import AttributeWidget
-from pickme.widgets.selection_set_button import SelectionSetButton
+from pickme.widgets.custom_widgets.attribute_widget import AttributeWidget
+from pickme.widgets.custom_widgets.selection_set_button import SelectionSetButton
 
 class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def __init__(self, parent=None):
