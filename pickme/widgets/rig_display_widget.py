@@ -13,6 +13,7 @@ from pickme.core.attribute import AttributeTypes
 from pickme.core.path import ICONS_DIR
 from pickme.widgets.auto_generated.rig_display_widget import Ui_RigDisplayWidget
 from pickme.widgets.custom_widgets.attribute_widget import AttributeWidget
+from pickme.widgets.custom_widgets.collapsable_layout_widget import CollapsableLayoutWidget
 from pickme.widgets.custom_widgets.selection_set_button import SelectionSetButton
 
 class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
@@ -73,16 +74,14 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             if(attr.attribute_type == AttributeTypes.group):
                 if(len(attr.childs) == 0): continue
 
-                group_box = QtWidgets.QGroupBox(attr.nice_name)
-                group_box_layout = QtWidgets.QVBoxLayout()
-                group_box_layout.setMargin(0)
-                group_box.setLayout(group_box_layout)
-                self.add_item_to_attributes_editor(group_box)
+                childs_attributes_widgets = [AttributeWidget(attribute=child_attr) for child_attr in attr.childs]
+                self.attributes_widgets.extend(childs_attributes_widgets)
+                collapsable_layout_widget = CollapsableLayoutWidget(
+                    attr.nice_name,
+                    items = childs_attributes_widgets
+                )
 
-                for child_attr in attr.childs:
-                    attribute_widget = AttributeWidget(attribute=child_attr)
-                    self.attributes_widgets.append(attribute_widget)
-                    group_box_layout.addWidget(attribute_widget)
+                self.add_item_to_attributes_editor(collapsable_layout_widget)
 
             else:
                 attribute_widget = AttributeWidget(attribute=attr)
