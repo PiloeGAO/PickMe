@@ -68,7 +68,15 @@ class AttributeWidget(QtWidgets.QWidget):
             self.value_widget.textChanged.connect(
                 self._attribute.edit_attribute
             )
-
+        
+        elif(self._attribute.attribute_type == AttributeTypes.enum):
+            self.value_widget = QtWidgets.QComboBox()
+            self.value_widget.addItems(self._attribute.enum_list)
+            self.value_widget.setCurrentIndex(self._attribute.value)
+            self.value_widget.currentIndexChanged.connect(
+                self._attribute.edit_attribute
+            )
+        
         else:
             self.value_widget = QtWidgets.QLabel("Incorrect value type.")
 
@@ -93,6 +101,9 @@ class AttributeWidget(QtWidgets.QWidget):
 
         elif(self._attribute.attribute_type == AttributeTypes.string):
             self.value_widget.setText(new_value)
+
+        elif(self._attribute.attribute_type == AttributeTypes.enum):
+            self.value_widget.setCurrentIndex(new_value)
 
         else:
             print("Nothing to update.")

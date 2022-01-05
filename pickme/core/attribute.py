@@ -12,7 +12,7 @@ class AttributeTypes():
     number = 1 # Can be int or float
     boolean = 2
     string = 3
-    # TODO: Add array of values
+    enum = 4
 
 class BaseAttribute:
     def __init__(self, rig, object, name):
@@ -67,6 +67,9 @@ class Attribute(BaseAttribute):
 
         self._min_value = kwargs.get("min_value", 0)
         self._max_value = kwargs.get("max_value", 1)
+
+        if(kwargs.get("enum_list", None) != None):
+            self._enum_list = kwargs.get("enum_list")
     
     @property
     def default_value(self):
@@ -94,6 +97,8 @@ class Attribute(BaseAttribute):
             raise ValueError(f"The value [{value}] must be a boolean.")
         elif(self._attribute_type == AttributeTypes.string and not type(value) == str):
             raise ValueError(f"The value [{value}] must be a string.")
+        elif(self._attribute_type == AttributeTypes.enum and not type(value) == int):
+            raise ValueError(f"The value [{value}] must be a list of strings.")
         
         self._value = value
     
@@ -105,11 +110,15 @@ class Attribute(BaseAttribute):
     def max_value(self):
         return self._max_value
     
+    @property
+    def enum_list(self):
+        return self._enum_list
+    
     def edit_attribute(self, value):
         """Update the attribute class and push modification to the integration.
 
         Args:
             value (int, float, bool, str): New value to apply
         """
-        self._value = value
+        self.value = value
         self._rig.manager.integration.update_attribute(self)

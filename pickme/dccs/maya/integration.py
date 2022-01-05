@@ -147,9 +147,7 @@ class MayaIntegration(Integration):
                 attribute_name = attr
                 attribute_value = cmds.getAttr(f"{sel}.{attr}")
 
-                if(maya_attribute_type in ("double", "long", "enum")):
-                    attribute_type = AttributeTypes.number
-
+                if(maya_attribute_type in ("double", "long")):
                     if(cmds.attributeQuery(attr, node=sel, minExists=True)):
                         attribute_min = cmds.attributeQuery(attr, node=sel, min=True)[0]
                     else:
@@ -164,36 +162,41 @@ class MayaIntegration(Integration):
                         self._manager.rig,
                         sel,
                         attribute_name,
-                        attribute_type,
+                        AttributeTypes.number,
                         attribute_value,
                         min_value = attribute_min,
                         max_value = attribute_max
                     )
 
                 elif(maya_attribute_type == "bool"):
-                    attribute_type = AttributeTypes.boolean
-                    
                     new_attribute = Attribute(
                         self._manager.rig,
                         sel,
                         attribute_name,
-                        attribute_type,
+                        AttributeTypes.boolean,
                         attribute_value
                     )
+                
                 elif(maya_attribute_type == "enum"):
-                    enum_values = cmds.attributeQuery(attr, node=sel, listEnum=True)
+                    enum_values = cmds.attributeQuery(attr, node=sel, listEnum=True)[0].split(":")
+                   
+                    new_attribute = Attribute(
+                        self._manager.rig,
+                        sel,
+                        attribute_name,
+                        AttributeTypes.enum,
+                        attribute_value,
+                        enum_list = enum_values
+                    )
                     
-                    # TODO: Add enum attribute type.
-                    continue
                 else:
-                    attribute_type = AttributeTypes.string
                     attribute_value = str(attribute_value)
                 
                     new_attribute = Attribute(
                         self._manager.rig,
                         sel,
                         attribute_name,
-                        attribute_type,
+                        AttributeTypes.string,
                         attribute_value
                     )
 
@@ -216,6 +219,8 @@ class MayaIntegration(Integration):
             attribute.value = bool(new_value)
         elif(attribute.attribute_type == AttributeTypes.string):
             attribute.value = str(new_value)
+        elif(attribute.attribute_type == AttributeTypes.enum):
+            attribute.value = int(new_value)
 
     def refresh_attributes(self, *args):
         """Refresh attributes values.
