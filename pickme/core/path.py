@@ -10,4 +10,5 @@ import os
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 ICONS_DIR = os.path.join(ROOT_DIR, "icons")
 
-CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
+GLOBAL_CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
+LOCAL_CONFIG_DIR = os.environ.get("pickme_local_config", os.path.join(os.path.expanduser("~"), ".pickme_configs"))

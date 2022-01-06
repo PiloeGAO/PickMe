@@ -7,11 +7,15 @@
 '''
 import os
 
-from pickme.core.path import CONFIG_DIR
+from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.rig import Rig
 
 class Manager():
     def __init__(self, main_widget, integration="standalone") -> None:
+        if(not os.path.isdir(LOCAL_CONFIG_DIR)):
+            print("Building local config directory.")
+            os.mkdir(LOCAL_CONFIG_DIR)
+
         self._main_widget = main_widget
 
         if(integration.lower() == "maya"):
@@ -63,8 +67,8 @@ class Manager():
         """Load rig configurations from disk.
         """
         configurations_directories = [
-            name for name in os.listdir(CONFIG_DIR)\
-            if os.path.isfile(os.path.join(CONFIG_DIR, name, "config.json"))
+            name for name in os.listdir(GLOBAL_CONFIG_DIR)\
+            if os.path.isfile(os.path.join(GLOBAL_CONFIG_DIR, name, "config.json"))
         ]
 
         for dir in configurations_directories:
@@ -78,7 +82,7 @@ class Manager():
                     manager=self,
                     id=len(self._rigs),
                     name=object,
-                    path=os.path.join(CONFIG_DIR, dir)
+                    path=os.path.join(GLOBAL_CONFIG_DIR, dir)
                 )
                 
                 self._rigs.append(rig)

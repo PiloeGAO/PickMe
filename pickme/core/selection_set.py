@@ -6,68 +6,92 @@
     :brief:     PickMe Selection Set Management class.
 '''
 import os
+import uuid
 import json
 
-class SelectionSet():
-    def __init__(self, rig=None, id=0, name="", objects=[], color="", icon="") -> None:
-        self._rig = rig
-        self._rig_config_path = self._rig.path
-        self._selection_set_path = os.path.join(self._rig_config_path, "selection_sets.json")
+from pickme.core.path import LOCAL_CONFIG_DIR
 
-        self._id = id
-        self._name = name
-        self._objects = objects
-        self._color  = color
-        self._icon = icon
+class SelectionSetManager():
+    def __init__(self, path, rig, is_editable=True) -> None:
+        self.id = uuid.uuid4()
+        self._rig = rig
+        self._path = path
+        self._is_editable = is_editable
+        self._selection_sets = []
+
+        self.load_sets()
     
-    @staticmethod
-    def create_set(rig, name="", objects=[], icon="", color=""):
+    @property
+    def rig(self):
+        return self._rig
+    
+    @property
+    def selection_sets(self):
+        return self._selection_sets
+    
+    @property
+    def is_editable(self):
+        return self._is_editable
+
+    def create_selection_set(self, name="", objects=[], icon="", color=""):
         """Create a new selection set.
 
         Args:
-            rig (class: Rig): Rig
-
-        Returns:
-            list: Selection sets
+            name (str, optional): Name. Defaults to "".
+            objects (list, optional): Objects inside of it. Defaults to [].
+            icon (str, optional): icon of the set. Defaults to "".
+            color (str, optional): color of the set. Defaults to "".
         """
-        selection_sets = rig.selection_sets
-
         new_set = SelectionSet(
-            rig,
-            id=len(selection_sets),
+            self,
+            id=len(self._selection_sets),
             name=name,
             objects=objects,
             icon=icon,
             color=color
         )
         
-        selection_sets.append(new_set)
-        return selection_sets
+        self._selection_sets.append(new_set)
     
-    @staticmethod
-    def load_sets(rig):
-        """Create Selection sets from a filepath.
+    def delete_selection_set(self, id):
+        """Delete the selection set for the given id.
 
         Args:
-            rig (class: Rig): Rig Class
+            id (int): ID of the selection set
+        """
+        if(not self._is_editable): return
+
+        to_del_position = -1
+        for i, selection_set in enumerate(self._selection_sets):
+            if(selection_set.id == id and to_del_position == -1):
+                to_del_position = i
+                continue
+                
+            if(selection_set.id > id):
+                selection_set.id -= 1
+
+        del self._selection_sets[to_del_position]
+
+        self.save_sets()
+
+    def load_sets(self):
+        """Create Selection sets from a filepath.
 
         Returns:
             list: Selection sets for the given rig
         """
-        selection_set_file = os.path.join(rig.path, "selection_sets.json")
+        self._selection_sets = []
 
-        if(not os.path.isfile(selection_set_file)):
-            return []
-        
-        selections_sets = []
+        if(not os.path.isfile(self._path)):
+            return
 
-        with open(selection_set_file, "r+") as file:
+        with open(self._path, "r+") as file:
             datas = json.loads(file.read())
 
             for data in datas:
-                selections_sets.append(
+                self._selection_sets.append(
                     SelectionSet(
-                        rig=rig, 
+                        self, 
                         id=data["id"],
                         name=data.get("name", "Selection Set"),
                         objects=data.get("objects",[]),
@@ -75,36 +99,47 @@ class SelectionSet():
                         icon=data.get("icon", "")
                     )
                 )
-
-        return selections_sets
     
-    @staticmethod
-    def save_sets(rig):
+    def save_sets(self):
         """Save selection sets to disk.
-
-        Args:
-            rig (class: Rig): Rig
         """
-        selection_set_file = os.path.join(rig.path, "selection_sets.json")
+        if(not os.path.isdir(os.path.dirname(self._path))):
+            # Create the directory if needed.
+            os.mkdir(os.path.dirname(self._path))
 
-        if(not os.path.isfile(selection_set_file)):
-            file = open(selection_set_file, "w")
+        if(not os.path.isfile(self._path)):
+            # Write the file if it not exist.
+            file = open(self._path, "w")
             file.write("[]")
             file.close()
 
-        with open(selection_set_file, "r+") as file:
+        with open(self._path, "r+") as file:
             content = []
 
-            for set in rig.selection_sets:
-                content.append(set.json)
+            for selection_set in self._selection_sets:
+                content.append(selection_set.json)
 
             file.seek(0)
             file.write(json.dumps(content, indent=4))
             file.truncate()
 
+class SelectionSet():
+    def __init__(self, selection_set_manager, id=0, name="", objects=[], color="", icon="") -> None:
+        self._selection_set_manager = selection_set_manager
+
+        self._id = id
+        self._name = name
+        self._objects = objects
+        self._color  = color
+        self._icon = icon
+    
+    @property
+    def selection_set_manager(self):
+        return self._selection_set_manager
+
     @property
     def rig(self):
-        return self._rig
+        return self.selection_set_manager.rig
 
     @property
     def id(self):
@@ -136,7 +171,7 @@ class SelectionSet():
     
     @property
     def icon(self):
-        return os.path.join(self._rig_config_path, "icons", self._icon)
+        return os.path.join(self.rig.path, "icons", self._icon)
     
     @property
     def icon_name(self):
@@ -166,9 +201,9 @@ class SelectionSet():
     def select_objects(self):
         """Select objects (shortcut to the integration).
         """
-        self._rig.manager.integration.select_objects(self._objects)
+        self.rig.manager.integration.select_objects(self._objects)
     
     def reset_moves(self):
         """Reset the pos-rot-scale of the selection (shortcut to the integration).
         """
-        self._rig.manager.integration.reset_moves(self._objects)
+        self.rig.manager.integration.reset_moves(self._objects)

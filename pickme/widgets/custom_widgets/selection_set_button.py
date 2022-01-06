@@ -30,32 +30,35 @@ class SelectionSetButton(QtWidgets.QToolButton):
 
         self._menu.addAction("Show/Hide Selection Set", self.show_hide_selection_set)
         self._menu.addSeparator()
-        self._menu.addAction("Rename", self.rename)
-        self._menu.addAction("Change Icon", self.change_icon)
-        self._menu.addSeparator()
 
-        color_menu = QtWidgets.QMenu("Colors")
+        if(self._set.selection_set_manager.is_editable):
+            self._menu.addAction("Rename", self.rename)
+            self._menu.addAction("Change Icon", self.change_icon)
+            self._menu.addSeparator()
 
-        color_config_file = open(os.path.join(ROOT_DIR, "ui", "selection_sets_colors.json"), "r")
-        colors_data = json.load(color_config_file)
-        color_config_file.close()
+            color_menu = QtWidgets.QMenu("Colors")
 
-        for color_data in colors_data:
-            pixmap = QtGui.QPixmap(16, 16)
-            pixmap.fill(QtGui.QColor(color_data["color"]))
-            icon = QtGui.QIcon(pixmap)
+            color_config_file = open(os.path.join(ROOT_DIR, "ui", "selection_sets_colors.json"), "r")
+            colors_data = json.load(color_config_file)
+            color_config_file.close()
 
-            color_menu.addAction(
-                icon,
-                color_data["name"],
-                partial(self.change_color, color_data["color"])
-            )
+            for color_data in colors_data:
+                pixmap = QtGui.QPixmap(16, 16)
+                pixmap.fill(QtGui.QColor(color_data["color"]))
+                icon = QtGui.QIcon(pixmap)
 
-        self._menu.addMenu(color_menu)
-        self._menu.addSeparator()
+                color_menu.addAction(
+                    icon,
+                    color_data["name"],
+                    partial(self.change_color, color_data["color"])
+                )
 
-        delete_icon = QtGui.QIcon(os.path.join(ICONS_DIR, "trashcanOpen.png"))
-        self._menu.addAction(delete_icon, "Delete", self.delete)
+            self._menu.addMenu(color_menu)
+
+            self._menu.addSeparator()
+
+            delete_icon = QtGui.QIcon(os.path.join(ICONS_DIR, "trashcanOpen.png"))
+            self._menu.addAction(delete_icon, "Delete", self.delete)
 
         # Set Connections
         self.clicked.connect(self._set.select_objects)
@@ -131,7 +134,7 @@ class SelectionSetButton(QtWidgets.QToolButton):
 
         self._set.name = new_name
 
-        SelectionSet.save_sets(self._set.rig)
+        self._set.selection_set_manager.save_sets()
 
         self._parent.load_selection_sets()
 
@@ -151,7 +154,7 @@ class SelectionSetButton(QtWidgets.QToolButton):
 
         self._set.icon = new_icon
 
-        SelectionSet.save_sets(self._set.rig)
+        self._set.selection_set_manager.save_sets()
 
         self._parent.load_selection_sets()
 
@@ -162,11 +165,11 @@ class SelectionSetButton(QtWidgets.QToolButton):
             new_color (str): Hex Color.
         """
         self._set.color = new_color
-        self._set.rig.save_selection_sets()
+        self._set.selection_set_manager.save_sets()
         self.setupUI()
     
     def delete(self):
         """Delete the button and remove the selection set from the rig.
         """
-        self._set.rig.delete_selection_set(self._set.id)
+        self._set.rig.delete_selection_set(self._set.selection_set_manager, self._set.id)
         self.deleteLater()

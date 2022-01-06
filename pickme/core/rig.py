@@ -8,7 +8,8 @@
 import os
 import json
 
-from pickme.core.selection_set import SelectionSet
+from pickme.core.path import LOCAL_CONFIG_DIR
+from pickme.core.selection_set import SelectionSetManager
 
 class Rig():
     def __init__(self, manager=None, id=-1, name="Default", path=None, icon=None) -> None:
@@ -19,7 +20,8 @@ class Rig():
         self._path = path
         self._config_path = os.path.join(path, "config.json")
         self._icon = os.path.join(path, "icon.png")
-        self._selection_sets = SelectionSet.load_sets(self)
+        self._selection_sets_managers = []
+        self.load_selection_sets()
 
         self._attributes = []
     
@@ -45,7 +47,11 @@ class Rig():
     
     @property
     def selection_sets(self):
-        return self._selection_sets
+        selection_sets = []
+        for selection_set_manager in self._selection_sets_managers:
+            selection_sets.extend(selection_set_manager.selection_sets)
+        
+        return selection_sets
     
     @property
     def attributes(self):
@@ -58,10 +64,21 @@ class Rig():
         
         self._attributes = attributes
     
-    def reload(self):
-        """Force rig class reload.
-        """
-        self._selection_sets = SelectionSet.load_sets(self)
+    def load_selection_sets(self):
+        self._selection_sets_managers.append(
+            SelectionSetManager(
+                os.path.join(self._path, "selection_sets.json"),
+                self,
+                is_editable=False
+            )
+        )
+
+        self._selection_sets_managers.append(
+            SelectionSetManager(
+                os.path.join(LOCAL_CONFIG_DIR, self.name, "selection_sets.json"),
+                self
+            )
+        )
 
     def create_selection_set(self, name, objects, icon, color="#0a3d62"):
         """Create selection set and them it to disk.
@@ -70,31 +87,32 @@ class Rig():
             name (str): Name of the set
             objects (list): Objects name
         """
-        self._selection_sets = SelectionSet.create_set(
-            self,
+        self._selection_sets_managers[1].create_selection_set(
             name=name,
             objects=objects,
             icon=icon,
             color=color
         )
 
-        self.save_selection_sets()
+        self._selection_sets_managers[1].save_sets()
 
-    def delete_selection_set(self, id):
+    def delete_selection_set(self, manager, id):
         """Delete a selection set.
         """
-        for selection_set in self._selection_sets:
-            if(selection_set.id > id):
-                selection_set.id -= 1
-
-        del self._selection_sets[id]
-        
-        self.save_selection_sets()
+        manager.delete_selection_set(id)
+        manager.save_sets()
 
     def save_selection_sets(self):
         """Save selections sets to disk.
         """
-        SelectionSet.save_sets(self)
+        for selection_set_manager in self._selection_sets_managers:
+            selection_set_manager.save_sets()
+    
+    def reload(self):
+        """Force rig class reload.
+        """
+        for selection_set_manager in self._selection_sets_managers:
+            selection_set_manager.load_sets()
     
     def show_hide_selection_set(self, selection_set):
         """Show/hide selection set.
