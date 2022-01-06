@@ -76,7 +76,7 @@ class SelectionSetButton(QtWidgets.QToolButton):
                 color: #FFFFFF;
                 margin: 2px;
                 border-radius: 3px;
-                border-style: solid;
+                border-style: %s;
                 border-width: 2px;
                 border-color: %s;
             }
@@ -88,7 +88,7 @@ class SelectionSetButton(QtWidgets.QToolButton):
             QToolButton:pressed {
                 border-color: white;
             }
-            """ % (self._set.color, self._set.color)
+            """ % (self._set.color, "solid" if self._set.selection_set_manager.is_editable else "dashed", self._set.color)
             )
         
         if(os.path.isfile(self._set.icon)):
