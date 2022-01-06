@@ -83,6 +83,19 @@ class MayaIntegration(Integration):
 
         cmds.select(objects)
     
+    def show_hide_objects(self, objects):
+        """Show/hide the list of objects
+
+        Args:
+            objects (list): Object names.
+        """
+        for obj in objects:
+            new_visibility = not cmds.getAttr(f"{self._manager.rig.name}:{obj}.visibility")
+            try:
+                cmds.setAttr(f"{self._manager.rig.name}:{obj}.visibility", new_visibility)
+            except Exception as e:
+                print(f"Failed to set visibility of {obj}")
+    
     def reset_moves(self, objects):
         """Reset the translation, position and scale of selection.
 
@@ -102,6 +115,8 @@ class MayaIntegration(Integration):
     def get_attributes_for_selection(self, *args, **kwargs):
         """Get the attributes from the selection.
         """
+        if(self._manager.rig == None): return
+
         attributes = []
 
         attributes_to_skip = (
@@ -225,6 +240,8 @@ class MayaIntegration(Integration):
     def refresh_attributes(self, *args):
         """Refresh attributes values.
         """
+        if(self._manager.rig == None): return
+
         for attribute in self._manager.rig.attributes:
             if(attribute.attribute_type == AttributeTypes.group):
                 for sub_attribute in attribute.childs:

@@ -95,3 +95,12 @@ class Rig():
         """Save selections sets to disk.
         """
         SelectionSet.save_sets(self)
+    
+    def show_hide_selection_set(self, selection_set):
+        """Show/hide selection set.
+
+        Args:
+            selection_set (class: SelectionSet): Set to show/hide
+        """
+        objects = selection_set.objects
+        self._manager.integration.show_hide_objects(objects)

@@ -28,6 +28,8 @@ class SelectionSetButton(QtWidgets.QToolButton):
         # Set Menu.
         self._menu = QtWidgets.QMenu()
 
+        self._menu.addAction("Show/Hide Selection Set", self.show_hide_selection_set)
+        self._menu.addSeparator()
         self._menu.addAction("Rename", self.rename)
         self._menu.addAction("Change Icon", self.change_icon)
         self._menu.addSeparator()
@@ -112,6 +114,11 @@ class SelectionSetButton(QtWidgets.QToolButton):
                 self._menu.exec_(QtGui.QCursor.pos())
             else:
                 super(SelectionSetButton, self).mousePressEvent(event)
+
+    def show_hide_selection_set(self):
+        """Show/Hide selection set.
+        """
+        self._set.rig.show_hide_selection_set(self._set)
 
     def rename(self):
         """Rename the current button.
