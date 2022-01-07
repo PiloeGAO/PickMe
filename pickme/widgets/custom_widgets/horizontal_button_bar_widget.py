@@ -13,6 +13,12 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
     def __init__(self, parent=None):
         super(HorizontalButtonBarWidget, self).__init__()
 
+        self.action_button_signals = {
+            "clicked": None,
+            "pressed": None,
+            "released": None,
+        }
+        
         self.setupUi(self)
 
         self.buttonArrayWidgetContentsLayout.setSpacing(0)
@@ -85,11 +91,17 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         self.actionButton.setFlat(flat)
 
         if(clicked_func != None):
+            if(self.action_button_signals["clicked"] != None): self.actionButton.clicked.disconnect(self.action_button_signals["clicked"])
             self.actionButton.clicked.connect(clicked_func)
+            self.action_button_signals["clicked"] = clicked_func
         if(pressed_func != None):
+            if(self.action_button_signals["pressed"] != None): self.actionButton.pressed.disconnect(self.action_button_signals["pressed"])
             self.actionButton.pressed.connect(pressed_func)
+            self.action_button_signals["pressed"] = pressed_func
         if(released_func != None):
+            if(self.action_button_signals["released"] != None): self.actionButton.released.disconnect(self.action_button_signals["released"])
             self.actionButton.released.connect(released_func)
+            self.action_button_signals["released"] = released_func
         
         if(menu != None):
             self.actionButton.setMenu(menu)

@@ -50,6 +50,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         plus_icon = os.path.join(ICONS_DIR, "plus.png")
         
         self.selectionGroup.set_action_button(
+            name="Selection Sets",
             display_name=False,
             icon=plus_icon,
             clicked_func=self.add_selection_set
@@ -134,16 +135,19 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Add a selection group to the UI.
         """
         name, status = QtWidgets.QInputDialog().getText(self,
-                                    "QInputDialog().getText()",
+                                    "Set Name",
                                     "Name:", QtWidgets.QLineEdit.Normal,
                                     "Selection")
-        
-        selection = self._manager.integration.get_selection()
 
-        if((not name and not status) or selection == []):
-            print("No name entered or nothing selected.")
+        if(not name or not status):
+            print("No name entered.")
             return
         
+        selection = self._manager.integration.get_selection()
+        if(len(selection) == 0):
+            print("Warning: Nothing selected ! ")
+            return
+
         rig_path = self._rig.path
         icon_name = ""
         
