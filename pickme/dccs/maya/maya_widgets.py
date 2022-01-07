@@ -33,6 +33,7 @@ class DockableWidget(MayaQWidgetDockableMixin, QWidget):
         super(DockableWidget, self).__init__(parent=parent)
 
         layout = QVBoxLayout()
+        layout.setMargin(0)
         layout.addWidget(widget)
         self.setLayout(layout)
         self.setWindowTitle(window_title)

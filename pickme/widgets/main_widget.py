@@ -7,7 +7,7 @@
 """
 import os
 
-from PySide2 import QtWidgets, QtCore
+from PySide2 import QtWidgets
 
 from pickme.core.manager import Manager
 from pickme.core.path import ROOT_DIR, ICONS_DIR
@@ -23,7 +23,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         with open(os.path.join(ROOT_DIR, "ui", "pickme_theme.qss"),"r") as qss:
             self.setStyleSheet(qss.read())
-        
+
         self.setupUi(self)
 
         self.pickerWidget.manager = self._manager
@@ -33,6 +33,15 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def setup_interactions(self):
         """Setup all interactions for the main widget.
         """
+        self.mainLayout.setMargin(0)
+
+        # Setup amenubar for the mainwidget
+        self.menubar = QtWidgets.QMenuBar(self)
+        # file_menu = self.menubar.addMenu('File')
+        # demo_action = QtWidgets.QAction('Demo', self)
+        # file_menu.addAction(demo_action)
+        self.mainLayout.insertWidget(0, self.menubar)
+
         # Set header functions.
         reload_icon = os.path.join(ICONS_DIR, "return.png")
         
