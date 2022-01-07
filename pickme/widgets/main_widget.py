@@ -7,10 +7,10 @@
 """
 import os
 
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtCore
 
 from pickme.core.manager import Manager
-from pickme.core.path import ICONS_DIR
+from pickme.core.path import ROOT_DIR, ICONS_DIR
 
 from pickme.widgets.auto_generated.main_widget import Ui_MainWidget
 from pickme.widgets.custom_widgets.rig_button import RigButton
@@ -21,6 +21,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self._manager = Manager(self, integration=integration)
 
+        with open(os.path.join(ROOT_DIR, "ui", "pickme_theme.qss"),"r") as qss:
+            self.setStyleSheet(qss.read())
+        
         self.setupUi(self)
 
         self.pickerWidget.manager = self._manager
