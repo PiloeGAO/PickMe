@@ -7,7 +7,7 @@
 """
 import os
 
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
 
 from pickme.core.manager import Manager
 from pickme.core.rig import Rig
@@ -39,7 +39,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         # Setup amenubar for the mainwidget
         self.menubar = QtWidgets.QMenuBar(self)
         edit_menu = self.menubar.addMenu('Edit')
-        create_rig_button = QtWidgets.QAction('Create Rig', self)
+        create_rig_button = QtWidgets.QAction(QtGui.QIcon(os.path.join(ICONS_DIR, "plus.png")), "Create Rig", self)
         create_rig_button.triggered.connect(self.menu_create_rig)
         edit_menu.addAction(create_rig_button)
         self.mainLayout.insertWidget(0, self.menubar)
