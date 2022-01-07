@@ -8,11 +8,11 @@
 import os
 import json
 
-from pickme.core.path import LOCAL_CONFIG_DIR
+from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.selection_set import SelectionSetManager
 
 class Rig():
-    def __init__(self, manager=None, id=-1, name="Default", path=None, icon=None) -> None:
+    def __init__(self, manager=None, id=-1, name="Default", path=None) -> None:
         self._manager = manager
 
         self._id = id
@@ -24,6 +24,32 @@ class Rig():
         self.load_selection_sets()
 
         self._attributes = []
+    
+    @classmethod
+    def create(cls, manager, name):
+        """Create a new rig from the manager and a rig name.
+
+        Args:
+            manager (class: Manager): PickMe Manager
+            name (str): Name of the rig
+
+        Returns:
+            class: Rig: New rig
+        """
+        if(name in [rig.name for rig in manager.rigs]):
+            return None
+
+        path = os.path.join(GLOBAL_CONFIG_DIR, name)
+        if(not os.path.isdir(path)): os.mkdir(path)
+
+        config_file = os.path.join(path, "config.json")
+        if(not os.path.isfile(config_file)):
+            # Write the file if it not exist.
+            file = open(config_file, "w")
+            file.write("[]")
+            file.close()
+
+        return cls(manager=manager, name=name, path=path)
     
     @property
     def manager(self):

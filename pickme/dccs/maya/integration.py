@@ -71,6 +71,21 @@ class MayaIntegration(Integration):
         selection = [obj.replace(f"{self._manager.rig.name}:", "") for obj in cmds.ls(sl=True)]
         return selection
     
+    def get_rig_selected(self):
+        """Get the name of the selected rig.
+
+        Returns:
+            str: Name of the reference.
+        """
+        selections = cmds.ls(sl=True)
+        if(len(selections) != 1): return ""
+
+        selection = selections[0]
+
+        if(not "RN" in selection): return ""
+
+        return selection.split("RN")[0]
+    
     def select_objects(self, objects, clear_selection=True):
         """Select the list of objects.
 
