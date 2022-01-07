@@ -7,10 +7,11 @@
 """
 import os
 
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
 
 from pickme.core.manager import Manager
-from pickme.core.path import ICONS_DIR
+from pickme.core.rig import Rig
+from pickme.core.path import ROOT_DIR, ICONS_DIR
 
 from pickme.widgets.auto_generated.main_widget import Ui_MainWidget
 from pickme.widgets.custom_widgets.rig_button import RigButton
@@ -21,6 +22,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self._manager = Manager(self, integration=integration)
 
+        with open(os.path.join(ROOT_DIR, "ui", "pickme_theme.qss"),"r") as qss:
+            self.setStyleSheet(qss.read())
+
         self.setupUi(self)
 
         self.pickerWidget.manager = self._manager
@@ -30,6 +34,16 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def setup_interactions(self):
         """Setup all interactions for the main widget.
         """
+        self.mainLayout.setMargin(0)
+
+        # Setup amenubar for the mainwidget
+        self.menubar = QtWidgets.QMenuBar(self)
+        edit_menu = self.menubar.addMenu('Edit')
+        create_rig_button = QtWidgets.QAction(QtGui.QIcon(os.path.join(ICONS_DIR, "plus.png")), "Create Rig", self)
+        create_rig_button.triggered.connect(self.menu_create_rig)
+        edit_menu.addAction(create_rig_button)
+        self.mainLayout.insertWidget(0, self.menubar)
+
         # Set header functions.
         reload_icon = os.path.join(ICONS_DIR, "return.png")
         
@@ -41,6 +55,28 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self.load_rigs()
     
+    # Menu Bar Functions
+    def menu_create_rig(self):
+        new_rig_name = self._manager.integration.get_rig_selected()
+
+        if(new_rig_name == ""):
+            error_dialog = QtWidgets.QMessageBox.critical(
+                self, "Rig creation failed",
+                "No valid rig selected", QtWidgets.QMessageBox.Ok
+            )
+            return
+        
+        new_rig = Rig.create(self._manager, new_rig_name)
+        if(new_rig == None):
+            error_dialog = QtWidgets.QMessageBox.critical(
+                self, "Rig creation failed",
+                "Something wrong happened. \nDid te same rig already created?", QtWidgets.QMessageBox.Ok
+            )
+            return
+
+        self._manager.add_rig(new_rig)
+        self.reload_configurations()
+
     def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
         """

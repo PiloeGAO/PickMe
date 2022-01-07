@@ -5,6 +5,7 @@
     :version:   0.0.1
     :brief:     PickMe Default integration class.
 '''
+from datetime import datetime
 
 class Integration(object):
     def __init__(self, manager=None):
@@ -47,6 +48,15 @@ class Integration(object):
             list: Object names
         """
         return ["Toto"]
+    
+    def get_rig_selected(self):
+        """Get the name of the selected rig.
+
+        Returns:
+            str: Name of the reference.
+        """
+        current_time = datetime.now().strftime("%H_%M_%S")
+        return f"Demo_{current_time}"
     
     def select_objects(self, objects):
         """Select the list of objects.

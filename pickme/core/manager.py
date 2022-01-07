@@ -63,6 +63,14 @@ class Manager():
         
         return self._rigs[self._current_rig]
     
+    def add_rig(self, new_rig):
+        """Add a rig to manager
+
+        Args:
+            new_rig (class: Rig): New rig
+        """
+        self._rigs.append(new_rig)
+    
     def load_configurations(self):
         """Load rig configurations from disk.
         """
