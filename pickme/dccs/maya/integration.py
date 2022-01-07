@@ -230,7 +230,7 @@ class MayaIntegration(Integration):
                         attribute_value
                     )
 
-                attributes[-1].childs.append(new_attribute)
+                attributes[-1].add_child(new_attribute)
         
         self._manager.rig.attributes = attributes
         self._manager.ui.create_attributes()

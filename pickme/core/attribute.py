@@ -36,7 +36,8 @@ class BaseAttribute:
     
     @property
     def nice_name(self):
-        return self._nice_name.replace("_", " ")
+        nice_name_with_space = self._nice_name.replace("_", " ")
+        return "".join(map(lambda x: x if x.islower() else " "+x, nice_name_with_space))
 
 class AttributeGroup(BaseAttribute):
     def __init__(self, rig, object, name):
@@ -53,10 +54,15 @@ class AttributeGroup(BaseAttribute):
     @childs.setter
     def childs(self, childs):
         self._childs = childs
+    
+    def add_child(self, new_attribute):
+        new_attribute.parent_attribute = self
+        self._childs.append(new_attribute)
 
 class Attribute(BaseAttribute):
     def __init__(self, rig, object, name, attribute_type, default_value, parent_attribute=None, **kwargs):
         super(Attribute, self).__init__(rig, object, name)
+        self._parent_attribute = parent_attribute
         
         if(type(parent_attribute) == AttributeGroup):
             self._nice_name = self._nice_name.replace(parent_attribute.name, "")
@@ -71,6 +77,17 @@ class Attribute(BaseAttribute):
         if(kwargs.get("enum_list", None) != None):
             self._enum_list = kwargs.get("enum_list")
     
+    @property
+    def parent_attribute(self):
+        return self._parent_attribute
+    
+    @parent_attribute.setter
+    def parent_attribute(self, new_parent):
+        self._parent_attribute = new_parent
+
+        if(type(new_parent) == AttributeGroup):
+            self._nice_name = self._nice_name.replace(new_parent.name, "")
+
     @property
     def default_value(self):
         return self._default_value
