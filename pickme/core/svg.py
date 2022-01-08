@@ -9,8 +9,9 @@ import os
 import xml.etree.ElementTree as ET
 
 class SVG(object):
-    def __init__(self, id="", parent=None, childs=[]) -> None:
+    def __init__(self, id="", value="", parent=None, childs=[]) -> None:
         self.id = id
+        self.value = value
         self.parent = parent
         self.childs = childs
 
@@ -61,14 +62,26 @@ class SVGDocument(SVG):
 
                 elif(elem.tag == "{http://www.w3.org/2000/svg}path"):
                     # Create path
-                    parent_class.add_child(
-                        SVGPath(
-                            id=elem.attrib["id"],
-                            raw_style=elem.attrib["style"],
-                            raw_d=elem.attrib["d"],
-                            raw_title=elem["title"] if elem.get("title", None) != None else "",
-                            raw_description=elem["desc"] if elem.get("desc", None) != None else ""
-                        )
+                    new_path = SVGPath(
+                        id=elem.attrib["id"],
+                        raw_style=elem.attrib["style"],
+                        raw_d=elem.attrib["d"]
+                    )
+                    parent_class.add_child(new_path)
+                    recursive_import(elem, new_path)
+
+                elif(elem.tag == "{http://www.w3.org/2000/svg}title" and type(parent_class) == SVGPath):
+                    # Create title/desc
+                    parent_class.title = SVG(
+                        id=elem.attrib["id"],
+                        value=elem.text
+                    )
+
+                elif(elem.tag == "{http://www.w3.org/2000/svg}desc" and type(parent_class) == SVGPath):
+                    # Create title/desc
+                    parent_class.description = SVG(
+                        id=elem.attrib["id"],
+                        value=elem.text
                     )
                 else:
                     print(f"Skipping {elem.tag} (not supported).")
@@ -101,7 +114,20 @@ class SVGDocument(SVG):
                     recursive_creation(child, group_elem)
                 elif(type(child) == SVGPath):
                     path_elem = ET.Element("path")
+
                     write_attributes_to_elem(child, path_elem)
+
+                    if(child.title != None):
+                        title_elem = ET.Element("title")
+                        title_elem.text = child.title.value
+                        title_elem.attrib["id"] = child.title.id
+                        path_elem.append(title_elem)
+                    if(child.description != None):
+                        desc_elem = ET.Element("desc")
+                        desc_elem.text = child.description.value
+                        desc_elem.attrib["id"] = child.description.id
+                        path_elem.append(desc_elem)
+                    
                     elem.append(path_elem)
                 else:
                     print("Unknown child, skipping.")
@@ -117,21 +143,19 @@ class SVGLayer(SVG):
         super(SVGLayer, self).__init__(*args, **kwargs)
     
 class SVGPath(SVG):
-    def __init__(self, raw_style, raw_d, raw_title, raw_description, *args, **kwargs) -> None:
+    def __init__(self, raw_style, raw_d, title=None, description=None, *args, **kwargs) -> None:
         super(SVGPath, self).__init__(*args, **kwargs)
         self.raw_style = raw_style
         self.raw_d = raw_d
-        self.raw_title = raw_title
-        self.raw_description = raw_description
+        self.title = title
+        self.description = description
     
     @property
     def __dict__(self):
         return {
             "id": self.id,
             "style": self.style,
-            "d": self.raw_d,
-            "title": self.raw_title,
-            "desc": self.raw_description
+            "d": self.raw_d
         }
 
     @property
