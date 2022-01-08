@@ -71,9 +71,46 @@ class SVGDocument(SVG):
                         )
                     )
                 else:
-                    print("Skipping {elem.tag} (not supported).")
+                    print(f"Skipping {elem.tag} (not supported).")
 
         recursive_import(root, self)
+    
+    def save_to_path(self, path, force_write=False):
+        if(os.path.isfile(path) and force_write):
+            os.remove(path)
+        elif(os.path.isfile(path) and not force_write):
+            raise RuntimeError("File cannot be created.")
+        
+        root = ET.Element("svg")
+        root.attrib["xmlns"] = "http://www.w3.org/2000/svg"
+        root.attrib["xmlns:svg"] = "http://www.w3.org/2000/svg"
+
+        def write_attributes_to_elem(svg_obj, elem):
+            for tag, value in svg_obj.__dict__.items():
+                if(tag in ("childs", "parent")
+                    or "raw" in tag):
+                    continue
+                elem.attrib[tag] = value
+
+        def recursive_creation(svg_obj, elem):
+            write_attributes_to_elem(svg_obj, elem)
+            for child in svg_obj.childs:
+                if(type(child) == SVGLayer):
+                    group_elem = ET.Element("g")
+                    elem.append(group_elem)
+                    recursive_creation(child, group_elem)
+                elif(type(child) == SVGPath):
+                    path_elem = ET.Element("path")
+                    write_attributes_to_elem(child, path_elem)
+                    elem.append(path_elem)
+                else:
+                    print("Unknown child, skipping.")
+                    continue
+        
+        recursive_creation(self, root)
+        document = ET.ElementTree()
+        document._setroot(root)
+        document.write(path, encoding="UTF-8", xml_declaration=True)
 
 class SVGLayer(SVG):
     def __init__(self, *args, **kwargs) -> None:
@@ -85,12 +122,27 @@ class SVGPath(SVG):
         self.raw_style = raw_style
         self.raw_d = raw_d
         self.raw_title = raw_title
-        self.raw_description = raw_description 
+        self.raw_description = raw_description
+    
+    @property
+    def __dict__(self):
+        return {
+            "id": self.id,
+            "style": self.style,
+            "d": self.raw_d,
+            "title": self.raw_title,
+            "desc": self.raw_description
+        }
+
+    @property
+    def style(self):
+        return self.raw_style
 
 if(__name__ == "__main__"):
     # TODO: Remove this when the implementation is finished.
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     GLOBAL_CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
     
-    svg = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "picker.svg"))
-    print(svg.__dict__)
+    svg_doc = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "picker.svg"))
+    print(svg_doc.__dict__)
+    svg_doc.save_to_path(os.path.join(GLOBAL_CONFIG_DIR, "demo", "picker_export.svg"), force_write=True)
