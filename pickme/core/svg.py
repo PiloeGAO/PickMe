@@ -16,6 +16,11 @@ class SVG(object):
         self.childs = childs
 
     def add_child(self, child):
+        """Add a child to the SVG class.
+
+        Args:
+            child (class): New child to add to list
+        """
         child.parent = self
         self.childs.append(child)
 
@@ -30,6 +35,11 @@ class SVGDocument(SVG):
             self.load_from_path(path)
 
     def load_from_path(self, path):
+        """Load a SVG from disk and convert it to SVGDocument.
+
+        Args:
+            path (str): File path
+        """
         tree = ET.parse(path)
         root = tree.getroot()
         
@@ -89,6 +99,15 @@ class SVGDocument(SVG):
         recursive_import(root, self)
     
     def save_to_path(self, path, force_write=False):
+        """Save the document to disk.
+
+        Args:
+            path (str): Path where the file need to be saved
+            force_write (bool, optional): Allow overwrite if file already exist. Defaults to False.
+
+        Raises:
+            RuntimeError: File cannot be created
+        """
         if(os.path.isfile(path) and force_write):
             os.remove(path)
         elif(os.path.isfile(path) and not force_write):
@@ -106,6 +125,7 @@ class SVGDocument(SVG):
                 elem.attrib[tag] = value
 
         def recursive_creation(svg_obj, elem):
+            # TODO: Move the Element creation code to class level.
             write_attributes_to_elem(svg_obj, elem)
             for child in svg_obj.childs:
                 if(type(child) == SVGLayer):
@@ -160,7 +180,13 @@ class SVGPath(SVG):
 
     @property
     def style(self):
+        # TODO: Convert the SVGStyle (need to be created) back to xml formating
         return self.raw_style
+    
+    @property
+    def d(self):
+        # TODO: Convert SVGPoint (need to be created) back to xml formating
+        return self.raw_d
 
 if(__name__ == "__main__"):
     # TODO: Remove this when the implementation is finished.
