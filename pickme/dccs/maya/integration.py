@@ -94,7 +94,7 @@ class MayaIntegration(Integration):
         """
         cmds.select(clear=clear_selection)
 
-        objects = [f"{self._manager.rig.name}:{obj}" for obj in objects]
+        objects = [f"{self._manager.rig.name}:{obj}" for obj in objects if f"{self._manager.rig.name}:{obj}" in cmds.ls()]
 
         cmds.select(objects)
     
