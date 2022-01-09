@@ -181,7 +181,7 @@ class SVGPath(SVG):
         return {
             "id": self.id,
             "style": self.style,
-            "d": self.raw_d
+            "d": self.d
         }
 
     @property
@@ -259,7 +259,7 @@ class SVGDraw:
             del positions[-1]
         
         for position in positions:
-            draw_object.points.append(SVGPoint(position[0], position[1]))
+            draw_object.points.append(SVGPoint(position.split(",")[0], position.split(",")[1]))
         
         return draw_object
     
