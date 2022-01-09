@@ -9,9 +9,13 @@ import os
 import xml.etree.ElementTree as ET
 
 class SVG(object):
-    def __init__(self, id="", value="", parent=None, childs=[]) -> None:
+    def __init__(self, id="", value="", parent=None, childs=[], title=None, description=None) -> None:
         self.id = id
-        self.value = value
+        self.value = value # = text
+
+        self.title = title
+        self.description = description
+
         self.parent = parent
         self.childs = childs
 
@@ -120,7 +124,8 @@ class SVGDocument(SVG):
         def write_attributes_to_elem(svg_obj, elem):
             for tag, value in svg_obj.__dict__.items():
                 if(tag in ("childs", "parent")
-                    or "raw" in tag):
+                    or "raw" in tag
+                    or value == None):
                     continue
                 elem.attrib[tag] = value
 
@@ -163,12 +168,13 @@ class SVGLayer(SVG):
         super(SVGLayer, self).__init__(*args, **kwargs)
     
 class SVGPath(SVG):
-    def __init__(self, raw_style, raw_d, title=None, description=None, *args, **kwargs) -> None:
+    def __init__(self, raw_style, raw_d, *args, **kwargs) -> None:
         super(SVGPath, self).__init__(*args, **kwargs)
         self.raw_style = raw_style
         self.raw_d = raw_d
-        self.title = title
-        self.description = description
+
+        self.svg_style = SVGStyle.create(raw_style)
+        self.svg_draw = SVGDraw.create(raw_d)
     
     @property
     def __dict__(self):
@@ -180,13 +186,98 @@ class SVGPath(SVG):
 
     @property
     def style(self):
-        # TODO: Convert the SVGStyle (need to be created) back to xml formating
-        return self.raw_style
+        return self.svg_style.to_css()
     
     @property
     def d(self):
-        # TODO: Convert SVGPoint (need to be created) back to xml formating
-        return self.raw_d
+        return self.svg_draw.to_svg()
+
+class SVGStyle:
+    def __init__(self, raw_style, **kwargs) -> None:
+        self.raw_style = raw_style
+        
+        self.fill = kwargs.get("fill", "#000000")
+        self.stroke_width = kwargs.get("stroke_width", 1.0)
+        self.stroke_opacity = kwargs.get("stroke_opacity", 1.0)
+    
+    @classmethod
+    def create(cls, raw_style):
+        """Create the SVGStyle class from a raw_style.
+
+        Args:
+            raw_style (str): Raw style from the SVG
+
+        Returns:
+            SVGStyle: Setuped SVGStyle class
+        """
+        fill_color = ""
+        stroke_width = 1.0
+        stroke_opacity = 1.0
+
+        for pair in raw_style.split(";"):
+            key, value = pair.split(":")
+
+            if(key == "fill"):
+                fill_color = value
+            elif(key == "stroke-width"):
+                stroke_width = float(value.replace("px", ""))
+            elif(key == "stroke-opacity"):
+                stroke_opacity = float(value.replace("px", ""))
+            else:
+                print(f"Unknown key {key}.")
+
+        return cls(
+            raw_style,
+            fill = fill_color,
+            stroke_width = stroke_width,
+            stroke_opacity = stroke_opacity,    
+        )
+    
+    def to_css(self):
+        """Convert the class to css formating.
+
+        Returns:
+            str: CSS Formated class
+        """
+        css_output = f"fill:{self.fill};stroke-width:{self.stroke_width};stroke-opacity:{self.stroke_opacity}"
+        return css_output
+
+class SVGDraw:
+    def __init__(self, raw_d, **kwargs) -> None:
+        self.raw_d = raw_d
+
+        self.points = []
+    
+    @classmethod
+    def create(cls, raw_d):
+        draw_object = cls(raw_d)
+        splitted_d = raw_d.split(" ")
+
+        positions = splitted_d[1:]
+        if(splitted_d[-1] in ("Z", "z")):
+            # Delete the Z (closesd path symbol).
+            del positions[-1]
+        
+        for position in positions:
+            draw_object.points.append(SVGPoint(position[0], position[1]))
+        
+        return draw_object
+    
+    def to_svg(self):
+        output_list = []
+
+        output_list.append("M")
+        
+        for point in self.points:
+            output_list.append(f"{point.x},{point.y}")
+        
+        output_list.append("Z")
+        return " ".join(output_list)
+
+class SVGPoint:
+    def __init__(self, x, y) -> None:
+        self.x = x
+        self.y = y
 
 if(__name__ == "__main__"):
     # TODO: Remove this when the implementation is finished.
