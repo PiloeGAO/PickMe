@@ -284,6 +284,6 @@ if(__name__ == "__main__"):
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     GLOBAL_CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
     
-    svg_doc = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "picker.svg"))
+    svg_doc = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker.svg"))
     print(svg_doc.__dict__)
-    svg_doc.save_to_path(os.path.join(GLOBAL_CONFIG_DIR, "demo", "picker_export.svg"), force_write=True)
+    svg_doc.save_to_path(os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker_export.svg"), force_write=True)

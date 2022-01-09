@@ -6,9 +6,9 @@
     :brief:     PickMe Rig Management class.
 '''
 import os
-import json
 
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
+from pickme.core.picker import Picker
 from pickme.core.selection_set import SelectionSetManager
 
 class Rig():
@@ -105,6 +105,14 @@ class Rig():
             print("No pickers layers directory, creating one.")
             os.mkdir(picker_layers_directory)
             return
+
+        for file in os.listdir(picker_layers_directory):
+            if(not os.path.splitext(file)[1] in (".svg")):
+                continue
+
+            self._picker_layers.append(
+                Picker.create(os.path.join(picker_layers_directory, file))
+            )
 
         # Load each svg files in the directory and create Picker (TODO) object from them.
         return
