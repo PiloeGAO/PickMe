@@ -41,8 +41,10 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Setup all interactions for the main widget.
         """
         # Reset the splitter
-        # self.horizontalSplitter.setSizes([self.size().width()/2, self.size().width()/2])
-        self.horizontalSplitter.setSizes([0, self.size().width()])
+        if(len(self._rig.picker_layers) > 0):
+            self.horizontalSplitter.setSizes([self.size().width()/2, self.size().width()/2])
+        else:
+            self.horizontalSplitter.setSizes([0, self.size().width()])
 
         # Set Attributes functions.
         self.create_attributes()

@@ -20,6 +20,10 @@ class Rig():
         self._path = path
         self._config_path = os.path.join(path, "config.json")
         self._icon = os.path.join(path, "icon.png")
+
+        self._picker_layers = [] # Is group a better name?
+        self.load_picker_layers()
+
         self._selection_sets_managers = []
         self.load_selection_sets()
 
@@ -72,6 +76,10 @@ class Rig():
         return self._icon
     
     @property
+    def picker_layers(self):
+        return self._picker_layers
+
+    @property
     def selection_sets(self):
         selection_sets = []
         for selection_set_manager in self._selection_sets_managers:
@@ -90,6 +98,18 @@ class Rig():
         
         self._attributes = attributes
     
+    # Pickers Layers.
+    def load_picker_layers(self):
+        picker_layers_directory = os.path.join(self._path, "layers")
+        if(not os.path.isdir(picker_layers_directory)):
+            print("No pickers layers directory, creating one.")
+            os.mkdir(picker_layers_directory)
+            return
+
+        # Load each svg files in the directory and create Picker (TODO) object from them.
+        return
+        
+    # Selection Sets.
     def load_selection_sets(self):
         self._selection_sets_managers.append(
             SelectionSetManager(
