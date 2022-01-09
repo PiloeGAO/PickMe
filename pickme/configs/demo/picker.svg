@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="250"
+   height="250"
+   viewBox="0 0 250 250"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title115">picker_svg</title>
+  <defs
+     id="defs2" />
+  <g
+     id="layer1">
+    <path
+       style="fill:#000000;stroke:none;stroke-width:1.04539px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 6.3622232,11.396907 5.0180411,42.313084 57.777172,45.337493 62.145762,13.413178 Z"
+       id="path44" />
+  </g>
+  <g
+     id="layer2">
+    <path
+       style="fill:#0066ff;stroke:none;stroke-width:1.75226px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 85.427345,51.767754 54.447308,96.829622 112.46447,153.15697 168.79181,122.74021 Z"
+       id="path79" />
+  </g>
+  <g
+     id="layer3">
+    <path
+       style="fill:#87decd;stroke:none;stroke-width:1.73101px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 98.99198,238.75773 211.94943,103.54267 243.11011,238.75773 Z"
+       id="global_contr_CON">
+      <desc
+         id="desc1221">demo: &quot;toto&quot;;
+demo2:&quot;toto&quot;</desc>
+      <title
+         id="title1219">Global Cont</title>
+    </path>
+  </g>
+  <metadata
+     id="metadata113">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>picker_svg</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>piloegao</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
