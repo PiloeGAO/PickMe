@@ -11,7 +11,7 @@ Maya
 2. Add the following line to 'Maya.env':
 
 +------------+-------------------------------------------------------------------------+
-| PYTHONPATH |"<unpack directory>/PickMe;<unpack directory>/PickMe/pickme/dccs/maya;" |
+| PYTHONPATH |"<unpack directory>/PickMe;<unpack directory>/PickMe/pickme/dccs/maya;"  |
 +------------+-------------------------------------------------------------------------+
 
 3. A new shelf called "PickMe" is automaticly added at launch.
