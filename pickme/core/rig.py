@@ -78,7 +78,14 @@ class Rig():
     @property
     def picker_layers(self):
         return self._picker_layers
-
+    
+    @property
+    def current_picker_layer(self):
+        if(len(self._picker_layers) > 0):
+            return self._picker_layers[0]
+        
+        raise RuntimeError(f"No picker layers loaded in {self._name}.")
+    
     @property
     def selection_sets(self):
         selection_sets = []
@@ -111,7 +118,8 @@ class Rig():
                 continue
 
             self._picker_layers.append(
-                Picker.create(os.path.join(picker_layers_directory, file))
+                Picker.create(os.path.join(picker_layers_directory, file),
+                manager=self._manager)
             )
 
         # Load each svg files in the directory and create Picker (TODO) object from them.

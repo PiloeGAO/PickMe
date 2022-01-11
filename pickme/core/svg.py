@@ -98,7 +98,7 @@ class SVGDocument(SVG):
                         value=elem.text
                     )
                 else:
-                    print(f"Skipping {elem.tag} (not supported).")
+                    print(f"SVGParser: Skipping {elem.tag} (not supported).")
 
         recursive_import(root, self)
     
@@ -155,7 +155,7 @@ class SVGDocument(SVG):
                     
                     elem.append(path_elem)
                 else:
-                    print("Unknown child, skipping.")
+                    print("SVGParser: Unknown child, skipping.")
                     continue
         
         recursive_creation(self, root)
@@ -224,7 +224,7 @@ class SVGStyle:
             elif(key == "stroke-opacity"):
                 stroke_opacity = float(value.replace("px", ""))
             else:
-                print(f"Unknown key {key}.")
+                print(f"SVGParser: Unknown key {key}.")
 
         return cls(
             raw_style,

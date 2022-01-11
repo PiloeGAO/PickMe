@@ -7,13 +7,15 @@
 """
 import os
 
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
 from pickme.core.attribute import AttributeTypes
 
 from pickme.core.path import ICONS_DIR
+
 from pickme.widgets.auto_generated.rig_display_widget import Ui_RigDisplayWidget
 from pickme.widgets.custom_widgets.attribute_widget import AttributeWidget
 from pickme.widgets.custom_widgets.collapsable_layout_widget import CollapsableLayoutWidget
+from pickme.widgets.custom_widgets.rig_picker_widget import RigPickerWidget
 from pickme.widgets.custom_widgets.selection_set_button import SelectionSetButton
 
 class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
@@ -26,7 +28,20 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         self.attributes_widgets = []
 
         self.setupUi(self)
-    
+
+        width = self.width()/2
+        height = self.height()
+        self._rig_picker_scene = RigPickerWidget(-width/2, -height/2, width, height)
+
+        self.rig_picker = QtWidgets.QGraphicsView()
+        self.rig_picker.setRenderHints(QtGui.QPainter.Antialiasing |
+            QtGui.QPainter.HighQualityAntialiasing)
+        self.rig_picker.setViewportUpdateMode(QtWidgets.QGraphicsView.FullViewportUpdate)
+        self.rig_picker.setScene(self._rig_picker_scene)
+
+        self.rig_display_layout.insertWidget(0, self.rig_picker)
+        
+
     @property
     def manager(self):
         return self._manager
@@ -41,8 +56,18 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Setup all interactions for the main widget.
         """
         # Reset the splitter
-        if(len(self._rig.picker_layers) > 0):
-            self.horizontalSplitter.setSizes([self.size().width()/2, self.size().width()/2])
+        if(self._rig != None):
+            if(len(self._rig.picker_layers) > 0):
+                self.horizontalSplitter.setSizes([self.size().width()/2, self.size().width()/2])
+
+                width = self.width()/2
+                height = self.height()
+
+                self._rig_picker_scene.load_layer(
+                    self._rig.current_picker_layer,
+                    width=width,
+                    height=height
+                )
         else:
             self.horizontalSplitter.setSizes([0, self.size().width()])
 

@@ -76,13 +76,14 @@
          <property name="handleWidth">
           <number>5</number>
          </property>
-         <widget class="RigPickerWidget" name="rigDisplay" native="true">
+         <widget class="QWidget" name="rigDisplay" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <layout class="QVBoxLayout" name="rig_display_layout"/>
          </widget>
          <widget class="QScrollArea" name="scrollAttributesEditor">
           <property name="sizePolicy">
@@ -102,7 +103,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>86</width>
+             <width>69</width>
              <height>194</height>
             </rect>
            </property>
@@ -170,12 +171,6 @@
    <class>HorizontalButtonBarWidget</class>
    <extends>QWidget</extends>
    <header location="global">pickme/widgets/custom_widgets/horizontal_button_bar_widget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>RigPickerWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">pickme/widgets/custom_widgets/rig_picker_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

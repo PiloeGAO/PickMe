@@ -13,7 +13,6 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from pickme.widgets.custom_widgets.horizontal_button_bar_widget import HorizontalButtonBarWidget
-from pickme.widgets.custom_widgets.rig_picker_widget import RigPickerWidget
 
 
 class Ui_RigDisplayWidget(object):
@@ -51,13 +50,15 @@ class Ui_RigDisplayWidget(object):
         self.horizontalSplitter.setEnabled(True)
         self.horizontalSplitter.setOrientation(Qt.Horizontal)
         self.horizontalSplitter.setHandleWidth(5)
-        self.rigDisplay = RigPickerWidget(self.horizontalSplitter)
+        self.rigDisplay = QWidget(self.horizontalSplitter)
         self.rigDisplay.setObjectName(u"rigDisplay")
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rigDisplay.sizePolicy().hasHeightForWidth())
         self.rigDisplay.setSizePolicy(sizePolicy)
+        self.rig_display_layout = QVBoxLayout(self.rigDisplay)
+        self.rig_display_layout.setObjectName(u"rig_display_layout")
         self.horizontalSplitter.addWidget(self.rigDisplay)
         self.scrollAttributesEditor = QScrollArea(self.horizontalSplitter)
         self.scrollAttributesEditor.setObjectName(u"scrollAttributesEditor")
@@ -67,7 +68,7 @@ class Ui_RigDisplayWidget(object):
         self.scrollAttributesEditor.setWidgetResizable(True)
         self.attributesEditorObject = QWidget()
         self.attributesEditorObject.setObjectName(u"attributesEditorObject")
-        self.attributesEditorObject.setGeometry(QRect(0, 0, 86, 194))
+        self.attributesEditorObject.setGeometry(QRect(0, 0, 69, 194))
         self.attributesEditorLayout = QVBoxLayout(self.attributesEditorObject)
         self.attributesEditorLayout.setObjectName(u"attributesEditorLayout")
         self.attributesEditorLayout.setContentsMargins(0, 0, 0, 0)
@@ -98,7 +99,7 @@ class Ui_RigDisplayWidget(object):
 
         self.retranslateUi(RigDisplayWidget)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(RigDisplayWidget)

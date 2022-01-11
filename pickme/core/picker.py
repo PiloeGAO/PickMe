@@ -7,26 +7,49 @@
 '''
 import os
 
+from pickme.core.svg import SVGDocument, SVGLayer, SVGPath
+
 class Picker:
-    def __init__(self, name, description, buttons=[]) -> None:
+    def __init__(self, name, description, buttons=[], manager=None) -> None:
+        self._manager = manager
+        
         self._name = name
         self._description = description
         self._buttons = buttons
     
     @classmethod
-    def create(cls, path):
+    def create(cls, path, manager=None):
         """Create the Picker Object from a path.
 
         Args:
-            path (str): Path to SVG file
+            path (str): Path to picker file
+            manager (class: Manager, optional): The mPickMe manager. Defaults to None.
 
         Returns:
-            class: Picker: Picker object
+            class: Picker: Setuped class
         """
         name = os.path.splitext(path)[0] # TODO: Use the name stored in the SVG.
         description = "" # TODO: Use the description stored in the metadatas of the SVG.
         buttons = []
-        return cls(name, description, buttons)
+
+        print(f"Loading picker: {path}")
+
+        svg_document = SVGDocument(path=path)
+        
+        for child in svg_document.childs:
+            if(type(child) == SVGLayer):
+                print("Layers not supported.")
+            elif(type(child) == SVGPath):
+                buttons.append(
+                    PickerButton(
+                        name=child.id,
+                        points=child.svg_draw.points,
+                        color=child.svg_style.fill,
+                        manager=manager
+                    )
+                )
+
+        return cls(name, description, buttons, manager=manager)
 
     @property
     def name(self):
@@ -39,3 +62,30 @@ class Picker:
     @property
     def buttons(self):
         return self._buttons
+
+class PickerButton:
+    def __init__(self, name="", points=[], color="", manager=None):
+        self._manager = manager
+
+        self._name = name
+        self._points = points
+        self._color = color
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def points(self):
+        return self._points
+    
+    @property
+    def color(self):
+        return self._color
+    
+    def on_click(self):
+        """Action to perform on button click.
+        """
+        self._manager.integration.select_objects(
+            [self._name]
+        )
