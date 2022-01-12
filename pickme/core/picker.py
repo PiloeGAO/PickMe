@@ -9,13 +9,13 @@ import os
 
 from pickme.core.svg import SVGDocument, SVGLayer, SVGPath
 
-class Picker:
-    def __init__(self, name, description, buttons=[], manager=None) -> None:
+class PickerCore:
+    def __init__(self, name, description, interactive_elements=[], manager=None) -> None:
         self._manager = manager
         
         self._name = name
         self._description = description
-        self._buttons = buttons
+        self._interactive_elements = interactive_elements
     
     @classmethod
     def create(cls, path, manager=None):
@@ -41,7 +41,7 @@ class Picker:
                 print("Layers not supported.")
             elif(type(child) == SVGPath):
                 buttons.append(
-                    PickerButton(
+                    PickerInteractiveElement(
                         name=child.id,
                         points=child.svg_draw.points,
                         color=child.svg_style.fill,
@@ -60,10 +60,10 @@ class Picker:
         return self._description
     
     @property
-    def buttons(self):
-        return self._buttons
+    def interactive_elements(self):
+        return self._interactive_elements
 
-class PickerButton:
+class PickerInteractiveElement:
     def __init__(self, name="", points=[], color="", manager=None):
         self._manager = manager
 

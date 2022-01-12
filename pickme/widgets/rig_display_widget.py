@@ -57,14 +57,14 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """
         # Reset the splitter
         if(self._rig != None):
-            if(len(self._rig.picker_layers) > 0):
+            if(len(self._rig._picker_groups) > 0):
                 self.horizontalSplitter.setSizes([self.size().width()/2, self.size().width()/2])
 
                 width = self.width()/2
                 height = self.height()
 
                 self._rig_picker_scene.load_layer(
-                    self._rig.current_picker_layer,
+                    self._rig.current_picker_group,
                     width=width,
                     height=height
                 )

@@ -8,7 +8,7 @@
 import os
 
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
-from pickme.core.picker import Picker
+from pickme.core.picker import PickerCore
 from pickme.core.selection_set import SelectionSetManager
 
 class Rig():
@@ -21,7 +21,7 @@ class Rig():
         self._config_path = os.path.join(path, "config.json")
         self._icon = os.path.join(path, "icon.png")
 
-        self._picker_layers = [] # Is group a better name?
+        self._picker_groups = []
         self.load_picker_layers()
 
         self._selection_sets_managers = []
@@ -76,15 +76,15 @@ class Rig():
         return self._icon
     
     @property
-    def picker_layers(self):
-        return self._picker_layers
+    def picker_groups(self):
+        return self._picker_groups
     
     @property
-    def current_picker_layer(self):
-        if(len(self._picker_layers) > 0):
-            return self._picker_layers[0]
+    def current_picker_group(self):
+        if(len(self._picker_groups) > 0):
+            return self._picker_groups[0]
         
-        raise RuntimeError(f"No picker layers loaded in {self._name}.")
+        raise RuntimeError(f"No picker group loaded in {self._name}.")
     
     @property
     def selection_sets(self):
@@ -117,9 +117,11 @@ class Rig():
             if(not os.path.splitext(file)[1] in (".svg")):
                 continue
 
-            self._picker_layers.append(
-                Picker.create(os.path.join(picker_layers_directory, file),
-                manager=self._manager)
+            self._picker_groups.append(
+                PickerCore.create(
+                    os.path.join(picker_layers_directory, file),
+                    manager=self._manager
+                )
             )
 
         # Load each svg files in the directory and create Picker (TODO) object from them.

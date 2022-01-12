@@ -15,27 +15,27 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         self.setSceneRect(0, 0, width, height)
         self.clear()
 
-        for button in layer.buttons:
+        for elem in layer.interactive_elements:
             self.addItem(
                 RigPickerButton(
-                    picker_button=button
+                    picker_element=elem
                 )
             )
 
 class RigPickerButton(QtWidgets.QGraphicsItem):
     Type = QtWidgets.QGraphicsItem.UserType + 1
     
-    def __init__(self, picker_button=None, *args, **kwargs):
+    def __init__(self, picker_element=None, *args, **kwargs):
         super(RigPickerButton, self).__init__(*args, **kwargs)
 
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, False)
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, False)
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsFocusable, False)
 
-        self._picker_button = picker_button
+        self._picker_element = picker_element
 
         points = []
-        for point in self._picker_button.points:
+        for point in self._picker_element.points:
             points.append(
                 QtCore.QPointF(
                     float(point.x),
@@ -54,12 +54,12 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
     def paint(self, painter, option, widget=None):
         painter.setPen(
             QtGui.QPen(
-                self._picker_button.color
+                self._picker_element.color
             )
         )
         painter.setBrush(
             QtGui.QBrush(
-                self._picker_button.color,
+                self._picker_element.color,
                 QtCore.Qt.SolidPattern
             )
         )
@@ -85,6 +85,6 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
         )
 
         if(self.polygon.intersects(tmp_polygon)):
-            self._picker_button.on_click()
+            self._picker_element.on_click()
 
         super(RigPickerButton, self).mousePressEvent(event)
