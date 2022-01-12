@@ -65,6 +65,17 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
         )
 
         painter.drawPolygon(self.polygon)
+
+        painter.setPen(
+            QtGui.QPen(
+                QtCore.Qt.white
+            )
+        )
+
+        painter.drawText(
+            self.polygon.boundingRect().center(),
+            self._picker_element.nice_name
+        )
     
     def boundingRect(self):
         return self.polygon.boundingRect()

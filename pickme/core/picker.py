@@ -30,7 +30,7 @@ class PickerCore:
         """
         name = os.path.splitext(path)[0] # TODO: Use the name stored in the SVG.
         description = "" # TODO: Use the description stored in the metadatas of the SVG.
-        buttons = []
+        interactive_elements = []
 
         print(f"Loading picker: {path}")
 
@@ -40,16 +40,19 @@ class PickerCore:
             if(type(child) == SVGLayer):
                 print("Layers not supported.")
             elif(type(child) == SVGPath):
-                buttons.append(
+                nice_name = child.title.value if child.title != None else child.id
+
+                interactive_elements.append(
                     PickerInteractiveElement(
                         name=child.id,
+                        nice_name=nice_name,
                         points=child.svg_draw.points,
                         color=child.svg_style.fill,
                         manager=manager
                     )
                 )
 
-        return cls(name, description, buttons, manager=manager)
+        return cls(name, description, interactive_elements, manager=manager)
 
     @property
     def name(self):
@@ -64,10 +67,11 @@ class PickerCore:
         return self._interactive_elements
 
 class PickerInteractiveElement:
-    def __init__(self, name="", points=[], color="", manager=None):
+    def __init__(self, name="", nice_name="", points=[], color="", manager=None):
         self._manager = manager
 
         self._name = name
+        self._nice_name = nice_name
         self._points = points
         self._color = color
     
@@ -75,6 +79,10 @@ class PickerInteractiveElement:
     def name(self):
         return self._name
     
+    @property
+    def nice_name(self):
+        return self._nice_name
+
     @property
     def points(self):
         return self._points
