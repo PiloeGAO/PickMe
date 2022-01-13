@@ -36,12 +36,18 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         """
         self.mainLayout.setMargin(0)
 
-        # Setup amenubar for the mainwidget
+        # Setup a menubar for the mainwidget
         self.menubar = QtWidgets.QMenuBar(self)
         edit_menu = self.menubar.addMenu('Edit')
+
         create_rig_button = QtWidgets.QAction(QtGui.QIcon(os.path.join(ICONS_DIR, "plus.png")), "Create Rig", self)
         create_rig_button.triggered.connect(self.menu_create_rig)
         edit_menu.addAction(create_rig_button)
+
+        create_picker_button = QtWidgets.QAction("Create Picker Layer", self)
+        create_picker_button.triggered.connect(self.menu_create_picker_layer)
+        edit_menu.addAction(create_picker_button)
+
         self.mainLayout.insertWidget(0, self.menubar)
 
         # Set header functions.
@@ -76,6 +82,21 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self._manager.add_rig(new_rig)
         self.reload_configurations()
+    
+    def menu_create_picker_layer(self):
+        if(self._manager.current_rig == None):
+            print("Please load a rig.")
+            return
+        
+        name, ok = QtWidgets.QInputDialog().getText(self, "Picer Layer Name",
+            "Name:", QtWidgets.QLineEdit.Normal,
+            "Picker Layer"
+        )
+
+        if(not ok and name == ""):
+            return
+        
+        print(name)
 
     def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
