@@ -31,6 +31,8 @@ class SVG(object):
 class SVGDocument(SVG):
     def __init__(self, path="") -> None:
         super(SVGDocument, self).__init__()
+        self.__path = path
+        
         self.width = 100
         self.height = 100
         self.version = 1.1
@@ -102,6 +104,14 @@ class SVGDocument(SVG):
 
         recursive_import(root, self)
     
+    def save(self, force_write=False):
+        """Save the current docutment to it's saved path.
+
+        Args:
+            force_write (bool, optional): Allow overwrite if file already exist. Defaults to False.
+        """
+        self.save_to_path(self.__path, force_write=force_write)
+    
     def save_to_path(self, path, force_write=False):
         """Save the document to disk.
 
@@ -127,7 +137,7 @@ class SVGDocument(SVG):
                     or "raw" in tag
                     or value == None):
                     continue
-                elem.attrib[tag] = value
+                elem.attrib[tag] = str(value)
 
         def recursive_creation(svg_obj, elem):
             # TODO: Move the Element creation code to class level.

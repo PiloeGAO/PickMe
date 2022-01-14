@@ -10,6 +10,7 @@ import os
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.picker import PickerCore
 from pickme.core.selection_set import SelectionSetManager
+from pickme.core.svg import SVGDocument
 
 class Rig():
     def __init__(self, manager=None, id=-1, name="Default", path=None) -> None:
@@ -124,8 +125,17 @@ class Rig():
                 )
             )
 
-        # Load each svg files in the directory and create Picker (TODO) object from them.
         return
+    
+    def create_picker_layer(self, name):
+        name = name.replace(" ", "_")
+        svg_path = os.path.join(self._path, "layers", f"{name}.svg")
+        
+        if(os.path.isfile(svg_path)):
+            raise RuntimeError("SVG Layer file already exist.")
+
+        new_layer = SVGDocument(path=svg_path)
+        new_layer.save()
         
     # Selection Sets.
     def load_selection_sets(self):

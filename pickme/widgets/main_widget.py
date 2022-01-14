@@ -84,7 +84,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         self.reload_configurations()
     
     def menu_create_picker_layer(self):
-        if(self._manager.current_rig == None):
+        if(self._manager.rig == None):
             print("Please load a rig.")
             return
         
@@ -96,7 +96,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         if(not ok and name == ""):
             return
         
-        print(name)
+        self._manager.rig.create_picker_layer(name)
 
     def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
