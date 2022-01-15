@@ -162,4 +162,4 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
             id (int): Index of the new selected rig
         """
         self._manager.current_rig = id
-        self.pickerWidget.setup_interactions()
+        self.pickerWidget.refresh_widget_content()

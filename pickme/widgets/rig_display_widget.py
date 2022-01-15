@@ -39,7 +39,6 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     @manager.setter
     def manager(self, manager):
         self._manager = manager
-        self._rig = manager.rig
 
         self._rig_picker_scene.manager = manager
 
@@ -71,26 +70,33 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             clicked_func=self.add_selection_set
         )
 
-        if(self._rig != None):
-            # Reset the splitter
-            if(len(self._rig._picker_groups) > 0):
-                widget_size = (self.size().width(), self.size().height())
-                self.horizontalSplitter.setSizes([widget_size[0]/2, widget_size[1]])
+        self.refresh_widget_content()
+    
+    def refresh_widget_content(self):
+        """Refresh the content of the widget.
+        """
+        if(self._manager.rig == None):
+            return
 
-                self.load_picker()
-            else:
-                self.horizontalSplitter.setSizes([0, self.size().width()])
-            
-            print(f"Loading {self._rig.name}")
-            self.load_selection_sets()
+        if(self._rig == None and self._manager.rig != None):
+            self._rig = self._manager.rig
+        
+        # Reset the splitter
+        if(len(self._rig._picker_groups) > 0):
+            widget_size = (self.size().width(), self.size().height())
+            self.horizontalSplitter.setSizes([widget_size[0]/2, widget_size[1]])
+
+            self.load_picker()
+        else:
+            self.horizontalSplitter.setSizes([0, self.size().width()])
+        
+        print(f"Loading {self._rig.name}")
+        self.load_selection_sets()
 
     # Picker Area
     def load_picker(self):
         """Load a new picker in the picker area.
         """
-        if(self._rig == None):
-            return
-
         width = self._rig.current_picker_group.width
         height = self._rig.current_picker_group.height
 
@@ -187,6 +193,9 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def add_selection_set(self):
         """Add a selection group to the UI.
         """
+        if(self._rig == None):
+            return
+        
         name, status = QtWidgets.QInputDialog().getText(self,
                                     "Set Name",
                                     "Name:", QtWidgets.QLineEdit.Normal,
