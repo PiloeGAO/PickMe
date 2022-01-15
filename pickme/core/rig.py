@@ -23,7 +23,8 @@ class Rig():
         self._icon = os.path.join(path, "icon.png")
 
         self._picker_groups = []
-        self.load_picker_layers()
+        self._current_picker_group = 0
+        self.load_picker_groups()
 
         self._selection_sets_managers = []
         self.load_selection_sets()
@@ -83,7 +84,7 @@ class Rig():
     @property
     def current_picker_group(self):
         if(len(self._picker_groups) > 0):
-            return self._picker_groups[0]
+            return self._picker_groups[self._current_picker_group]
         
         raise RuntimeError(f"No picker group loaded in {self._name}.")
     
@@ -107,7 +108,9 @@ class Rig():
         self._attributes = attributes
     
     # Pickers Layers.
-    def load_picker_layers(self):
+    def load_picker_groups(self):
+        """Load picker groups from disk.
+        """
         picker_layers_directory = os.path.join(self._path, "layers")
         if(not os.path.isdir(picker_layers_directory)):
             print("No pickers layers directory, creating one.")
@@ -125,7 +128,15 @@ class Rig():
                 )
             )
     
-    def create_picker_layer(self, name):
+    def create_picker_group(self, name):
+        """Create a new picker group.
+
+        Args:
+            name (str): Name fo the group
+
+        Raises:
+            RuntimeError: File with same name already exist
+        """
         name = name.replace(" ", "_")
         svg_path = os.path.join(self._path, "layers", f"{name}.svg")
         
@@ -135,7 +146,8 @@ class Rig():
         new_layer = SVGDocument(path=svg_path)
         new_layer.save()
 
-        self.load_picker_layers()
+        self.load_picker_groups()
+        self._current_picker_group = len(self._picker_groups)-1
         
     # Selection Sets.
     def load_selection_sets(self):

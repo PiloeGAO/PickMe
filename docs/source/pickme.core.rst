@@ -1,8 +1,6 @@
 pickme.core package
 ===================
 
-Core functions used in the tool (rigs management, selections sets management, parsing SVGs...).
-
 Submodules
 ----------
 

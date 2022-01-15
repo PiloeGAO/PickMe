@@ -38,6 +38,7 @@ class SVGDocument(SVG):
         self.version = 1.1
 
         if(os.path.isfile(path)):
+            print(f"Loading {path}")
             self.load_from_path(path)
 
     def load_from_path(self, path):

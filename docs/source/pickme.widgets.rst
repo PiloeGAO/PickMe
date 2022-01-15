@@ -1,8 +1,6 @@
 pickme.widgets package
 ======================
 
-This package contain the mains widgets of the software.
-
 Subpackages
 -----------
 

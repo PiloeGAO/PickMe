@@ -1,8 +1,6 @@
 pickme.widgets.custom\_widgets package
 ======================================
 
-This package contain custom/utils widgets to make special actions.
-
 Submodules
 ----------
 

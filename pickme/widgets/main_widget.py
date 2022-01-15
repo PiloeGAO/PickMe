@@ -45,7 +45,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         edit_menu.addAction(create_rig_button)
 
         create_picker_button = QtWidgets.QAction("Create Picker Layer", self)
-        create_picker_button.triggered.connect(self.menu_create_picker_layer)
+        create_picker_button.triggered.connect(self.menu_create_picker_group)
         edit_menu.addAction(create_picker_button)
 
         self.mainLayout.insertWidget(0, self.menubar)
@@ -83,7 +83,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         self._manager.add_rig(new_rig)
         self.reload_configurations()
     
-    def menu_create_picker_layer(self):
+    def menu_create_picker_group(self):
+        """Create a new picker group.
+        """
         if(self._manager.rig == None):
             print("Please load a rig.")
             return
@@ -96,10 +98,11 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         if(not ok and name == ""):
             return
         
-        self._manager.rig.create_picker_layer(name)
+        self._manager.rig.create_picker_group(name)
 
         self.refresh_picker_area()
 
+    # Loaders.
     def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
         """
@@ -124,6 +127,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
             [rig_button for rig_button in self.headerWidget.widgets if rig_button.rig.id == 0][0].set_active()
 
+    # Refresh functions.
     def refresh_rig_buttons(self, active_button):
         """Refresh the header widgets and set buttons inactive except for the clicked one.
 
@@ -137,12 +141,18 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
             button.set_inactive()
     
     def refresh_picker_area(self):
-        print("Refresh")
+        """Refresh the picker area.
+        """
+        self.pickerWidget.load_picker()
     
     def create_attributes(self):
+        """Create attributes displays.
+        """
         self.pickerWidget.create_attributes()
 
     def refresh_attributes(self):
+        """Refresh attrinbutes values.
+        """
         self.pickerWidget.refresh_attributes()
 
     def move_to_rig(self, id):

@@ -1,8 +1,6 @@
 pickme.dccs.maya package
 ========================
 
-All the maya computing/callings are defined in the package.
-
 Submodules
 ----------
 
