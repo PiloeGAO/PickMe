@@ -9,15 +9,15 @@ import os
 import xml.etree.ElementTree as ET
 
 class SVG(object):
-    def __init__(self, id="", value="", parent=None, childs=[], title=None, description=None) -> None:
+    def __init__(self, id="", value="", title=None, description=None, *args, **kwargs) -> None:
         self.id = id
         self.value = value # = text
 
         self.title = title
         self.description = description
 
-        self.parent = parent
-        self.childs = childs
+        self.parent = None
+        self.childs = []
 
     def add_child(self, child):
         """Add a child to the SVG class.
@@ -37,19 +37,34 @@ class SVGDocument(SVG):
         self.height = 100
         self.version = 1.1
 
-        if(os.path.isfile(path)):
-            print(f"Loading {path}")
-            self.load_from_path(path)
-
-    def load_from_path(self, path):
-        """Load a SVG from disk and convert it to SVGDocument.
+    @classmethod
+    def create(cls, path):
+        """Create a new SVGDocument class instance.
 
         Args:
-            path (str): File path
+            path (str): Path to SVG
+
+        Returns:
+            class: SVGDocument: New SVGDocument instance
         """
-        tree = ET.parse(path)
-        root = tree.getroot()
+        document = cls(path=path)
+
+        if(os.path.isfile(path)):
+            print("Loading document.")
+            document.load_from_path()
+        else:
+            print(f"New Document.")
+            document.id = os.path.splitext(os.path.basename(path))[0]
+            document.save()
         
+        return document
+
+    def load_from_path(self):
+        """Load a SVG from disk and convert it to SVGDocument.
+        """
+        tree = ET.parse(self.__path)
+        root = tree.getroot()
+
         self.id = root.attrib["id"]
         self.version = root.attrib["version"]
 
@@ -111,6 +126,8 @@ class SVGDocument(SVG):
         Args:
             force_write (bool, optional): Allow overwrite if file already exist. Defaults to False.
         """
+        print(self.__path)
+        print(self.childs)
         self.save_to_path(self.__path, force_write=force_write)
     
     def save_to_path(self, path, force_write=False):
@@ -292,9 +309,10 @@ class SVGPoint:
 
 if(__name__ == "__main__"):
     # TODO: Remove this when the implementation is finished.
-    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    GLOBAL_CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
+    # ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    # GLOBAL_CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
     
-    svg_doc = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker.svg"))
-    print(svg_doc.__dict__)
-    svg_doc.save_to_path(os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker_export.svg"), force_write=True)
+    # svg_doc = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker.svg"))
+    # print(svg_doc.__dict__)
+    # svg_doc.save_to_path(os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker_export.svg"), force_write=True)
+    pass

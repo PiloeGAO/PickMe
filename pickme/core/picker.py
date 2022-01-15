@@ -29,13 +29,13 @@ class PickerCore:
         Returns:
             class: Picker: Setuped class
         """
-        name = os.path.splitext(path)[0] # TODO: Use the name stored in the SVG.
+        name = os.path.splitext(path)[0]
         description = "" # TODO: Use the description stored in the metadatas of the SVG.
         interactive_elements = []
 
         print(f"Loading picker: {path}")
 
-        svg_document = SVGDocument(path=path)
+        svg_document = SVGDocument.create(path)
         document_size = (float(svg_document.width), float(svg_document.height))
         
         for child in svg_document.childs:

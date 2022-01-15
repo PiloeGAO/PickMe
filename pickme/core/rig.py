@@ -107,7 +107,7 @@ class Rig():
         
         self._attributes = attributes
     
-    # Pickers Layers.
+    # Pickers Groups.
     def load_picker_groups(self):
         """Load picker groups from disk.
         """
@@ -143,8 +143,7 @@ class Rig():
         if(os.path.isfile(svg_path)):
             raise RuntimeError("SVG Layer file already exist.")
 
-        new_layer = SVGDocument(path=svg_path)
-        new_layer.save()
+        new_picker = SVGDocument.create(svg_path)
 
         self.load_picker_groups()
         self._current_picker_group = len(self._picker_groups)-1
