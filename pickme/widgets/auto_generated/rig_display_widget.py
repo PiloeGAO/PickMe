@@ -58,7 +58,17 @@ class Ui_RigDisplayWidget(object):
         sizePolicy.setHeightForWidth(self.rigDisplay.sizePolicy().hasHeightForWidth())
         self.rigDisplay.setSizePolicy(sizePolicy)
         self.rig_display_layout = QVBoxLayout(self.rigDisplay)
+        self.rig_display_layout.setSpacing(0)
         self.rig_display_layout.setObjectName(u"rig_display_layout")
+        self.rig_display_layout.setContentsMargins(0, 0, 0, 0)
+        self.picker_graphics_view = QGraphicsView(self.rigDisplay)
+        self.picker_graphics_view.setObjectName(u"picker_graphics_view")
+        self.picker_graphics_view.setFrameShape(QFrame.NoFrame)
+        self.picker_graphics_view.setRenderHints(QPainter.Antialiasing|QPainter.TextAntialiasing)
+        self.picker_graphics_view.setViewportUpdateMode(QGraphicsView.SmartViewportUpdate)
+
+        self.rig_display_layout.addWidget(self.picker_graphics_view)
+
         self.horizontalSplitter.addWidget(self.rigDisplay)
         self.scrollAttributesEditor = QScrollArea(self.horizontalSplitter)
         self.scrollAttributesEditor.setObjectName(u"scrollAttributesEditor")

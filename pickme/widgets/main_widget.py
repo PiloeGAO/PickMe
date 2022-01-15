@@ -98,6 +98,8 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         
         self._manager.rig.create_picker_layer(name)
 
+        self.refresh_picker_area()
+
     def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
         """
@@ -133,6 +135,9 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
                 continue
 
             button.set_inactive()
+    
+    def refresh_picker_area(self):
+        print("Refresh")
     
     def create_attributes(self):
         self.pickerWidget.create_attributes()

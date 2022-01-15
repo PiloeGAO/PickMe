@@ -17,6 +17,10 @@
   <defs
      id="defs2" />
    <path
+      style="fill:#FF0000;stroke:none;stroke-width:1.04539px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+      d="M 0,0 250,0 250,250 0,250 Z"
+      id="path99" />
+   <path
       style="fill:#000000;stroke:none;stroke-width:1.04539px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
       d="M 6.3622232,11.396907 5.0180411,42.313084 57.777172,45.337493 62.145762,13.413178 Z"
       id="spine_upperBody_MIX_CON" />

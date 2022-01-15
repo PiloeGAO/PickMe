@@ -124,8 +124,6 @@ class Rig():
                     manager=self._manager
                 )
             )
-
-        return
     
     def create_picker_layer(self, name):
         name = name.replace(" ", "_")
@@ -136,6 +134,8 @@ class Rig():
 
         new_layer = SVGDocument(path=svg_path)
         new_layer.save()
+
+        self.load_picker_layers()
         
     # Selection Sets.
     def load_selection_sets(self):

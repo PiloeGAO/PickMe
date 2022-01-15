@@ -83,7 +83,36 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QVBoxLayout" name="rig_display_layout"/>
+          <layout class="QVBoxLayout" name="rig_display_layout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QGraphicsView" name="picker_graphics_view">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
+             <property name="viewportUpdateMode">
+              <enum>QGraphicsView::SmartViewportUpdate</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
          <widget class="QScrollArea" name="scrollAttributesEditor">
           <property name="sizePolicy">

@@ -7,7 +7,7 @@
 """
 import os
 
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtWidgets, QtCore
 from pickme.core.attribute import AttributeTypes
 
 from pickme.core.path import ICONS_DIR
@@ -29,18 +29,8 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
 
         self.setupUi(self)
 
-        width = self.width()/2
-        height = self.height()
-        self._rig_picker_scene = RigPickerWidget(-width/2, -height/2, width, height)
-
-        self.rig_picker = QtWidgets.QGraphicsView()
-        self.rig_picker.setRenderHints(QtGui.QPainter.Antialiasing |
-            QtGui.QPainter.HighQualityAntialiasing)
-        self.rig_picker.setViewportUpdateMode(QtWidgets.QGraphicsView.FullViewportUpdate)
-        self.rig_picker.setScene(self._rig_picker_scene)
-
-        self.rig_display_layout.insertWidget(0, self.rig_picker)
-        
+        self._rig_picker_scene = RigPickerWidget(0, 0, 0, 0)
+        self.picker_graphics_view.setScene(self._rig_picker_scene)
 
     @property
     def manager(self):
@@ -52,25 +42,19 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         self._rig = manager.rig
         self.setup_interactions()
 
+    def resizeEvent(self, event):
+        """Resize the sub-widgets.
+
+        Args:
+            event (QResizeEvent): Event
+        """
+        super(RigDisplayWidget, self).resizeEvent(event)
+
+        self.update_picker_graphics_view_size()
+
     def setup_interactions(self):
         """Setup all interactions for the main widget.
         """
-        # Reset the splitter
-        if(self._rig != None):
-            if(len(self._rig._picker_groups) > 0):
-                self.horizontalSplitter.setSizes([self.size().width()/2, self.size().width()/2])
-
-                width = self.width()/2
-                height = self.height()
-
-                self._rig_picker_scene.load_layer(
-                    self._rig.current_picker_group,
-                    width=width,
-                    height=height
-                )
-        else:
-            self.horizontalSplitter.setSizes([0, self.size().width()])
-
         # Set Attributes functions.
         self.create_attributes()
 
@@ -86,9 +70,49 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
 
         self._rig = self._manager.rig
         if(self._rig != None):
+            # Reset the splitter
+            if(len(self._rig._picker_groups) > 0):
+                widget_size = (self.size().width(), self.size().height())
+                self.horizontalSplitter.setSizes([widget_size[0]/2, widget_size[1]])
+
+                self.load_picker()
+            else:
+                self.horizontalSplitter.setSizes([0, self.size().width()])
+            
             print(f"Loading {self._rig.name}")
             self.load_selection_sets()
 
+    # Picker Area
+    def load_picker(self):
+        """Load a new picker in the picker area.
+        """
+        if(self._rig == None):
+            return
+        
+        width = self._rig.current_picker_group.width
+        height = self._rig.current_picker_group.height
+
+        self._rig_picker_scene.load_layer(
+            self._rig.current_picker_group,
+            width=width,
+            height=height
+        )
+
+        self.update_picker_graphics_view_size()
+
+    def update_picker_graphics_view_size(self, size=()):
+        """Update the size of the element inside of the QGraphicsView.
+        """
+        if(size == ()):
+            width = self.picker_graphics_view.width()
+            height = self.picker_graphics_view.height()
+        else:
+            width = size[0]
+            height = size[1]
+        
+        self.picker_graphics_view.fitInView(0, 0, width, height,aspectRatioMode=QtCore.Qt.KeepAspectRatio)
+
+    # Attributes Editor    
     def create_attributes(self):
         """Create attributes.
         """
@@ -123,7 +147,6 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         for attr_widget in self.attributes_widgets:
             attr_widget.refresh_widget()
 
-    # Attributes Editor
     def add_item_to_attributes_editor(self, item):
         """Add a widget to the bar.
 
