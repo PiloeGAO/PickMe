@@ -88,6 +88,15 @@ class Rig():
         
         raise RuntimeError(f"No picker group loaded in {self._name}.")
     
+    @current_picker_group.setter
+    def current_picker_group(self, picker_group):
+        group_index = self._picker_groups.index(picker_group)
+
+        if(group_index >= 0):
+            self._current_picker_group = group_index
+        else:
+            raise RuntimeError(f"No picker group {picker_group.name} in {self.name}.")
+    
     @property
     def selection_sets(self):
         selection_sets = []
@@ -111,6 +120,8 @@ class Rig():
     def load_picker_groups(self):
         """Load picker groups from disk.
         """
+        self._picker_groups = []
+
         picker_layers_directory = os.path.join(self._path, "layers")
         if(not os.path.isdir(picker_layers_directory)):
             print("No pickers layers directory, creating one.")
@@ -147,6 +158,16 @@ class Rig():
 
         self.load_picker_groups()
         self._current_picker_group = len(self._picker_groups)-1
+    
+    def set_current_picker_group(self, picker_group):
+        """Utils function to allow partial to edit the property.
+
+        Args:
+            picker_group (class: PickerCore): New picker group to apply
+        """
+        self.current_picker_group = picker_group
+        
+        self._manager.ui.pickerWidget.load_picker()
         
     # Selection Sets.
     def load_selection_sets(self):

@@ -29,7 +29,7 @@ class PickerCore:
         Returns:
             class: Picker: Setuped class
         """
-        name = os.path.splitext(path)[0]
+        name = os.path.splitext(os.path.basename(path))[0]
         description = "" # TODO: Use the description stored in the metadatas of the SVG.
         interactive_elements = []
 

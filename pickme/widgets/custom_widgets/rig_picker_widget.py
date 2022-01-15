@@ -5,13 +5,62 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
+from functools import partial
+
 from PySide2 import QtWidgets, QtGui, QtCore
 
 class RigPickerWidget(QtWidgets.QGraphicsScene):
-    def __init__(self, x, y, w, h, layer=None, parent=None):
+    def __init__(self, x, y, w, h, parent=None):
         super(RigPickerWidget, self).__init__(x, y, w, h, parent)
+        self._manager = None
+        self._rig = None
+
+        self._menu = QtWidgets.QMenu("Options")
+        self._groups_menu = QtWidgets.QMenu("Groups")
+        self._menu.addMenu(self._groups_menu)
+
+    @property
+    def manager(self):
+        return self._manager
+
+    @manager.setter
+    def manager(self, manager):
+        self._manager = manager
+        self._rig = manager.rig
+    
+    def mousePressEvent(self, event):
+        """Implement Middle Click and Right Click.
+
+        Args:
+            event (QEvent): Event.
+        """
+        if event.type() == QtCore.QEvent.GraphicsSceneMousePress:
+            if event.button() == QtCore.Qt.RightButton:
+                if(self._rig != None):
+                    self._groups_menu.clear()
+                    for picker_groups in self._rig.picker_groups:
+                        self._groups_menu.addAction(
+                            picker_groups.name.replace("_", " "),
+                            partial(
+                                self._rig.set_current_picker_group,
+                                picker_groups
+                            )
+                        )
+                
+                self._menu.exec_(QtGui.QCursor.pos())
+                return
+        
+        super(RigPickerWidget, self).mousePressEvent(event)
 
     def load_layer(self, layer, width=100, height=100):
+        """Load the current group in the view.
+
+        Args:
+            layer (class: PickerCore): Group to load
+            width (int, optional): width of the group. Defaults to 100.
+            height (int, optional): Height of the group. Defaults to 100.
+        """
+        # Setup view.
         self.setSceneRect(0, 0, width, height)
         self.clear()
 

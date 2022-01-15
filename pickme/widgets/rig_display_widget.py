@@ -40,6 +40,9 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def manager(self, manager):
         self._manager = manager
         self._rig = manager.rig
+
+        self._rig_picker_scene.manager = manager
+
         self.setup_interactions()
 
     def resizeEvent(self, event):
@@ -68,7 +71,6 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
             clicked_func=self.add_selection_set
         )
 
-        self._rig = self._manager.rig
         if(self._rig != None):
             # Reset the splitter
             if(len(self._rig._picker_groups) > 0):
@@ -88,7 +90,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """
         if(self._rig == None):
             return
-        
+
         width = self._rig.current_picker_group.width
         height = self._rig.current_picker_group.height
 
