@@ -125,7 +125,7 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
         super(RigPickerButton, self).__init__(*args, **kwargs)
 
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsFocusable, False)
 
         self._picker_element = picker_element
@@ -144,7 +144,8 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
         )
     
     def type(self):
-       # Enable the use of qgraphicsitem_cast with this item.
+       """ Enable the use of qgraphicsitem_cast with this item.
+       """
        return self.Type
 
     def paint(self, painter, option, widget=None):
@@ -173,25 +174,20 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
             self._picker_element.nice_name
         )
     
+    def shape(self):
+        """Define the shape of the Item, usefull for defining custom bounding boxes.
+
+        Returns:
+            class: QtGui.QPainterPath: Path of the shape
+        """
+        path = QtGui.QPainterPath()
+        path.addPolygon(self.polygon)
+        return path
+    
     def boundingRect(self):
         return self.polygon.boundingRect()
 
     def mousePressEvent(self, event):
-        tmp_polygon = QtGui.QPolygonF(
-            [
-                QtCore.QPointF(event.pos()),
-                QtCore.QPointF(
-                    event.pos().x() - 1,
-                    event.pos().y()
-                ),
-                QtCore.QPointF(
-                    event.pos().x(),
-                    event.pos().y() + 1
-                ),
-            ]
-        )
-
-        if(self.polygon.intersects(tmp_polygon)):
-            self._picker_element.on_click()
+        self._picker_element.on_click()
 
         super(RigPickerButton, self).mousePressEvent(event)
