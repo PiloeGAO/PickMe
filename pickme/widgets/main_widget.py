@@ -44,7 +44,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         create_rig_button.triggered.connect(self.menu_create_rig)
         edit_menu.addAction(create_rig_button)
 
-        create_picker_button = QtWidgets.QAction("Create Picker Layer", self)
+        create_picker_button = QtWidgets.QAction("Create Picker Group", self)
         create_picker_button.triggered.connect(self.menu_create_picker_group)
         edit_menu.addAction(create_picker_button)
 
