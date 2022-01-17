@@ -18,6 +18,8 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         self._menu = QtWidgets.QMenu("Options")
         self._groups_menu = QtWidgets.QMenu("Groups")
         self._menu.addMenu(self._groups_menu)
+        self._menu.addSeparator()
+        self._menu.addAction("Add Button", self.create_button)
 
     @property
     def manager(self):
@@ -71,6 +73,21 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                     picker_element=elem
                 )
             )
+    
+    def create_button(self):
+        """Add a button from viewport selection.
+        """
+        selection = self._manager.integration.get_selection()
+
+        if(len(selection) == 0):
+            print("Please select an object.")
+            return
+        elif(len(selection) > 1):
+            print("Only the first selected object will have a button.")
+        
+        selected_object_name = selection[0]
+
+        print(QtGui.QCursor.pos(), selected_object_name)
 
 class RigPickerButton(QtWidgets.QGraphicsItem):
     Type = QtWidgets.QGraphicsItem.UserType + 1
