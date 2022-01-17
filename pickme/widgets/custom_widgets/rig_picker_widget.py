@@ -52,19 +52,21 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         
         super(RigPickerWidget, self).mousePressEvent(event)
 
-    def load_layer(self, layer, width=100, height=100):
+    def load_layer(self):
         """Load the current group in the view.
-
-        Args:
-            layer (class: PickerCore): Group to load
-            width (int, optional): width of the group. Defaults to 100.
-            height (int, optional): Height of the group. Defaults to 100.
         """
-        # Setup view.
-        self.setSceneRect(0, 0, width, height)
-        self.clear()
+        self._rig = self._manager.rig
 
-        for elem in layer.interactive_elements:
+        self.clear()
+        if(self._rig == None):
+            return
+        
+        # Setup view.
+        width = self._rig.current_picker_group.width
+        height = self._rig.current_picker_group.height
+        self.setSceneRect(0, 0, width, height)
+
+        for elem in self._rig.current_picker_group.interactive_elements:
             self.addItem(
                 RigPickerButton(
                     picker_element=elem
