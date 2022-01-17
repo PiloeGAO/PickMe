@@ -18,6 +18,8 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         self._current_clicked_pos = QtCore.QPointF(0, 0)
 
         self._menu = QtWidgets.QMenu("Options")
+        self._edit_menu = QtWidgets.QMenu("Edit")
+        self._menu.addMenu(self._edit_menu)
         self._groups_menu = QtWidgets.QMenu("Groups")
         self._menu.addMenu(self._groups_menu)
         self._menu.addSeparator()
@@ -40,10 +42,16 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         """
         if event.type() == QtCore.QEvent.GraphicsSceneMousePress:
             self._current_clicked_pos = event.scenePos()
+            
+            selected_element = self.items(event.scenePos())[0]
 
             if event.button() == QtCore.Qt.RightButton:
                 if(self._rig != None):
-                    self._groups_menu.clear()
+                    # Edit current picker element.
+                    self._edit_menu.clear()
+                    # TODO: Allow user to change nice_name, color and delete the item.
+                    
+                    # Picker Group Selector
                     for picker_groups in self._rig.picker_groups:
                         self._groups_menu.addAction(
                             picker_groups.name.replace("_", " "),
