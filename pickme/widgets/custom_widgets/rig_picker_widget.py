@@ -48,7 +48,6 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                         )
                 
                 self._menu.exec_(QtGui.QCursor.pos())
-                return
         
         super(RigPickerWidget, self).mousePressEvent(event)
 

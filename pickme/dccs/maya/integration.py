@@ -92,10 +92,12 @@ class MayaIntegration(Integration):
         Args:
             objects (list): Object names
         """
-        cmds.select(clear=clear_selection)
-
         objects = [f"{self._manager.rig.name}:{obj}" for obj in objects if f"{self._manager.rig.name}:{obj}" in cmds.ls()]
+        
+        if(objects == []):
+            return
 
+        cmds.select(clear=clear_selection)
         cmds.select(objects)
     
     def show_hide_objects(self, objects):
