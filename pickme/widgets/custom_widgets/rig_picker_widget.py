@@ -15,6 +15,8 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         self._manager = None
         self._rig = None
 
+        self._current_clicked_pos = QtCore.QPointF(0, 0)
+
         self._menu = QtWidgets.QMenu("Options")
         self._groups_menu = QtWidgets.QMenu("Groups")
         self._menu.addMenu(self._groups_menu)
@@ -37,6 +39,8 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
             event (QEvent): Event.
         """
         if event.type() == QtCore.QEvent.GraphicsSceneMousePress:
+            self._current_clicked_pos = event.scenePos()
+
             if event.button() == QtCore.Qt.RightButton:
                 if(self._rig != None):
                     self._groups_menu.clear()
@@ -87,7 +91,32 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         
         selected_object_name = selection[0]
 
-        print(QtGui.QCursor.pos(), selected_object_name)
+        nice_name, status = QtWidgets.QInputDialog().getText(self._manager.ui,
+                                    "Set name",
+                                    "Name:", QtWidgets.QLineEdit.Normal,
+                                    selected_object_name)
+
+        if(not nice_name or not status):
+            print("No name entered.")
+            return
+
+        button_size = [16, 16]
+
+        points = [
+            [self._current_clicked_pos.x() - button_size[0], self._current_clicked_pos.y() - button_size[1]],
+            [self._current_clicked_pos.x() - button_size[0], self._current_clicked_pos.y() + button_size[1]],
+            [self._current_clicked_pos.x() + button_size[0], self._current_clicked_pos.y() + button_size[1]],
+            [self._current_clicked_pos.x() + button_size[0], self._current_clicked_pos.y() - button_size[1]]
+        ]
+
+        self._rig.current_picker_group.add_interactive_element(
+            name=selected_object_name,
+            nice_name=nice_name,
+            color="#636e72",
+            points=points
+        )
+
+        self.load_layer()
 
 class RigPickerButton(QtWidgets.QGraphicsItem):
     Type = QtWidgets.QGraphicsItem.UserType + 1

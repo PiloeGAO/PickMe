@@ -7,7 +7,7 @@
 '''
 import os
 
-from pickme.core.svg import SVGDocument, SVGLayer, SVGPath
+from pickme.core.svg import SVGDocument, SVGLayer, SVGPath, SVGPoint
 
 class PickerCore:
     def __init__(self, name, description, interactive_elements=[], size=(0, 0), manager=None) -> None:
@@ -55,6 +55,40 @@ class PickerCore:
                 )
 
         return cls(name, description, interactive_elements, size=document_size, manager=manager)
+    
+    def save_picker(self):
+        """Save the picker to disk.
+        """
+        pass
+    
+    def add_interactive_element(self, name="", nice_name="", color="#FFFFFF", points=[]):
+        """Create a new interactive element.
+
+        Args:
+            name (str, optional): Name of the object to select. Defaults to "".
+            nice_name (str, optional): Name to display. Defaults to "".
+            points (list, optional): Position of points that containt the polygon. Defaults to [].
+        """
+        if(len(points) < 3): raise RuntimeError("Interactive element need valid points positions (3+)")
+
+        svg_points = []
+        for pos in points:
+            svg_points.append(
+                SVGPoint(
+                    pos[0],
+                    pos[1]
+                )
+            )
+        
+        self._interactive_elements.append(
+            PickerInteractiveElement(
+                name=name,
+                nice_name=nice_name,
+                points=svg_points,
+                color=color,
+                manager=self._manager
+            )
+        )
 
     @property
     def name(self):
