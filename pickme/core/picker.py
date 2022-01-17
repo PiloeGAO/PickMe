@@ -6,12 +6,15 @@
     :brief:     Picker class.
 '''
 import os
+from turtle import title
 
-from pickme.core.svg import SVGDocument, SVGLayer, SVGPath, SVGPoint
+from pickme.core.svg import SVG, SVGDocument, SVGLayer, SVGPath, SVGPoint
 
 class PickerCore:
-    def __init__(self, name, description, interactive_elements=[], size=(0, 0), manager=None) -> None:
+    def __init__(self, name, description, interactive_elements=[], size=(0, 0), manager=None, svg_document=None) -> None:
         self._manager = manager
+
+        self._svg_document = svg_document
         
         self._name = name
         self._description = description
@@ -54,7 +57,7 @@ class PickerCore:
                     )
                 )
 
-        return cls(name, description, interactive_elements, size=document_size, manager=manager)
+        return cls(name, description, interactive_elements, size=document_size, manager=manager, svg_document=svg_document)
     
     def save_picker(self):
         """Save the picker to disk.
@@ -89,6 +92,27 @@ class PickerCore:
                 manager=self._manager
             )
         )
+
+        svg_title = SVG(
+            id=f"{nice_name.replace(' ', '_')}_title",
+            value=nice_name
+        )
+
+        new_path = SVGPath(
+            "",
+            "",
+            id=name,
+            title=svg_title
+        )
+
+        new_path.svg_style.fill = color
+        new_path.svg_draw.points = svg_points
+
+        self._svg_document.add_child(
+            new_path
+        )
+
+        self._svg_document.save(force_write=True)
 
     @property
     def name(self):

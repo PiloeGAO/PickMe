@@ -243,6 +243,9 @@ class SVGStyle:
         stroke_opacity = 1.0
 
         for pair in raw_style.split(";"):
+            if(pair == ""):
+                continue
+            
             key, value = pair.split(":")
 
             if(key == "fill"):
