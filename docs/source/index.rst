@@ -14,7 +14,7 @@ Features:
 * Attribute editor
 
 .. image:: _static/images/pickme_index.png
-  :width: 327px
+  :width: 100%
   :alt: Maya PickMe Main Window (Maya)
 
 +-------------+-------------+
