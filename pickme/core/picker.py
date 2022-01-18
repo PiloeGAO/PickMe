@@ -5,6 +5,7 @@
     :version:   0.0.1
     :brief:     Picker class.
 '''
+from functools import partial
 import os
 from turtle import title
 
@@ -21,6 +22,30 @@ class PickerCore:
         self._interactive_elements = interactive_elements
         self._size = size
     
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def description(self):
+        return self._description
+    
+    @property
+    def interactive_elements(self):
+        return self._interactive_elements
+
+    @interactive_elements.setter
+    def interactive_elements(self, items):
+        self._interactive_elements = items
+    
+    @property
+    def width(self):
+        return self._size[0]
+    
+    @property
+    def height(self):
+        return self._size[1]
+    
     @classmethod
     def create(cls, path, manager=None):
         """Create the Picker Object from a path.
@@ -32,15 +57,23 @@ class PickerCore:
         Returns:
             class: Picker: Setuped class
         """
-        name = os.path.splitext(os.path.basename(path))[0]
-        description = "" # TODO: Use the description stored in the metadatas of the SVG.
-        interactive_elements = []
-
         print(f"Loading picker: {path}")
 
+        name = os.path.splitext(os.path.basename(path))[0]
+        description = "" # TODO: Use the description stored in the metadatas of the SVG.
         svg_document = SVGDocument.create(path)
         document_size = (float(svg_document.width), float(svg_document.height))
+
+        picker_core_class = cls(
+            name,
+            description,
+            [],
+            size=document_size,
+            manager=manager,
+            svg_document=svg_document
+        )
         
+        interactive_elements = []
         for child in svg_document.childs:
             if(type(child) == SVGLayer):
                 print("Layers not supported.")
@@ -53,16 +86,39 @@ class PickerCore:
                         nice_name=nice_name,
                         points=child.svg_draw.points,
                         color=child.svg_style.fill,
-                        manager=manager
+                        parent=picker_core_class
                     )
                 )
 
-        return cls(name, description, interactive_elements, size=document_size, manager=manager, svg_document=svg_document)
+        picker_core_class.interactive_elements = interactive_elements
+        return picker_core_class
     
-    def save_picker(self):
+    def save(self):
         """Save the picker to disk.
         """
-        pass
+        self._svg_document.childs = []
+
+        for interactive_element in self._interactive_elements:
+            svg_title = SVG(
+                id=f"{interactive_element.nice_name.replace(' ', '_')}_title",
+                value=interactive_element.nice_name
+            )
+
+            new_path = SVGPath(
+                "",
+                "",
+                id=interactive_element.name,
+                title=svg_title
+            )
+
+            new_path.svg_style.fill = interactive_element.color
+            new_path.svg_draw.points = interactive_element.points
+
+            self._svg_document.add_child(
+                new_path
+            )
+        
+        self._svg_document.save(force_write=True)
     
     def add_interactive_element(self, name="", nice_name="", color="#FFFFFF", points=[]):
         """Create a new interactive element.
@@ -89,54 +145,25 @@ class PickerCore:
                 nice_name=nice_name,
                 points=svg_points,
                 color=color,
-                manager=self._manager
+                parent=self
             )
         )
 
-        svg_title = SVG(
-            id=f"{nice_name.replace(' ', '_')}_title",
-            value=nice_name
-        )
-
-        new_path = SVGPath(
-            "",
-            "",
-            id=name,
-            title=svg_title
-        )
-
-        new_path.svg_style.fill = color
-        new_path.svg_draw.points = svg_points
-
-        self._svg_document.add_child(
-            new_path
-        )
-
-        self._svg_document.save(force_write=True)
-
-    @property
-    def name(self):
-        return self._name
+        self.save()
     
-    @property
-    def description(self):
-        return self._description
-    
-    @property
-    def interactive_elements(self):
-        return self._interactive_elements
-    
-    @property
-    def width(self):
-        return self._size[0]
-    
-    @property
-    def height(self):
-        return self._size[1]
+    def remove_interactive_element(self, interactive_element):
+        """Remove interactive element from the picker.
+
+        Args:
+            interactive_element (class: PickerInteractiveElement): The element to remove
+        """
+        self._interactive_elements = [elem for elem in self._interactive_elements if elem != interactive_element]
+        self.save()
 
 class PickerInteractiveElement:
-    def __init__(self, name="", nice_name="", points=[], color="", manager=None):
-        self._manager = manager
+    def __init__(self, name="", nice_name="", points=[], color="", parent=None):
+        self._parent = parent
+        self._manager = self._parent._manager
 
         self._name = name
         self._nice_name = nice_name
@@ -150,6 +177,10 @@ class PickerInteractiveElement:
     @property
     def nice_name(self):
         return self._nice_name
+    
+    @nice_name.setter
+    def nice_name(self, new_name):
+        self._nice_name = new_name
 
     @property
     def points(self):
@@ -158,6 +189,10 @@ class PickerInteractiveElement:
     @property
     def color(self):
         return self._color
+    
+    @color.setter
+    def color(self, new_color):
+        self._color = new_color
     
     def on_click(self):
         """Action to perform on button click.

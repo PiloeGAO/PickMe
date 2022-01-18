@@ -126,8 +126,6 @@ class SVGDocument(SVG):
         Args:
             force_write (bool, optional): Allow overwrite if file already exist. Defaults to False.
         """
-        print(self.__path)
-        print(self.childs)
         self.save_to_path(self.__path, force_write=force_write)
     
     def save_to_path(self, path, force_write=False):

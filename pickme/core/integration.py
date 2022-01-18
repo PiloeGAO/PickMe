@@ -64,7 +64,7 @@ class Integration(object):
         Args:
             objects (list): Object names
         """
-        print(objects)
+        print(f"Selecting {objects}")
     
     def show_hide_objects(self, objects):
         """Show/hide the list of objects
@@ -72,7 +72,7 @@ class Integration(object):
         Args:
             objects (list): Object names.
         """
-        print(objects)
+        print(f"Showing/Hiding {objects}")
     
     def reset_moves(self, objects):
         """Reset the translation, position and scale of selection.

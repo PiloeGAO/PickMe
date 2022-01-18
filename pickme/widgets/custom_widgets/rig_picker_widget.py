@@ -5,15 +5,20 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
+import os
+import json
 from functools import partial
 
 from PySide2 import QtWidgets, QtGui, QtCore
+
+from pickme.core.path import ROOT_DIR
 
 class RigPickerWidget(QtWidgets.QGraphicsScene):
     def __init__(self, x, y, w, h, parent=None):
         super(RigPickerWidget, self).__init__(x, y, w, h, parent)
         self._manager = None
         self._rig = None
+        self._current_picker_group = None
 
         self._current_clicked_pos = QtCore.QPointF(0, 0)
 
@@ -49,9 +54,48 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                 if(self._rig != None):
                     # Edit current picker element.
                     self._edit_menu.clear()
-                    # TODO: Allow user to change nice_name, color and delete the item.
+                    self._edit_menu.addAction(
+                        "Rename",
+                        partial(
+                            self.rename_picker_button,
+                            selected_element
+                        )
+                    )
+
+                    color_menu = QtWidgets.QMenu("Colors")
+
+                    color_config_file = open(os.path.join(ROOT_DIR, "ui", "selection_sets_colors.json"), "r")
+                    colors_data = json.load(color_config_file)
+                    color_config_file.close()
+
+                    for color_data in colors_data:
+                        pixmap = QtGui.QPixmap(16, 16)
+                        pixmap.fill(QtGui.QColor(color_data["color"]))
+                        icon = QtGui.QIcon(pixmap)
+
+                        color_menu.addAction(
+                            icon,
+                            color_data["name"],
+                            partial(
+                                self.change_picker_button_color,
+                                selected_element,
+                                color_data["color"])
+                        )
+
+                    self._edit_menu.addMenu(color_menu)
+
+                    self._edit_menu.addSeparator()
+
+                    self._edit_menu.addAction(
+                        "Delete",
+                        partial(
+                            self.delete_picker_button,
+                            selected_element
+                        )
+                    )
                     
                     # Picker Group Selector
+                    self._groups_menu.clear()
                     for picker_groups in self._rig.picker_groups:
                         self._groups_menu.addAction(
                             picker_groups.name.replace("_", " "),
@@ -75,6 +119,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
             return
         
         # Setup view.
+        self._current_picker_group = self._rig.current_picker_group
         width = self._rig.current_picker_group.width
         height = self._rig.current_picker_group.height
         self.setSceneRect(0, 0, width, height)
@@ -86,6 +131,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                 )
             )
     
+    # Create Picker Button.
     def create_button(self):
         """Add a button from viewport selection.
         """
@@ -126,6 +172,49 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
 
         self.load_layer()
 
+    # Edit Picker Button.
+    def rename_picker_button(self, element):
+        """Rename the selected element.
+
+        Args:
+            element (class: RigPickerButton): Selected element
+        """
+        nice_name, status = QtWidgets.QInputDialog().getText(self._manager.ui,
+                                    "Set name",
+                                    "New name:", QtWidgets.QLineEdit.Normal,
+                                    element.picker_element.nice_name)
+
+        if(not nice_name or not status):
+            print("No name entered.")
+            return
+        
+        element.picker_element.nice_name = str(nice_name)
+        element.update()
+
+        self._current_picker_group.save()
+    
+    def change_picker_button_color(self, element, new_color):
+        """Update the color of the button.
+
+        Args:
+            new_color (str): Hex Color.
+        """
+        element.picker_element.color = new_color
+        element.update()
+
+        self._current_picker_group.save()
+    
+    def delete_picker_button(self, element):
+        """Remove the selected element.
+
+        Args:
+            element (class: RigPickerButton): Selected element
+        """
+        self._current_picker_group.remove_interactive_element(element.picker_element)
+
+        self.removeItem(element)
+        self.update()
+
 class RigPickerButton(QtWidgets.QGraphicsItem):
     Type = QtWidgets.QGraphicsItem.UserType + 1
     
@@ -150,6 +239,10 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
         self.polygon = QtGui.QPolygonF(
             points
         )
+    
+    @property
+    def picker_element(self):
+        return self._picker_element
     
     def type(self):
        """ Enable the use of qgraphicsitem_cast with this item.

@@ -67,7 +67,7 @@ class SelectionSetButton(QtWidgets.QToolButton):
         self.setupUI()
     
     def setupUI(self):
-        """ Setup the displqy of the button (visual only).
+        """ Setup the display of the button (visual only).
         """
         if(self._set.color != ""):
             self.setStyleSheet("""
