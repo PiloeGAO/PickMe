@@ -118,7 +118,8 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                                 selected_element
                             )
                         )
-                    
+                    else:
+                        self._edit_menu.addAction("Nothing selected.")
                     # Picker Group Selector
                     self._groups_menu.clear()
                     for picker_groups in self._rig.picker_groups:
