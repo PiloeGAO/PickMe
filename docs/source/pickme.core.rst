@@ -20,6 +20,14 @@ pickme.core.integration module
    :undoc-members:
    :show-inheritance:
 
+pickme.core.logger module
+-------------------------
+
+.. automodule:: pickme.core.logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pickme.core.manager module
 --------------------------
 
