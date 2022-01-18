@@ -16,6 +16,9 @@ from pickme.core.path import ROOT_DIR, ICONS_DIR
 from pickme.widgets.auto_generated.main_widget import Ui_MainWidget
 from pickme.widgets.custom_widgets.rig_button import RigButton
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def __init__(self, integration="standalone", parent=None):
         super(MainWidget, self).__init__()
@@ -87,7 +90,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         """Create a new picker group.
         """
         if(self._manager.rig == None):
-            print("Please load a rig.")
+            logger.error("Please load a rig.")
             return
         
         name, ok = QtWidgets.QInputDialog().getText(self, "Picer Layer Name",
@@ -106,7 +109,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def reload_configurations(self, *args, **kwargs):
         """Reload rigs from disk.
         """
-        print("Reload rigs.")
+        logger.info("Reload rigs.")
         self.pickerWidget.stackedWidget.setCurrentIndex(0)
         self.headerWidget.clear_bar()
 

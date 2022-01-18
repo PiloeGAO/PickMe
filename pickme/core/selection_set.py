@@ -9,7 +9,6 @@ import os
 import uuid
 import json
 
-from pickme.core.path import LOCAL_CONFIG_DIR
 
 class SelectionSetManager():
     def __init__(self, path, rig, is_editable=True) -> None:

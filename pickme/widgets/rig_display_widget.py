@@ -18,6 +18,9 @@ from pickme.widgets.custom_widgets.collapsable_layout_widget import CollapsableL
 from pickme.widgets.custom_widgets.rig_picker_widget import RigPickerWidget
 from pickme.widgets.custom_widgets.selection_set_button import SelectionSetButton
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def __init__(self, parent=None):
         super(RigDisplayWidget, self).__init__()
@@ -90,7 +93,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         else:
             self.horizontalSplitter.setSizes([0, self.size().width()])
         
-        print(f"Loading {self._rig.name}")
+        logger.info(f"Loading \"{self._rig.name}\"")
         self.load_selection_sets()
 
     # Picker Area
@@ -195,12 +198,12 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
                                     "Selection")
 
         if(not name or not status):
-            print("No name entered.")
+            logger.error("No name entered.")
             return
         
         selection = self._manager.integration.get_selection()
         if(len(selection) == 0):
-            print("Warning: Nothing selected ! ")
+            logger.error("Nothing selected ! ")
             return
 
         rig_path = self._rig.path

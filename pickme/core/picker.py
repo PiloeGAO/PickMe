@@ -5,11 +5,12 @@
     :version:   0.0.1
     :brief:     Picker class.
 '''
-from functools import partial
 import os
-from turtle import title
 
 from pickme.core.svg import SVG, SVGDocument, SVGLayer, SVGPath, SVGPoint
+
+from pickme.core.logger import get_logger
+logger = get_logger()
 
 class PickerCore:
     def __init__(self, name, description, interactive_elements=[], size=(0, 0), manager=None, svg_document=None) -> None:
@@ -57,7 +58,7 @@ class PickerCore:
         Returns:
             class: Picker: Setuped class
         """
-        print(f"Loading picker: {path}")
+        logger.info(f"Loading picker: {path}")
 
         name = os.path.splitext(os.path.basename(path))[0]
         description = "" # TODO: Use the description stored in the metadatas of the SVG.
@@ -76,7 +77,7 @@ class PickerCore:
         interactive_elements = []
         for child in svg_document.childs:
             if(type(child) == SVGLayer):
-                print("Layers not supported.")
+                logger.warning("Layers not supported.")
             elif(type(child) == SVGPath):
                 nice_name = child.title.value if child.title != None else child.id
 

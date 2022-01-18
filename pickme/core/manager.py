@@ -10,10 +10,13 @@ import os
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.rig import Rig
 
+from pickme.core.logger import get_logger
+logger = get_logger(debug=os.environ.get("PICKME_DEBUG", False))
+
 class Manager():
     def __init__(self, main_widget, integration="standalone") -> None:
         if(not os.path.isdir(LOCAL_CONFIG_DIR)):
-            print("Building local config directory.")
+            logger.info("Building local config directory.")
             os.mkdir(LOCAL_CONFIG_DIR)
 
         self._main_widget = main_widget
@@ -25,7 +28,7 @@ class Manager():
             from pickme.core.integration import Integration
             self._integration = Integration()
         
-        print(f"Current integration: {self._integration.name}")
+        logger.info(f"Current integration: {self._integration.name}")
 
         self._current_rig = 0
         self._rigs = []

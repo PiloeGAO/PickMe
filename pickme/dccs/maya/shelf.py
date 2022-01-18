@@ -12,8 +12,6 @@ import maya
 
 from pickme.core.path import ICONS_DIR
 
-print(ICONS_DIR)
-
 def remove_shelf():
     """Clear the current PickMe shelf from the interface.
     """

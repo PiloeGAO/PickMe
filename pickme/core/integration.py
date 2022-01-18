@@ -7,6 +7,9 @@
 '''
 from datetime import datetime
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class Integration(object):
     def __init__(self, manager=None):
         self._name = "Standalone"
@@ -64,7 +67,7 @@ class Integration(object):
         Args:
             objects (list): Object names
         """
-        print(f"Selecting {objects}")
+        logger.info(f"Selecting {objects}")
     
     def show_hide_objects(self, objects):
         """Show/hide the list of objects
@@ -72,7 +75,7 @@ class Integration(object):
         Args:
             objects (list): Object names.
         """
-        print(f"Showing/Hiding {objects}")
+        logger.info(f"Showing/Hiding {objects}")
     
     def reset_moves(self, objects):
         """Reset the translation, position and scale of selection.
@@ -80,7 +83,7 @@ class Integration(object):
         Args:
             objects (list): Object names
         """
-        print(f"Reset {objects}")
+        logger.info(f"Reset {objects}")
     
     def update_attribute(self, attribute):
         """Update attribute for object.
@@ -88,4 +91,4 @@ class Integration(object):
         Args:
             attribute (class: Attribute): Attribute
         """
-        print(f"Updating {attribute.object} > {attribute.name} to {attribute.value}")
+        logger.info(f"Updating {attribute.object} > {attribute.name} to {attribute.value}")

@@ -11,6 +11,9 @@ from maya.api import OpenMaya
 from pickme.core.attribute import AttributeGroup, AttributeTypes, Attribute
 from pickme.core.integration import Integration
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class MayaIntegration(Integration):
     def __init__(self, manager=None) -> None:
         super(MayaIntegration, self).__init__()
@@ -111,7 +114,7 @@ class MayaIntegration(Integration):
             try:
                 cmds.setAttr(f"{self._manager.rig.name}:{obj}.visibility", new_visibility)
             except Exception as e:
-                print(f"Failed to set visibility of {obj}")
+                logger.error(f"Failed to set visibility of {obj}")
     
     def reset_moves(self, objects):
         """Reset the translation, position and scale of selection.
@@ -277,4 +280,4 @@ class MayaIntegration(Integration):
         try:
             cmds.setAttr(f"{attribute.object}.{attribute.name}", attribute.value)
         except Exception as e:
-            print(f"Failed to set {attribute.object}.{attribute.name} to {attribute.value}")
+            logger.error(f"Failed to set {attribute.object}.{attribute.name} to {attribute.value}")

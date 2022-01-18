@@ -13,6 +13,9 @@ from PySide2 import QtWidgets, QtGui, QtCore
 
 from pickme.core.path import ROOT_DIR
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class RigPickerWidget(QtWidgets.QGraphicsScene):
     def __init__(self, x, y, w, h, parent=None):
         super(RigPickerWidget, self).__init__(x, y, w, h, parent)
@@ -120,6 +123,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                         )
                     else:
                         self._edit_menu.addAction("Nothing selected.")
+                    
                     # Picker Group Selector
                     self._groups_menu.clear()
                     for picker_groups in self._rig.picker_groups:
@@ -164,10 +168,10 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         selection = self._manager.integration.get_selection()
 
         if(len(selection) == 0):
-            print("Please select an object.")
+            logger.error("Please select an object.")
             return
         elif(len(selection) > 1):
-            print("Only the first selected object will have a button.")
+            logger.warning("Only the first selected object will have a button.")
         
         selected_object_name = selection[0]
 
@@ -177,7 +181,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                                     selected_object_name)
 
         if(not nice_name or not status):
-            print("No name entered.")
+            logger.error("No name entered.")
             return
 
         button_size = [16, 16]
@@ -211,7 +215,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                                     element.picker_element.nice_name)
 
         if(not nice_name or not status):
-            print("No name entered.")
+            logger.error("No name entered.")
             return
         
         element.picker_element.nice_name = str(nice_name)

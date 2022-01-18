@@ -8,6 +8,9 @@
 import os
 import xml.etree.ElementTree as ET
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class SVG(object):
     def __init__(self, id="", value="", title=None, description=None, *args, **kwargs) -> None:
         self.id = id
@@ -50,10 +53,10 @@ class SVGDocument(SVG):
         document = cls(path=path)
 
         if(os.path.isfile(path)):
-            print("Loading document.")
+            logger.debug(f"Loading document {path}")
             document.load_from_path()
         else:
-            print(f"New Document.")
+            logger.debug(f"New Document {path}")
             document.id = os.path.splitext(os.path.basename(path))[0]
             document.save()
         
@@ -116,7 +119,7 @@ class SVGDocument(SVG):
                         value=elem.text
                     )
                 else:
-                    print(f"SVGParser: Skipping {elem.tag} (not supported).")
+                    logger.debug(f"SVGParser: Skipping \"{elem.tag}\" (not supported).")
 
         recursive_import(root, self)
     
@@ -181,7 +184,7 @@ class SVGDocument(SVG):
                     
                     elem.append(path_elem)
                 else:
-                    print("SVGParser: Unknown child, skipping.")
+                    logger.debug("SVGParser: Unknown child, skipping.")
                     continue
         
         recursive_creation(self, root)
@@ -253,7 +256,7 @@ class SVGStyle:
             elif(key == "stroke-opacity"):
                 stroke_opacity = float(value.replace("px", ""))
             else:
-                print(f"SVGParser: Unknown key {key}.")
+                logger.debug(f"SVGParser: Unknown key \"{key}\".")
 
         return cls(
             raw_style,
@@ -307,13 +310,3 @@ class SVGPoint:
     def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
-
-if(__name__ == "__main__"):
-    # TODO: Remove this when the implementation is finished.
-    # ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    # GLOBAL_CONFIG_DIR = os.environ.get("pickme_configs", os.path.join(ROOT_DIR, "configs"))
-    
-    # svg_doc = SVGDocument(path=os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker.svg"))
-    # print(svg_doc.__dict__)
-    # svg_doc.save_to_path(os.path.join(GLOBAL_CONFIG_DIR, "demo", "layers", "picker_export.svg"), force_write=True)
-    pass

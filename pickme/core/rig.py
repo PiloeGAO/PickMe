@@ -12,6 +12,9 @@ from pickme.core.picker import PickerCore
 from pickme.core.selection_set import SelectionSetManager
 from pickme.core.svg import SVGDocument
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class Rig():
     def __init__(self, manager=None, id=-1, name="Default", path=None) -> None:
         self._manager = manager
@@ -124,7 +127,7 @@ class Rig():
 
         picker_layers_directory = os.path.join(self._path, "layers")
         if(not os.path.isdir(picker_layers_directory)):
-            print("No pickers layers directory, creating one.")
+            logger.info("No pickers layers directory, creating one.")
             os.mkdir(picker_layers_directory)
             return
 

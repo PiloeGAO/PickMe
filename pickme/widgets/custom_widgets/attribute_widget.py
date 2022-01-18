@@ -11,6 +11,9 @@ from pickme.core.attribute import AttributeTypes
 
 from pickme.widgets.custom_widgets.float_slider_widget import FloatSliderWidget
 
+from pickme.core.logger import get_logger
+logger = get_logger()
+
 class AttributeWidget(QtWidgets.QWidget):
     def __init__(self, attribute=None, update_function=None):
         super(AttributeWidget, self).__init__(parent=None)
@@ -106,4 +109,4 @@ class AttributeWidget(QtWidgets.QWidget):
             self.value_widget.setCurrentIndex(new_value)
 
         else:
-            print("Nothing to update.")
+            logger.warning("Nothing to update.")
