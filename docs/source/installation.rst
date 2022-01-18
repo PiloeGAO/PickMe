@@ -17,7 +17,7 @@ Maya
 3. A new shelf called "PickMe" is automaticly added at launch.
 
 .. image:: _static/images/maya_shelf.png
-  :width: 214px
+  :width: 140px
   :alt: Maya PickMe shelf 
   :align: center
 
