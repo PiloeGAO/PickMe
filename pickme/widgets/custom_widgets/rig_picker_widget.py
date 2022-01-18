@@ -71,52 +71,53 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         """
         if event.type() == QtCore.QEvent.GraphicsSceneMousePress:
             self._current_clicked_pos = event.scenePos()
-            
-            selected_element = self.items(event.scenePos())[0]
 
             if event.button() == QtCore.Qt.RightButton:
                 if(self._rig != None):
                     # Edit current picker element.
                     self._edit_menu.clear()
-                    self._edit_menu.addAction(
-                        "Rename",
-                        partial(
-                            self.rename_picker_button,
-                            selected_element
-                        )
-                    )
+                    if(len(self.items(event.scenePos())) > 0):
+                        selected_element = self.items(event.scenePos())[0]
 
-                    color_menu = QtWidgets.QMenu("Colors")
-
-                    color_config_file = open(os.path.join(ROOT_DIR, "ui", "selection_sets_colors.json"), "r")
-                    colors_data = json.load(color_config_file)
-                    color_config_file.close()
-
-                    for color_data in colors_data:
-                        pixmap = QtGui.QPixmap(16, 16)
-                        pixmap.fill(QtGui.QColor(color_data["color"]))
-                        icon = QtGui.QIcon(pixmap)
-
-                        color_menu.addAction(
-                            icon,
-                            color_data["name"],
+                        self._edit_menu.addAction(
+                            "Rename",
                             partial(
-                                self.change_picker_button_color,
-                                selected_element,
-                                color_data["color"])
+                                self.rename_picker_button,
+                                selected_element
+                            )
                         )
 
-                    self._edit_menu.addMenu(color_menu)
+                        color_menu = QtWidgets.QMenu("Colors")
 
-                    self._edit_menu.addSeparator()
+                        color_config_file = open(os.path.join(ROOT_DIR, "ui", "selection_sets_colors.json"), "r")
+                        colors_data = json.load(color_config_file)
+                        color_config_file.close()
 
-                    self._edit_menu.addAction(
-                        "Delete",
-                        partial(
-                            self.delete_picker_button,
-                            selected_element
+                        for color_data in colors_data:
+                            pixmap = QtGui.QPixmap(16, 16)
+                            pixmap.fill(QtGui.QColor(color_data["color"]))
+                            icon = QtGui.QIcon(pixmap)
+
+                            color_menu.addAction(
+                                icon,
+                                color_data["name"],
+                                partial(
+                                    self.change_picker_button_color,
+                                    selected_element,
+                                    color_data["color"])
+                            )
+
+                        self._edit_menu.addMenu(color_menu)
+
+                        self._edit_menu.addSeparator()
+
+                        self._edit_menu.addAction(
+                            "Delete",
+                            partial(
+                                self.delete_picker_button,
+                                selected_element
+                            )
                         )
-                    )
                     
                     # Picker Group Selector
                     self._groups_menu.clear()
