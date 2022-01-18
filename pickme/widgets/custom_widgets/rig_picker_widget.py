@@ -39,6 +39,30 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         self._manager = manager
         self._rig = manager.rig
     
+    def drawBackground(self, painter, rect):
+        if(self._rig == None):
+            return
+
+        painter.setRenderHint(painter.Antialiasing)
+        painter.setPen(
+            QtGui.QPen(
+                QtCore.Qt.white,
+                0.5
+            )
+        )
+        
+        painter.drawRect(
+            QtCore.QRectF(
+                QtCore.QPointF(0, 0),
+                QtCore.QSizeF(
+                    self._rig.current_picker_group.width,
+                    self._rig.current_picker_group.height
+                )
+            )
+        )
+        
+        super().drawBackground(painter, rect)
+    
     def mousePressEvent(self, event):
         """Implement Middle Click and Right Click.
 
