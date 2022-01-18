@@ -38,7 +38,7 @@ def create_shelf():
         label='Open PickMe',
         command='from pickme.dccs.maya.shelf_commands import open_ui; open_ui()',
         sourceType='python', annotation='',
-        image=os.path.join(ICONS_DIR, "figurine.png"),
+        image=os.path.join(ICONS_DIR, "pointer.png"),
         style='iconOnly'
     )
 
