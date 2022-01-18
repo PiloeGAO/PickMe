@@ -14,7 +14,7 @@ PickMe is a tool created to help animators by giving them a set of selection too
 
 Features:
 ---------
-* Picker (*still in development*)
+* Picker
 * Selection set manager (Global to the production and Local to user)
 * Attribute editor
 
