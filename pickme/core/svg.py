@@ -58,7 +58,7 @@ class SVGDocument(SVG):
         else:
             logger.debug(f"New Document {path}")
             document.id = os.path.splitext(os.path.basename(path))[0]
-            document.save()
+            # document.save()
         
         return document
 

@@ -142,7 +142,7 @@ class Rig():
                 )
             )
     
-    def create_picker_group(self, name):
+    def create_picker_group(self, name, *args, **kwargs):
         """Create a new picker group.
 
         Args:
@@ -158,6 +158,9 @@ class Rig():
             raise RuntimeError("SVG Layer file already exist.")
 
         new_picker = SVGDocument.create(svg_path)
+        new_picker.width = kwargs.get("width", 512)
+        new_picker.height = kwargs.get("height", 512)
+        new_picker.save(force_write=True)
 
         self.load_picker_groups()
         self._current_picker_group = len(self._picker_groups)-1

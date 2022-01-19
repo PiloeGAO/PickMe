@@ -183,7 +183,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         if(not ok and name == ""):
             return
         
-        self._manager.rig.create_picker_group(name)
+        self._manager.rig.create_picker_group(name, width=2048, height=2048)
 
         self.load_group()
     
