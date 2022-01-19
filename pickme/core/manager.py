@@ -8,6 +8,7 @@
 import os
 import sys
 
+from pickme import __version__
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.rig import Rig
 
@@ -16,6 +17,7 @@ logger = get_logger(debug=os.environ.get("PICKME_DEBUG", False))
 
 class Manager():
     def __init__(self, main_widget, integration="standalone") -> None:
+        logger.info("Manager start.")
         if(not os.path.isdir(LOCAL_CONFIG_DIR)):
             logger.info("Building local config directory.")
             os.mkdir(LOCAL_CONFIG_DIR)
@@ -33,12 +35,14 @@ class Manager():
 
             self.hook_exceptions()
         
+        self.check_for_updates()
         logger.info(f"Current integration: {self._integration.name}")
 
         self._current_rig = 0
         self._rigs = []
         
         self.load_configurations()
+        logger.info("Manager loaded successfully.")
 
     @property
     def ui(self):
@@ -71,6 +75,7 @@ class Manager():
         
         return self._rigs[self._current_rig]
     
+    # Manager tuils functions.
     def hook_exceptions(self):
         """Define a custom exception handling for the application.
         """
@@ -94,6 +99,12 @@ class Manager():
 
         self.ui.show_error(type, value, traceback)
     
+    def check_for_updates(self):
+        """Check for updates, and display a modal if new version is available.
+        """
+        logger.info(f"Current version {__version__}")
+    
+    # Core PickMe functions.
     def add_rig(self, new_rig):
         """Add a rig to manager
 

@@ -1,6 +1,6 @@
 """
     :package:   PickMe
-    :file:      __init__.py
+    :file:      main.py
     :brief:     File that open the UI in standalone mode.
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
