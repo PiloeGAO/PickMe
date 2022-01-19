@@ -134,12 +134,19 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                                 picker_groups
                             )
                         )
+                        
+                    self._groups_menu.addSeparator()
+                    self._groups_menu.addAction(
+                        "Add new group",
+                        self.create_picker_group
+                    )
                 
                 self._menu.exec_(QtGui.QCursor.pos())
         
         super(RigPickerWidget, self).mousePressEvent(event)
 
-    def load_layer(self):
+    # Picker Groups Management.
+    def load_group(self):
         """Load the current group in the view.
         """
         self._rig = self._manager.rig
@@ -160,6 +167,25 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
                     picker_element=elem
                 )
             )
+    
+    def create_picker_group(self):
+        """Create a new picker group.
+        """
+        if(self._manager.rig == None):
+            logger.error("Please load a rig.")
+            return
+        
+        name, ok = QtWidgets.QInputDialog().getText(self._manager.ui, "Picker Layer Name",
+            "Name:", QtWidgets.QLineEdit.Normal,
+            "Picker Layer"
+        )
+
+        if(not ok and name == ""):
+            return
+        
+        self._manager.rig.create_picker_group(name)
+
+        self.load_group()
     
     # Create Picker Button.
     def create_button(self):

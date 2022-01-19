@@ -47,10 +47,6 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         create_rig_button.triggered.connect(self.menu_create_rig)
         edit_menu.addAction(create_rig_button)
 
-        create_picker_button = QtWidgets.QAction("Create Picker Group", self)
-        create_picker_button.triggered.connect(self.menu_create_picker_group)
-        edit_menu.addAction(create_picker_button)
-
         self.mainLayout.insertWidget(0, self.menubar)
 
         # Set header functions.
@@ -85,25 +81,6 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self._manager.add_rig(new_rig)
         self.reload_configurations()
-    
-    def menu_create_picker_group(self):
-        """Create a new picker group.
-        """
-        if(self._manager.rig == None):
-            logger.error("Please load a rig.")
-            return
-        
-        name, ok = QtWidgets.QInputDialog().getText(self, "Picer Layer Name",
-            "Name:", QtWidgets.QLineEdit.Normal,
-            "Picker Layer"
-        )
-
-        if(not ok and name == ""):
-            return
-        
-        self._manager.rig.create_picker_group(name)
-
-        self.refresh_picker_area()
 
     # Loaders.
     def reload_configurations(self, *args, **kwargs):

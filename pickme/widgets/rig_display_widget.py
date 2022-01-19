@@ -100,7 +100,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
     def load_picker(self):
         """Load a new picker in the picker area.
         """
-        self._rig_picker_scene.load_layer()
+        self._rig_picker_scene.load_group()
 
         self.update_picker_graphics_view_size()
 
