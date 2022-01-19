@@ -103,3 +103,41 @@ class Manager():
         """
         self._rigs = []
         self.load_configurations()
+
+######################
+# Manager Management #
+######################
+CURRENT_MANAGER = None
+
+def set_current_manager(manager):
+    """Set the current manager.
+    Args:
+        manager (class:`Manager`): Manager instance.
+    """
+    global CURRENT_MANAGER
+    CURRENT_MANAGER = manager
+
+def current_manager():
+    """Get current manager.
+    Returns:
+        class:`Manager`: Manager instance.
+    """
+    global CURRENT_MANAGER
+    return CURRENT_MANAGER
+
+def start_manager(*args, **kwargs):
+    """Start a manager.
+
+    Returns:
+        class:`Manager`: Manager initialized.
+    """
+    if(current_manager()):
+        logger.info("Manager already started, using it.")
+        return current_manager()
+    
+    integration = kwargs["integration"] if "integration" in kwargs else "standalone"
+
+    manager = Manager(kwargs.get("main_widget"), integration)
+    set_current_manager(manager)
+
+    return manager

@@ -9,7 +9,7 @@ import os
 
 from PySide2 import QtWidgets, QtGui
 
-from pickme.core.manager import Manager
+from pickme.core.manager import start_manager
 from pickme.core.rig import Rig
 from pickme.core.path import ROOT_DIR, ICONS_DIR
 
@@ -23,7 +23,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
     def __init__(self, integration="standalone", parent=None):
         super(MainWidget, self).__init__()
 
-        self._manager = Manager(self, integration=integration)
+        self._manager = start_manager(main_widget=self, integration=integration)
 
         with open(os.path.join(ROOT_DIR, "ui", "pickme_theme.qss"),"r") as qss:
             self.setStyleSheet(qss.read())
