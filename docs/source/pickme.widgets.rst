@@ -12,6 +12,14 @@ Subpackages
 Submodules
 ----------
 
+pickme.widgets.error\_dialog module
+-----------------------------------
+
+.. automodule:: pickme.widgets.error_dialog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pickme.widgets.main\_widget module
 ----------------------------------
 

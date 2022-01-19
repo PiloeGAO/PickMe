@@ -12,6 +12,14 @@ pickme.core.attribute module
    :undoc-members:
    :show-inheritance:
 
+pickme.core.exceptions module
+-----------------------------
+
+.. automodule:: pickme.core.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pickme.core.integration module
 ------------------------------
 
