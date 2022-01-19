@@ -258,7 +258,7 @@ class SVGStyle:
             elif(key == "stroke-opacity"):
                 stroke_opacity = float(value.replace("px", ""))
             else:
-                logger.debug(f"SVGParser: Unknown key \"{key}\".")
+                SVGError(f"Unknown key \"{key}\".")
 
         return cls(
             raw_style,

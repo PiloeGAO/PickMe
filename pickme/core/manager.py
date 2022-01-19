@@ -6,7 +6,9 @@
     :brief:     PickMe manager.
 '''
 import os
+import sys
 
+from pickme.core.exceptions import CoreError, SVGError
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.rig import Rig
 
@@ -24,9 +26,13 @@ class Manager():
         if(integration.lower() == "maya"):
             from pickme.dccs.maya.integration import MayaIntegration
             self._integration = MayaIntegration(manager = self)
+
+            self._integration.hook_exceptions()
         else:
             from pickme.core.integration import Integration
             self._integration = Integration()
+
+            self.hook_exceptions()
         
         logger.info(f"Current integration: {self._integration.name}")
 
@@ -65,6 +71,29 @@ class Manager():
             return None
         
         return self._rigs[self._current_rig]
+    
+    def hook_exceptions(self):
+        """Define a custom exception handling for the application.
+        """
+        old_hook = sys.excepthook
+
+        def new_hook(type, value, traceback):
+            self.error_exec_function(type, value, traceback)
+            old_hook(type, value, traceback)
+        
+        sys.excepthook = new_hook
+    
+    def error_exec_function(self, type, value, traceback):
+        """Function to run on error, to display the error message to user.
+
+        Args:
+            type (class): Exception class
+            value (str): Value of the exception
+            traceback (class: traceback): position of the error
+        """
+        logger.error(f"{type.__name__} : {value}")
+
+        self.ui.show_error(type, value, traceback)
     
     def add_rig(self, new_rig):
         """Add a rig to manager

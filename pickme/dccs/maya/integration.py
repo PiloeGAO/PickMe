@@ -5,7 +5,7 @@
     :version:   0.0.1
     :brief:     PickMe Maya integration class.
 '''
-from maya import cmds
+from maya import cmds, utils
 from maya.api import OpenMaya
 
 from pickme.core.attribute import AttributeGroup, AttributeTypes, Attribute
@@ -28,6 +28,20 @@ class MayaIntegration(Integration):
         OpenMaya.MEventMessage.addEventCallback("SelectionChanged", self.get_attributes_for_selection)
         OpenMaya.MEventMessage.addEventCallback("timeChanged", self.refresh_attributes)
     
+    def hook_exceptions(self):
+        """Define a custom exception handling for the application.
+        Source: https://around-the-corner.typepad.com/adn/2013/03/my-entry.html
+        """
+        old_hook = utils.formatGuiException
+
+        def new_hook(type, value, traceback, detail):
+            self._manager.error_exec_function(type, value, traceback)
+            old_hook(type, value, traceback, detail)
+
+            return utils._formatGuiException(type, value, traceback, detail)
+
+        utils.formatGuiException = new_hook
+
     def is_rig(self, name):
         """Check if the rig is loaded in the scene.
 

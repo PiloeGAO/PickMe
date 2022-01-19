@@ -15,6 +15,7 @@ from pickme.core.path import ROOT_DIR, ICONS_DIR
 
 from pickme.widgets.auto_generated.main_widget import Ui_MainWidget
 from pickme.widgets.custom_widgets.rig_button import RigButton
+from pickme.widgets.error_dialog import ErrorDialog
 
 from pickme.core.logger import get_logger
 logger = get_logger()
@@ -60,6 +61,17 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self.load_rigs()
     
+    def show_error(self, type, value, traceback):
+        """Open the error dialog and display information to report it to user.
+
+        Args:
+            type (class): Exception class
+            value (str): Value of the exception
+            traceback (class: traceback): position of the error
+        """
+        error_dialog = ErrorDialog(type, value, traceback)
+        error_dialog.exec_()
+
     # Menu Bar Functions
     def menu_create_rig(self):
         new_rig_name = self._manager.integration.get_rig_selected()
