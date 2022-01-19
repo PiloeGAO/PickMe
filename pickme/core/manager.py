@@ -8,7 +8,6 @@
 import os
 import sys
 
-from pickme.core.exceptions import CoreError, SVGError
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.rig import Rig
 

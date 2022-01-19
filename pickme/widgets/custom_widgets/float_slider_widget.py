@@ -5,8 +5,6 @@
     :author:    PiloeGAO (Leo DEPOIX)
     :version:   0.0.1
 """
-from functools import partial
-
 from PySide2 import QtWidgets, QtCore
 
 class FloatSliderWidget(QtWidgets.QWidget):

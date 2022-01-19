@@ -12,7 +12,6 @@ from functools import partial
 from PySide2 import QtWidgets, QtGui, QtCore
 
 from pickme.core.path import ROOT_DIR, ICONS_DIR
-from pickme.core.selection_set import SelectionSet
 
 class SelectionSetButton(QtWidgets.QToolButton):
     def __init__(self, selection_set, parent_widget, parent=None) -> None:
