@@ -8,6 +8,8 @@
 import os
 import xml.etree.ElementTree as ET
 
+from pickme.core.exceptions import CoreError, SVGError
+
 from pickme.core.logger import get_logger
 logger = get_logger()
 
@@ -119,7 +121,7 @@ class SVGDocument(SVG):
                         value=elem.text
                     )
                 else:
-                    logger.debug(f"SVGParser: Skipping \"{elem.tag}\" (not supported).")
+                    SVGError(f"\"{elem.tag}\" not supported.")
 
         recursive_import(root, self)
     
@@ -139,12 +141,12 @@ class SVGDocument(SVG):
             force_write (bool, optional): Allow overwrite if file already exist. Defaults to False.
 
         Raises:
-            RuntimeError: File cannot be created
+            CoreError: File cannot be created
         """
         if(os.path.isfile(path) and force_write):
             os.remove(path)
         elif(os.path.isfile(path) and not force_write):
-            raise RuntimeError("File cannot be created.")
+            raise CoreError("File cannot be created.")
         
         root = ET.Element("svg")
         root.attrib["xmlns"] = "http://www.w3.org/2000/svg"
@@ -184,7 +186,7 @@ class SVGDocument(SVG):
                     
                     elem.append(path_elem)
                 else:
-                    logger.debug("SVGParser: Unknown child, skipping.")
+                    SVGError("Skipping unknown child.")
                     continue
         
         recursive_creation(self, root)

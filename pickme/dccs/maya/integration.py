@@ -9,6 +9,7 @@ from maya import cmds
 from maya.api import OpenMaya
 
 from pickme.core.attribute import AttributeGroup, AttributeTypes, Attribute
+from pickme.core.exceptions import CoreError
 from pickme.core.integration import Integration
 
 from pickme.core.logger import get_logger
@@ -34,13 +35,13 @@ class MayaIntegration(Integration):
             name (str): Name of the object
 
         Raises:
-            RuntimeError: Only strings can be used
+            CoreError: Only strings can be used
 
         Returns:
             bool: Is rig in the scene
         """
         if(type(name) != str):
-            raise RuntimeError("Only strings can be used in the function.")
+            raise CoreError("Only strings can be used in the function.")
         
         loaded_references = cmds.ls(references=True)
 

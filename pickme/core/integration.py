@@ -7,6 +7,8 @@
 '''
 from datetime import datetime
 
+from pickme.core.exceptions import CoreError
+
 from pickme.core.logger import get_logger
 logger = get_logger()
 
@@ -26,13 +28,13 @@ class Integration(object):
             name (str): Name of the object
 
         Raises:
-            RuntimeError: Only strings can be used
+            CoreError: Only strings can be used
 
         Returns:
             bool: Is rig in the scene
         """
         if(type(name) != str):
-            raise RuntimeError("Only strings can be used in the function.")
+            raise CoreError("Only strings can be used in the function.")
         
         return True
     

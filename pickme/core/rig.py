@@ -7,6 +7,7 @@
 '''
 import os
 
+from pickme.core.exceptions import CoreError
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.picker import PickerCore
 from pickme.core.selection_set import SelectionSetManager
@@ -89,7 +90,7 @@ class Rig():
         if(len(self._picker_groups) > 0):
             return self._picker_groups[self._current_picker_group]
         
-        raise RuntimeError(f"No picker group loaded in {self._name}.")
+        raise CoreError(f"No picker group loaded in {self._name}.")
     
     @current_picker_group.setter
     def current_picker_group(self, picker_group):
@@ -98,7 +99,7 @@ class Rig():
         if(group_index >= 0):
             self._current_picker_group = group_index
         else:
-            raise RuntimeError(f"No picker group {picker_group.name} in {self.name}.")
+            raise CoreError(f"No picker group {picker_group.name} in {self.name}.")
     
     @property
     def selection_sets(self):
@@ -149,13 +150,13 @@ class Rig():
             name (str): Name fo the group
 
         Raises:
-            RuntimeError: File with same name already exist
+            CoreError: File with same name already exist
         """
         name = name.replace(" ", "_")
         svg_path = os.path.join(self._path, "layers", f"{name}.svg")
         
         if(os.path.isfile(svg_path)):
-            raise RuntimeError("SVG Layer file already exist.")
+            raise CoreError("SVG Layer file already exist.")
 
         new_picker = SVGDocument.create(svg_path)
         new_picker.width = kwargs.get("width", 512)

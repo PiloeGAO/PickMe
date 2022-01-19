@@ -7,6 +7,7 @@
 '''
 import os
 
+from pickme.core.exceptions import CoreError
 from pickme.core.svg import SVG, SVGDocument, SVGLayer, SVGPath, SVGPoint
 
 from pickme.core.logger import get_logger
@@ -129,7 +130,8 @@ class PickerCore:
             nice_name (str, optional): Name to display. Defaults to "".
             points (list, optional): Position of points that containt the polygon. Defaults to [].
         """
-        if(len(points) < 3): raise RuntimeError("Interactive element need valid points positions (3+)")
+        if(len(points) < 3):
+            raise CoreError("Interactive element need valid points positions (3+)")
 
         svg_points = []
         for pos in points:

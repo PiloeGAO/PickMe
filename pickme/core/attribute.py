@@ -6,6 +6,8 @@
     :brief:     Attribute class.
 '''
 
+from pickme.core.exceptions import CoreError
+
 class AttributeTypes():
     none = -1
     group = 0
@@ -104,18 +106,18 @@ class Attribute(BaseAttribute):
             value (int, float, bool, str): The value to set
 
         Raises:
-            ValueError: If the AttributeType is a number, the value must be a number.
-            ValueError: If the AttributeType is a boolean, the value must be a boolean.
-            ValueError: If the AttributeType is a string, the value must be a string.
+            CoreError: If the AttributeType is a number, the value must be a number.
+            CoreError: If the AttributeType is a boolean, the value must be a boolean.
+            CoreError: If the AttributeType is a string, the value must be a string.
         """
         if(self._attribute_type == AttributeTypes.number and not type(value) in (int, float)):
-            raise ValueError(f"The value [{value}] must be a number.")
+            raise CoreError(f"The value [{value}] must be a number.")
         elif(self._attribute_type == AttributeTypes.boolean and not type(value) in (bool, int)):
-            raise ValueError(f"The value [{value}] must be a boolean.")
+            raise CoreError(f"The value [{value}] must be a boolean.")
         elif(self._attribute_type == AttributeTypes.string and not type(value) == str):
-            raise ValueError(f"The value [{value}] must be a string.")
+            raise CoreError(f"The value [{value}] must be a string.")
         elif(self._attribute_type == AttributeTypes.enum and not type(value) == int):
-            raise ValueError(f"The value [{value}] must be a list of strings.")
+            raise CoreError(f"The value [{value}] must be a list of strings.")
         
         self._value = value
     
