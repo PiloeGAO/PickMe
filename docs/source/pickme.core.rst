@@ -84,6 +84,14 @@ pickme.core.svg module
    :undoc-members:
    :show-inheritance:
 
+pickme.core.update\_system module
+---------------------------------
+
+.. automodule:: pickme.core.update_system
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

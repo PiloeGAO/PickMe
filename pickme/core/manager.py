@@ -11,9 +11,10 @@ import sys
 from pickme import __version__
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.rig import Rig
+from pickme.core.update_system import UpdateVersion, get_update_versions
 
 from pickme.core.logger import get_logger
-logger = get_logger(debug=os.environ.get("PICKME_DEBUG", False))
+logger = get_logger(debug=bool(os.environ.get("PICKME_DEBUG", "False")))
 
 class Manager():
     def __init__(self, main_widget, integration="standalone") -> None:
@@ -103,6 +104,20 @@ class Manager():
         """Check for updates, and display a modal if new version is available.
         """
         logger.info(f"Current version {__version__}")
+
+        if(bool(os.environ.get("PICKME_VERSION_CHECK", "True")) == False):
+            logger.warning("Update check de-activated, skipping version check.")
+            return
+
+        online_versions = get_update_versions("https://api.github.com/repos/PiloeGAO/PickMe/releases")
+        if(len(online_versions) == 0): return
+        
+        current_version = UpdateVersion(name="Current Version", description="", number=__version__)
+
+        if(online_versions[-1].version_id > current_version.version_id):
+            logger.info(f"New update is available : {online_versions[-1].version}")
+
+            self._main_widget.open_update_dialog(online_versions[-1])
     
     # Core PickMe functions.
     def add_rig(self, new_rig):

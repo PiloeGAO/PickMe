@@ -16,6 +16,7 @@ from pickme.core.path import ROOT_DIR, ICONS_DIR
 from pickme.widgets.auto_generated.main_widget import Ui_MainWidget
 from pickme.widgets.custom_widgets.rig_button import RigButton
 from pickme.widgets.error_dialog import ErrorDialog
+from pickme.widgets.update_dialog import UpdateDialog
 
 from pickme.core.logger import get_logger
 logger = get_logger()
@@ -71,6 +72,15 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         """
         error_dialog = ErrorDialog(type, value, traceback)
         error_dialog.exec_()
+    
+    def open_update_dialog(self, new_version):
+        """Open the update dialog and display new version informtations to user.
+
+        Args:
+            new_version (:obj:`pickme.core.update_system.UpdateVersion`): New Version
+        """
+        update_dialog = UpdateDialog(new_version)
+        update_dialog.exec_()
 
     # Menu Bar Functions
     def menu_create_rig(self):

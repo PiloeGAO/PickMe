@@ -44,6 +44,14 @@ pickme.widgets.standalone\_window module
    :undoc-members:
    :show-inheritance:
 
+pickme.widgets.update\_dialog module
+------------------------------------
+
+.. automodule:: pickme.widgets.update_dialog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
