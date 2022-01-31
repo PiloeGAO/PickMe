@@ -51,7 +51,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Resize the sub-widgets.
 
         Args:
-            event (QResizeEvent): Event
+            event (:obj:`PySide2.QtGui.QResizeEvent`): Event
         """
         super(RigDisplayWidget, self).resizeEvent(event)
 
@@ -155,7 +155,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Add a widget to the bar.
 
         Args:
-            item (QWidget): Widget to add
+            item (:obj:`PySide2.QtWidgets.QWidget`): Widget to add
         """
         self.attributesEditorLayout.insertWidget(self.attributesEditorLayout.count()-1, item)
     

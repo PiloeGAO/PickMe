@@ -60,13 +60,13 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
 
         Args:
             name (str, optional): Text displayed on the button. Defaults to "Action".
-            icon (QIcon, optional): Icon to display instead of the text. Defaults to None.
+            icon (:obj:`PySide2.QtGui.QIcon`, optional): Icon to display instead of the text. Defaults to None.
             icon_size (tuple, optional): Icon Size in pixel. Defaults to (64, 64).
             flat (bool, optional): Set button to flat display. Defaults to False.
             clicked_func (function, optional): Function to execute on clicked. Defaults to None.
             pressed_func (function, optional): Function to execute on press. Defaults to None.
             released_func (function, optional): Function to execute on release. Defaults to None.
-            menu (QMenu, optional): Set the menu of the button. Defaults to None.
+            menu (:obj:`PySide2.QtWidgets.QMenu`, optional): Set the menu of the button. Defaults to None.
         """
         self.actionButton.setText(name)
 
@@ -111,12 +111,12 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
 
         Args:
             name (str, optional): Text displayed on the button. Defaults to "Button".
-            icon (QIcon, optional): Icon to display instead of the text. Defaults to None.
+            icon (:obj:`PySide2.QtGui.QIcon`, optional): Icon to display instead of the text. Defaults to None.
             flat (bool, optional): Set button to flat display. Defaults to False.
             clicked_func (function, optional): Function to execute on clicked. Defaults to None.
             pressed_func (function, optional): Function to execute on press. Defaults to None.
             released_func (function, optional): Function to execute on release. Defaults to None.
-            menu (QMenu, optional): Set the menu of the button. Defaults to None.
+            menu (:obj:`PySide2.QtWidgets.QMenu`, optional): Set the menu of the button. Defaults to None.
         """
         button = QtWidgets.QPushButton(name)
         button.setFlat(flat)
@@ -148,7 +148,7 @@ class HorizontalButtonBarWidget(QtWidgets.QWidget, Ui_HorizontalButtonBarWidget)
         """Add a widget to the bar.
 
         Args:
-            item (QWidget): Widget to add
+            item (:obj:`PySide2.QtWidgets.QWidget`): Widget to add
         """
         self.buttonArrayWidgetContentsLayout.insertWidget(self.buttonArrayWidgetContentsLayout.count()-1, item)
     

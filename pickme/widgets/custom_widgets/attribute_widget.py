@@ -26,7 +26,7 @@ class AttributeWidget(QtWidgets.QWidget):
         """Implement Middle Click and Right Click.
 
         Args:
-            event (QEvent): Event.
+            event (:obj:`PySide2.QtCore.QEvent`): Event.
         """
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if event.button() == QtCore.Qt.MiddleButton:

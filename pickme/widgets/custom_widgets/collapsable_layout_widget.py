@@ -84,7 +84,7 @@ class OpenButton(QtWidgets.QWidget):
         """Implement Mouse Clicks.
 
         Args:
-            event (QEvent): Event.
+            event (:obj:`PySide2.QtCore.QEvent`): Event.
         """
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if event.button() == QtCore.Qt.LeftButton:

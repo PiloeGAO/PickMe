@@ -68,7 +68,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         Args:
             type (class): Exception class
             value (str): Value of the exception
-            traceback (class: traceback): position of the error
+            traceback (:obj:`traceback`): position of the error
         """
         error_dialog = ErrorDialog(type, value, traceback)
         error_dialog.exec_()
@@ -84,6 +84,8 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
     # Menu Bar Functions
     def menu_create_rig(self):
+        """Create the new rig when button pressed in the top bar.
+        """
         new_rig_name = self._manager.integration.get_rig_selected()
 
         if(new_rig_name == ""):
@@ -134,7 +136,7 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         """Refresh the header widgets and set buttons inactive except for the clicked one.
 
         Args:
-            active_button (class: RigButton): Active button
+            active_button (:obj:`pickme.widgets.custom_widgets.rig_button.RigButton`): Active button
         """
         for button in self.headerWidget.widgets:
             if(button == active_button):

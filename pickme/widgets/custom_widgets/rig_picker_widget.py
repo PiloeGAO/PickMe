@@ -70,7 +70,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         """Implement Middle Click and Right Click.
 
         Args:
-            event (QEvent): Event.
+            event (:obj:`PySide2.QtCore.QEvent`): Event.
         """
         if event.type() == QtCore.QEvent.GraphicsSceneMousePress:
             self._current_clicked_pos = event.scenePos()
@@ -233,7 +233,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         """Rename the selected element.
 
         Args:
-            element (class: RigPickerButton): Selected element
+            element (:obj:`pickme.widgets.custom_widgets.rig_picker_widget.RigPickerButton`): Selected element
         """
         nice_name, status = QtWidgets.QInputDialog().getText(self._manager.ui,
                                     "Set name",
@@ -264,7 +264,7 @@ class RigPickerWidget(QtWidgets.QGraphicsScene):
         """Remove the selected element.
 
         Args:
-            element (class: RigPickerButton): Selected element
+            element (:obj:`pickme.widgets.custom_widgets.rig_picker_widget.RigPickerButton`): Selected element
         """
         self._current_picker_group.remove_interactive_element(element.picker_element)
 
@@ -335,7 +335,7 @@ class RigPickerButton(QtWidgets.QGraphicsItem):
         """Define the shape of the Item, usefull for defining custom bounding boxes.
 
         Returns:
-            class: QtGui.QPainterPath: Path of the shape
+            :obj:`PySide2.QtGui.QPainterPath`: Path of the shape
         """
         path = QtGui.QPainterPath()
         path.addPolygon(self.polygon)
