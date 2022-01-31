@@ -94,7 +94,7 @@ class Manager():
         Args:
             type (class): Exception class
             value (str): Value of the exception
-            traceback (class: traceback): position of the error
+            traceback (:obj:`traceback`): position of the error
         """
         logger.error(f"{type.__name__} : {value}")
 
@@ -124,7 +124,7 @@ class Manager():
         """Add a rig to manager
 
         Args:
-            new_rig (class: Rig): New rig
+            new_rig (:obj:`pickme.core.rig.Rig`): New rig
         """
         self._rigs.append(new_rig)
     
@@ -166,7 +166,7 @@ CURRENT_MANAGER = None
 def set_current_manager(manager):
     """Set the current manager.
     Args:
-        manager (class:`Manager`): Manager instance.
+        manager (:obj:`pickme.core.manager.Manager`): Manager instance.
     """
     global CURRENT_MANAGER
     CURRENT_MANAGER = manager
@@ -174,7 +174,7 @@ def set_current_manager(manager):
 def current_manager():
     """Get current manager.
     Returns:
-        class:`Manager`: Manager instance.
+        :obj:`pickme.core.manager.Manager`: Manager instance.
     """
     global CURRENT_MANAGER
     return CURRENT_MANAGER
@@ -183,7 +183,7 @@ def start_manager(*args, **kwargs):
     """Start a manager.
 
     Returns:
-        class:`Manager`: Manager initialized.
+        :obj:`pickme.core.manager.Manager`: Manager initialized.
     """
     if(current_manager()):
         logger.info("Manager already started, using it.")

@@ -28,7 +28,7 @@ class SVG(object):
         """Add a child to the SVG class.
 
         Args:
-            child (class): New child to add to list
+            child (:obj:`pickme.core.svg.SVG`): New child to add to list
         """
         child.parent = self
         self.childs.append(child)
@@ -50,7 +50,7 @@ class SVGDocument(SVG):
             path (str): Path to SVG
 
         Returns:
-            class: SVGDocument: New SVGDocument instance
+            :obj:`pickme.core.svg.SVGDocument`: New SVGDocument instance
         """
         document = cls(path=path)
 
@@ -239,7 +239,7 @@ class SVGStyle:
             raw_style (str): Raw style from the SVG
 
         Returns:
-            SVGStyle: Setuped SVGStyle class
+            :obj:`pickme.core.svg.SVGStyle`: Setuped SVGStyle class
         """
         fill_color = ""
         stroke_width = 1.0

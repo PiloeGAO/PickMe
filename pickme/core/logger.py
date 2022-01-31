@@ -16,7 +16,7 @@ def get_logger(module_name="PickMe", debug=True):
         module_name (str): Name of the module to log.
         debug (bool, optional): Enable debug logging. Defaults to True.
     Returns:
-        class:`logging`: Logger to be used.
+        :obj:`logging`: Logger to be used.
     """
     logger = logging.getLogger(module_name)
     

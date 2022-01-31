@@ -54,10 +54,10 @@ class PickerCore:
 
         Args:
             path (str): Path to picker file
-            manager (class: Manager, optional): The mPickMe manager. Defaults to None.
+            manager (:obj:`pickme.core.manager.Manager`, optional): The mPickMe manager. Defaults to None.
 
         Returns:
-            class: Picker: Setuped class
+            :obj:`pickme.core.picker.Picker`: Setuped class
         """
         logger.info(f"Loading picker: {path}")
 
@@ -158,7 +158,7 @@ class PickerCore:
         """Remove interactive element from the picker.
 
         Args:
-            interactive_element (class: PickerInteractiveElement): The element to remove
+            interactive_element (:obj:`pickme.core.picker.PickerInteractiveElement`): The element to remove
         """
         self._interactive_elements = [elem for elem in self._interactive_elements if elem != interactive_element]
         self.save()

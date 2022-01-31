@@ -40,11 +40,11 @@ class Rig():
         """Create a new rig from the manager and a rig name.
 
         Args:
-            manager (class: Manager): PickMe Manager
+            manager (:obj:`pickme.core.manager.Manager`): PickMe Manager
             name (str): Name of the rig
 
         Returns:
-            class: Rig: New rig
+            :obj:`pickme.core.rig.Rig`: New rig
         """
         if(name in [rig.name for rig in manager.rigs]):
             return None
@@ -170,7 +170,7 @@ class Rig():
         """Utils function to allow partial to edit the property.
 
         Args:
-            picker_group (class: PickerCore): New picker group to apply
+            picker_group (:obj:`pickme.core.picker.PickerCore`): New picker group to apply
         """
         self.current_picker_group = picker_group
         
@@ -231,7 +231,7 @@ class Rig():
         """Show/hide selection set.
 
         Args:
-            selection_set (class: SelectionSet): Set to show/hide
+            selection_set (:obj:`pickme.core.selection_set.SelectionSet`): Set to show/hide
         """
         objects = selection_set.objects
         self._manager.integration.show_hide_objects(objects)
