@@ -66,7 +66,7 @@ class FloatSliderWidget(QtWidgets.QWidget):
         self.slider.setMaximum(self._max)
         self.slider.setValue(self._value)
 
-        self.slider.sliderReleased.connect(
+        self.slider.valueChanged.connect(
             self.update_value
         )
 
@@ -77,8 +77,8 @@ class FloatSliderWidget(QtWidgets.QWidget):
 
         self.setLayout(layout)
     
-    def update_value(self):
-        self._value = self.slider.value()
+    def update_value(self, new_value):
+        self._value = new_value
         self.slider.setToolTip(str(self.value))
         
         self._update_function(self.value) 
