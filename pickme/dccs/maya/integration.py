@@ -24,6 +24,7 @@ class MayaIntegration(Integration):
         # Adding callbacks
         OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterCreateReference, self._manager.ui.reload_configurations)
         OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterRemoveReference, self._manager.ui.reload_configurations)
+        OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterLoadReference, self._manager.ui.reload_configurations)
 
         OpenMaya.MEventMessage.addEventCallback("SelectionChanged", self.get_attributes_for_selection)
         OpenMaya.MEventMessage.addEventCallback("timeChanged", self.refresh_attributes)
