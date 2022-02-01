@@ -155,7 +155,7 @@ class MayaIntegration(Integration):
 
         attributes = []
 
-        for sel in cmds.ls(sl=True):
+        for sel in cmds.ls(sl=True, exactType="transform"):
             if(sel in [f"{self._manager.rig.name}:{obj.name}" for obj in self._manager.rig.rig_objects]):
                 logger.debug(f"Loading custom rig object \"{sel}\" from the config.")
                 # Load from custom rig object config.
