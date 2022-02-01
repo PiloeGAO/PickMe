@@ -81,7 +81,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         if(self._manager.rig == None):
             return
 
-        if(self._rig == None and self._manager.rig != None):
+        if(self._manager.rig != None):
             self._rig = self._manager.rig
         
         # Reset the splitter
@@ -121,6 +121,7 @@ class RigDisplayWidget(QtWidgets.QWidget, Ui_RigDisplayWidget):
         """Create attributes.
         """
         if(self._rig == None):
+            logger.debug("No rig loaded in the widget, skipping.")
             return
         
         self.clear_attributes_editor()
