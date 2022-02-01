@@ -1,0 +1,357 @@
+[
+    {
+        "name": "main_global_settings",
+        "attributes": [
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "demo:main_global_settings",
+                "nice_name": "demo:main_global_settings",
+                "childs": []
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "head_setup",
+                "nice_name": "head_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "head_setup_blendJawFKIK",
+                        "nice_name": "_blendJawFKIK",
+                        "default_value": 0.0,
+                        "min_value": 0.0,
+                        "max_value": 1.0,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 2,
+                        "name": "head_setup_displayToothControllers",
+                        "nice_name": "_displayToothControllers",
+                        "default_value": true,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "head_setup_blendTongueFKIK",
+                        "nice_name": "_blendTongueFKIK",
+                        "default_value": 0.0,
+                        "min_value": -0.0,
+                        "max_value": 0.0,
+                        "enum_list": []
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "facial_setup",
+                "nice_name": "facial_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 2,
+                        "name": "facial_setup_showTweakers",
+                        "nice_name": "_showTweakers",
+                        "default_value": false,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "eyes_setup",
+                "nice_name": "eyes_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "eyes_setup_eyeLSwitchFKIK",
+                        "nice_name": "_eyeLSwitchFKIK",
+                        "default_value": 1.0,
+                        "min_value": 0.0,
+                        "max_value": 1.0,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "eyes_setup_eyeRSwitchFKIK",
+                        "nice_name": "_eyeRSwitchFKIK",
+                        "default_value": 1.0,
+                        "min_value": 0.0,
+                        "max_value": 1.0,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "eyes_setup_pupilLScale",
+                        "nice_name": "_pupilLScale",
+                        "default_value": 1.0,
+                        "min_value": 0.0,
+                        "max_value": 2.0,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "eyes_setup_pupilRScale",
+                        "nice_name": "_pupilRScale",
+                        "default_value": 1.0,
+                        "min_value": 0.0,
+                        "max_value": 2.0,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "eyes_setup_spaceSwitches_lookAt_BUF",
+                        "nice_name": "_spaceSwitches_lookAt_BUF",
+                        "default_value": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "Parent",
+                            "UpperBody",
+                            "Local"
+                        ]
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "neck_setup",
+                "nice_name": "neck_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "neck_setup_DisplayCtrls",
+                        "nice_name": "_DisplayCtrls",
+                        "default_value": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "PRIMARY",
+                            "SECONDARY",
+                            "BOTH"
+                        ]
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "spine_setup",
+                "nice_name": "spine_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_fkIkBlend",
+                        "nice_name": "_fkIkBlend",
+                        "default_value": "0.0",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "spine_setup_stretch",
+                        "nice_name": "_stretch",
+                        "default_value": 1,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "disable",
+                            "enable"
+                        ]
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "spine_setup_lStretch",
+                        "nice_name": "_lStretch",
+                        "default_value": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "disable",
+                            "enable"
+                        ]
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_maxSLF",
+                        "nice_name": "_maxSLF",
+                        "default_value": "1.2000000476837158",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_minSLF",
+                        "nice_name": "_minSLF",
+                        "default_value": "0.800000011920929",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "spine_setup_snsMode",
+                        "nice_name": "_snsMode",
+                        "default_value": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "None",
+                            "Controllers Distance"
+                        ]
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_strchAxis0Scl",
+                        "nice_name": "_strchAxis0Scl",
+                        "default_value": "0.5",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_strchAxis1Scl",
+                        "nice_name": "_strchAxis1Scl",
+                        "default_value": "0.5",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_sqtchAxis0Scl",
+                        "nice_name": "_sqtchAxis0Scl",
+                        "default_value": "2.0",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 3,
+                        "name": "spine_setup_sqtchAxis1Scl",
+                        "nice_name": "_sqtchAxis1Scl",
+                        "default_value": "2.0",
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": []
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "hairs_setup",
+                "nice_name": "hairs_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "hairs_setup_DisplayCtrls",
+                        "nice_name": "_DisplayCtrls",
+                        "default_value": 2,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "PRIMARY",
+                            "SECONDARY",
+                            "BOTH"
+                        ]
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "hairs_setup_primaryFKIK",
+                        "nice_name": "_primaryFKIK",
+                        "default_value": 0.0,
+                        "min_value": 0.0,
+                        "max_value": 1.0,
+                        "enum_list": []
+                    },
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 1,
+                        "name": "hairs_setup_secondaryFKIK",
+                        "nice_name": "_secondaryFKIK",
+                        "default_value": 1.0,
+                        "min_value": 0.0,
+                        "max_value": 1.0,
+                        "enum_list": []
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "coat_setup",
+                "nice_name": "coat_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "coat_setup_DisplayCtrls",
+                        "nice_name": "_DisplayCtrls",
+                        "default_value": 2,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "PRIMARY",
+                            "SECONDARY",
+                            "BOTH"
+                        ]
+                    }
+                ]
+            },
+            {
+                "object": "demo:main_global_settings",
+                "attribute_type": 0,
+                "name": "skirt_setup",
+                "nice_name": "skirt_setup",
+                "childs": [
+                    {
+                        "object": "demo:main_global_settings",
+                        "attribute_type": 4,
+                        "name": "skirt_setup_DisplayCtrls",
+                        "nice_name": "_DisplayCtrls",
+                        "default_value": 2,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "enum_list": [
+                            "PRIMARY",
+                            "SECONDARY",
+                            "BOTH"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

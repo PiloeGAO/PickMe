@@ -6,7 +6,9 @@
     :brief:     PickMe Rig Management class.
 '''
 import os
+import json
 
+from pickme.core.attribute import AttributeGroup, Attribute
 from pickme.core.exceptions import CoreError
 from pickme.core.path import GLOBAL_CONFIG_DIR, LOCAL_CONFIG_DIR
 from pickme.core.picker import PickerCore
@@ -34,7 +36,10 @@ class Rig():
         self.load_selection_sets()
 
         self._attributes = []
-    
+
+        self._custom_rig_objects = []
+        self.load_rig_objects()
+
     @classmethod
     def create(cls, manager, name):
         """Create a new rig from the manager and a rig name.
@@ -235,3 +240,138 @@ class Rig():
         """
         objects = selection_set.objects
         self._manager.integration.show_hide_objects(objects)
+    
+    # Rig Objects management.
+    @property
+    def rig_objects(self):
+        return self._custom_rig_objects
+
+    def load_rig_objects(self):
+        """Load rig objects stored in the config.
+        """
+        if(not os.path.isfile(self._config_path)):
+            return
+
+        def recursive_attribute_load(elem, parent):
+            """Recursively load attributes/attributes groups.
+
+            Args:
+                elem (str): JSON Datas
+                parent (:obj:`pickme.core.attribute.AttributeGroup`): [description]
+            """
+            if(elem.get("childs", None) != None):
+                group = AttributeGroup(
+                    self,
+                    elem["object"],
+                    elem["name"]
+                )
+
+                parent.add_child(group)
+
+                for sub_elem in elem:
+                    recursive_attribute_load(sub_elem, group)
+            
+            else:
+                parent.add_child(
+                    Attribute(
+                        self,
+                        elem["object"],
+                        elem["name"],
+                        elem["attribute_type"],
+                        elem["default_value"],
+                        min_value=elem["min_value"],
+                        max_value=elem["max_value"],
+                        enum_list=elem["enum_list"]
+                    )
+                )
+
+        with open(self._config_path, "r+") as file:
+            datas = json.loads(file.read())
+
+            for data in datas:
+                name = data["name"]
+                attributes = []
+
+                for attribute_group in data["attributes"]:
+                    group = AttributeGroup(
+                        self,
+                        attribute_group["object"],
+                        attribute_group["name"]
+                    )
+
+                    attributes.append(group)
+
+                    for sub_elem in attribute_group["childs"]:
+                        recursive_attribute_load(sub_elem, group)
+
+                self._custom_rig_objects.append(
+                    RigObject(
+                        name,
+                        attributes
+                    )
+                )
+
+    def save_rig_objects(self):
+        """Save the list of custom rig objects on disk.
+        """
+        if(not os.path.isdir(os.path.dirname(self._config_path))):
+            # Create the directory if needed.
+            os.mkdir(os.path.dirname(self._config_path))
+
+        if(not os.path.isfile(self._config_path)):
+            # Write the file if it not exist.
+            file = open(self._config_path, "w")
+            file.write("[]")
+            file.close()
+
+        with open(self._config_path, "r+") as file:
+            content = []
+
+            for rig_obj in self._custom_rig_objects:
+                content.append(rig_obj.json)
+
+            file.seek(0)
+            file.write(json.dumps(content, indent=4))
+            file.truncate()
+    
+    def create_custom_rig_object(self, name, attributes):
+        """Add a new custom rig object.
+
+        Args:
+            name (str): Object name
+            attributes (list: :obj:`pickme.core.attribute.BaseAttribute`): List of attributes
+        """
+        self._custom_rig_objects.append(
+            RigObject(
+                name,
+                attributes
+            )
+        )
+
+        self.save_rig_objects()
+
+class RigObject:
+    def __init__(self, name, attributes=[]):
+        """Create a RigObject class instance.
+
+        Args:
+            name (str): Name of the 3D Object
+            attributes (list: :obj:`pickme.core.attribute.BaseAttribute`, optional): List of attributes for the object. Defaults to [].
+        """
+        self._name = name
+        self._attributes = attributes
+    
+    @property
+    def json(self):
+        return {
+            "name": self._name,
+            "attributes": [attr.json for attr in self._attributes]
+        }
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def attributes(self):
+        return self._attributes

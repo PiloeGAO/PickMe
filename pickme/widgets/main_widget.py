@@ -49,6 +49,10 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
         create_rig_button.triggered.connect(self.menu_create_rig)
         edit_menu.addAction(create_rig_button)
 
+        create_custom_rig_object_button = QtWidgets.QAction(QtGui.QIcon(os.path.join(ICONS_DIR, "plus.png")), "Create Custom Rig Object", self)
+        create_custom_rig_object_button.triggered.connect(self.menu_create_custom_rig_object)
+        edit_menu.addAction(create_custom_rig_object_button)
+
         self.mainLayout.insertWidget(0, self.menubar)
 
         # Set header functions.
@@ -105,6 +109,22 @@ class MainWidget(QtWidgets.QWidget, Ui_MainWidget):
 
         self._manager.add_rig(new_rig)
         self.reload_configurations()
+    
+    def menu_create_custom_rig_object(self):
+        rig_object_names = self._manager.integration.get_selection()
+
+        if(len(rig_object_names) != 1):
+            logger.error("Invalid selection.")
+            return
+
+        if(len([rig_obj for rig_obj in self._manager.rig.rig_objects if rig_object_names[0] == rig_obj.name]) != 0):
+            logger.error("Object already created.")
+            return
+
+        self._manager.rig.create_custom_rig_object(
+            rig_object_names[0],
+            self._manager.rig.attributes
+        )
 
     # Loaders.
     def reload_configurations(self, *args, **kwargs):

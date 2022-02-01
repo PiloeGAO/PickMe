@@ -154,103 +154,98 @@ class MayaIntegration(Integration):
 
         attributes = []
 
-        attributes_to_skip = (
-            "visibility",
-            "translateX",
-            "translateY",
-            "translateZ",
-            "rotateX",
-            "rotateY",
-            "rotateZ",
-            "scaleX",
-            "scaleY",
-            "scaleZ"
-        )
-
         for sel in cmds.ls(sl=True):
-            attributes.append(
-                AttributeGroup(
-                    self._manager.rig,
-                    sel,
-                    f"{sel}"
+            if(sel in [f"{self._manager.rig.name}:{obj.name}" for obj in self._manager.rig.rig_objects]):
+                logger.debug(f"Loading custom rig object \"{sel}\" from the config.")
+                # Load from custom rig object config.
+                rig_object = [obj for obj in self._manager.rig.rig_objects if obj.name == sel.split(":")[-1]][0]
+
+                attributes.extend(rig_object.attributes)
+
+            else:
+                logger.debug(f"Dynamicly building attributes for \"{sel}\".")
+                # Dynamicly build attributes.
+                attributes.append(
+                    AttributeGroup(
+                        self._manager.rig,
+                        sel,
+                        f"{sel}"
+                    )
                 )
-            )
 
-            for attr in cmds.listAttr(sel, keyable=True):
-                if(attr in attributes_to_skip): continue
-                
-                maya_attribute_type = cmds.getAttr(f"{sel}.{attr}", type=True)
+                for attr in cmds.listAttr(sel, keyable=True):
+                    maya_attribute_type = cmds.getAttr(f"{sel}.{attr}", type=True)
 
-                if(maya_attribute_type == "enum" and
-                    cmds.attributeQuery(attr, node=sel, listEnum=True)[0] == "---------------"):
-                    # Create group
-                    attributes.append(
-                        AttributeGroup(
+                    if(maya_attribute_type == "enum" and
+                        cmds.attributeQuery(attr, node=sel, listEnum=True)[0] == "---------------"):
+                        # Create group
+                        attributes.append(
+                            AttributeGroup(
+                                self._manager.rig,
+                                sel,
+                                f"{attr}"
+                            )
+                        )
+                        continue
+
+                    # Create attributes.
+                    attribute_name = attr
+                    attribute_value = cmds.getAttr(f"{sel}.{attr}")
+
+                    if(maya_attribute_type in ("double", "long")):
+                        if(cmds.attributeQuery(attr, node=sel, minExists=True)):
+                            attribute_min = cmds.attributeQuery(attr, node=sel, min=True)[0]
+                        else:
+                            attribute_min = attribute_value * -2
+                            
+                        if(cmds.attributeQuery(attr, node=sel, maxExists=True)):
+                            attribute_max = cmds.attributeQuery(attr, node=sel, max=True)[0]
+                        else:
+                            attribute_max = attribute_value * 2
+                    
+                        new_attribute = Attribute(
                             self._manager.rig,
                             sel,
-                            f"{attr}"
+                            attribute_name,
+                            AttributeTypes.number,
+                            attribute_value,
+                            min_value = attribute_min,
+                            max_value = attribute_max
                         )
-                    )
-                    continue
 
-                # Create attributes.
-                attribute_name = attr
-                attribute_value = cmds.getAttr(f"{sel}.{attr}")
-
-                if(maya_attribute_type in ("double", "long")):
-                    if(cmds.attributeQuery(attr, node=sel, minExists=True)):
-                        attribute_min = cmds.attributeQuery(attr, node=sel, min=True)[0]
-                    else:
-                        attribute_min = attribute_value * -2
-                        
-                    if(cmds.attributeQuery(attr, node=sel, maxExists=True)):
-                        attribute_max = cmds.attributeQuery(attr, node=sel, max=True)[0]
-                    else:
-                        attribute_max = attribute_value * 2
-                
-                    new_attribute = Attribute(
-                        self._manager.rig,
-                        sel,
-                        attribute_name,
-                        AttributeTypes.number,
-                        attribute_value,
-                        min_value = attribute_min,
-                        max_value = attribute_max
-                    )
-
-                elif(maya_attribute_type == "bool"):
-                    new_attribute = Attribute(
-                        self._manager.rig,
-                        sel,
-                        attribute_name,
-                        AttributeTypes.boolean,
-                        attribute_value
-                    )
-                
-                elif(maya_attribute_type == "enum"):
-                    enum_values = cmds.attributeQuery(attr, node=sel, listEnum=True)[0].split(":")
-                   
-                    new_attribute = Attribute(
-                        self._manager.rig,
-                        sel,
-                        attribute_name,
-                        AttributeTypes.enum,
-                        attribute_value,
-                        enum_list = enum_values
-                    )
+                    elif(maya_attribute_type == "bool"):
+                        new_attribute = Attribute(
+                            self._manager.rig,
+                            sel,
+                            attribute_name,
+                            AttributeTypes.boolean,
+                            attribute_value
+                        )
                     
-                else:
-                    attribute_value = str(attribute_value)
-                
-                    new_attribute = Attribute(
-                        self._manager.rig,
-                        sel,
-                        attribute_name,
-                        AttributeTypes.string,
-                        attribute_value
-                    )
+                    elif(maya_attribute_type == "enum"):
+                        enum_values = cmds.attributeQuery(attr, node=sel, listEnum=True)[0].split(":")
+                    
+                        new_attribute = Attribute(
+                            self._manager.rig,
+                            sel,
+                            attribute_name,
+                            AttributeTypes.enum,
+                            attribute_value,
+                            enum_list = enum_values
+                        )
+                        
+                    else:
+                        attribute_value = str(attribute_value)
+                    
+                        new_attribute = Attribute(
+                            self._manager.rig,
+                            sel,
+                            attribute_name,
+                            AttributeTypes.string,
+                            attribute_value
+                        )
 
-                attributes[-1].add_child(new_attribute)
+                    attributes[-1].add_child(new_attribute)
         
         self._manager.rig.attributes = attributes
         self._manager.ui.create_attributes()

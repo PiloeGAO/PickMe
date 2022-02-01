@@ -25,6 +25,15 @@ class BaseAttribute:
         self._nice_name = self._name
     
     @property
+    def json(self):
+        return {
+            "object": self._object,
+            "attribute_type": self._attribute_type,
+            "name": self._name,
+            "nice_name": self._nice_name
+        }
+
+    @property
     def attribute_type(self):
         return self._attribute_type
 
@@ -50,6 +59,17 @@ class AttributeGroup(BaseAttribute):
         self._childs = []
     
     @property
+    def json(self):
+        return {
+            "object": self._object,
+            "attribute_type": self._attribute_type,
+            "name": self._name,
+            "nice_name": self._nice_name,
+            "attribute_type": self._attribute_type,
+            "childs": [attr.json for attr in self.childs]
+        }
+
+    @property
     def childs(self):
         return self._childs
     
@@ -67,7 +87,7 @@ class Attribute(BaseAttribute):
         self._parent_attribute = parent_attribute
         
         if(type(parent_attribute) == AttributeGroup):
-            self._nice_name = self._nice_name.replace(parent_attribute.name, "")
+            self._nice_name = self._nice_name.replace(f"{parent_attribute.name}_", "")
 
         self._attribute_type = attribute_type
         self._default_value = default_value
@@ -76,9 +96,21 @@ class Attribute(BaseAttribute):
         self._min_value = kwargs.get("min_value", 0)
         self._max_value = kwargs.get("max_value", 1)
 
-        if(kwargs.get("enum_list", None) != None):
-            self._enum_list = kwargs.get("enum_list")
+        self._enum_list = kwargs.get("enum_list", [])
     
+    @property
+    def json(self):
+        return {
+            "object": self._object,
+            "attribute_type": self._attribute_type,
+            "name": self._name,
+            "nice_name": self._nice_name,
+            "default_value": self._default_value,
+            "min_value": self._min_value,
+            "max_value": self._max_value,
+            "enum_list": self._enum_list
+        }
+
     @property
     def parent_attribute(self):
         return self._parent_attribute
